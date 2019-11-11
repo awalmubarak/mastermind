@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, StyleSheet,Image, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet,Image } from 'react-native'
 import Button from '../components/button'
 const WelcomeScreen = ({navigation})=>{
     return <View style={styles.container}>
@@ -17,13 +17,12 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center', 
-        justifyContent: "center",
+        justifyContent: "space-evenly",
         marginHorizontal: 50
     },
     image:{
         width: 300,
-        height: 300,
-        borderRadius: 50
+        height: 150,
     },
     
     welcomeMessage:{

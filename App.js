@@ -37,12 +37,16 @@ const CreateProfileNavigator = createStackNavigator({
   headerLayoutPreset: "center"
 });
 
+// const AppNavigator = createStackNavigator({
+
+// });
+
 const Navigator = createSwitchNavigator({
   Home: WelcomeScreen,
   Register: RegisterScreen,
   Login: LoginScreen,
   CreateProfile: CreateProfileNavigator,
-  ProfileSuccess: CreateProfileSuccessScreen
+  ProfileSuccess: CreateProfileSuccessScreen,
 })
 
 export default createAppContainer(Navigator)
