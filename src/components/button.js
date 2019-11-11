@@ -1,8 +1,8 @@
 import React from 'react'
 import { TouchableOpacity, Text, StyleSheet } from 'react-native'
 
-const Button = ({onPress, text})=>{
-    return <TouchableOpacity style={styles.getStartedButton} onPress={()=>onPress()}>
+const Button = ({onPress, text, style})=>{
+    return <TouchableOpacity style={[styles.getStartedButton, style]} onPress={()=>onPress()}>
                 <Text style={styles.getStartedButtonText}> {text} </Text>
             </TouchableOpacity>
 }
@@ -14,7 +14,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#067b7a',
         borderRadius: 4,
         flexDirection: "row",
-        alignItems: "center"
+        alignItems: "center",
+        elevation: 10
     },
     getStartedButtonText:{
         color: "white",

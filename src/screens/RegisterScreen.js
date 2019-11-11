@@ -17,7 +17,7 @@ const RegisterScreen = ({navigation})=>{
                 <Input label="Full Name" placeholder="John Smith"/>
                 <Input label="Email" placeholder="name@example.com"/>
                 <Input label="Password" secure placeholder="********"/>
-                <Button text="Sign Up"/>
+                <Button text="Sign Up" onPress={()=>navigation.navigate('CreateProfile')}/>
             </View>
             
             <GoogleAction actionText="Sign In" actionMessage="Already Have An Account?" action={()=>navigation.navigate("Login")}/>
