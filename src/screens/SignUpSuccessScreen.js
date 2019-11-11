@@ -1,11 +1,12 @@
 import React from 'react'
 import { Text, StyleSheet, View, StatusBar, Image } from 'react-native'
 import Button from '../components/button'
+import Card from '../components/card'
 
 const SignUpSuccessScreen = ()=>{
     return <View style={styles.container}>
             <StatusBar backgroundColor="#067b7a" barStyle="light-content" />   
-            <View style={styles.cardContainer}>
+            <Card style={styles.cardContainer}>
                 <View>
                     <Image source={require('../assets/signup-success.png')} style={styles.image}/>
                 </View>
@@ -16,7 +17,7 @@ const SignUpSuccessScreen = ()=>{
                     to finish setting you up.</Text>
                     <Button text="Continue" style={styles.button}/>
                 </View>
-            </View>     
+            </Card>     
     </View>
 }
 
@@ -27,12 +28,9 @@ const styles = StyleSheet.create({
         justifyContent: "center"
     },
     cardContainer:{
-        backgroundColor: "white",
-        elevation: 20,
-        borderRadius: 20,
+        alignItems: "center",        
         flex: 0.6,
         marginHorizontal: 10,
-        alignItems: "center"
     },
     image:{
         width: 200,
