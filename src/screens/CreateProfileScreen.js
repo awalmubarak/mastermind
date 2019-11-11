@@ -54,7 +54,7 @@ const CreateProfieScreen = ({navigation})=>{
 
     const renderStepThree = ()=>{
         return <ProfileContainer 
-            title="Choose A Profile Picture" 
+            title="Add A Profile Picture" 
             step={step} nextAction={nextStep} prevAction={previousStep}>
             <View style={styles.imageContainer}>
                 <ImageBackground  style={styles.profileImage}>
