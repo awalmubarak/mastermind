@@ -30,7 +30,13 @@ const Navigator = createSwitchNavigator({
       header:null
     }
   },
-  Auth:AuthNavigator
+  Register: {
+    screen :RegisterScreen,
+    navigationOptions: {
+      header:null
+    }
+  },
+  Login: LoginScreen
 })
 
 export default createAppContainer(Navigator)

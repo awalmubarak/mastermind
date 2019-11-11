@@ -1,11 +1,12 @@
 import React from 'react'
-import { Text, View, StyleSheet } from 'react-native'
+import { Text, View, StyleSheet, StatusBar } from 'react-native'
 import Input from "../components/input"
 import Button from '../components/button'
-import { GoogleSignin, GoogleSigninButton } from '@react-native-community/google-signin';
+import GoogleAction from '../components/googleAction'
 
-const RegisterScreen = ()=>{
+const RegisterScreen = ({navigation})=>{
     return <View style={styles.container}>
+        <StatusBar backgroundColor="#067b7a" barStyle="light-content" />        
         <View style={styles.headerContainer}>
             <Text style={styles.greetingText}>Welcome</Text>
             <Text style={styles.actionText}>Sign Up</Text>
@@ -13,26 +14,13 @@ const RegisterScreen = ()=>{
 
         <View style={styles.cardContainer}>
             <View style={styles.formContainer}>
-                <Input label="Full Name"/>
-                <Input label="Email"/>
-                <Input label="Password"/>
+                <Input label="Full Name" placeholder="John Smith"/>
+                <Input label="Email" placeholder="name@example.com"/>
+                <Input label="Password" secure placeholder="********"/>
                 <Button text="Sign Up"/>
             </View>
-            <View style={styles.dividerContainer}>
-                <View style={styles.divider}></View>
-                <Text>OR</Text>
-                <View style={styles.divider}></View>
-            </View>
-
-            <View style={styles.googleContainer}>
-            <GoogleSigninButton
-                style={styles.googleSignInButton}
-                size={GoogleSigninButton.Size.Wide}
-                color={GoogleSigninButton.Color.Light}
-                onPress={()=>{}}
-                disabled={false} />
-            </View>
-
+            
+            <GoogleAction actionText="Sign In" actionMessage="Already Have An Account?" action={()=>navigation.navigate("Login")}/>
         </View>
     </View>
 }
@@ -67,26 +55,6 @@ const styles = StyleSheet.create({
     formContainer:{
         marginHorizontal: 20
     },
-    dividerContainer:{
-        marginTop: 15,
-        flexDirection: "row",
-        justifyContent: "center"
-    },
-    divider:{
-        height: 1,
-        width: 30,
-        backgroundColor: "grey",
-        alignSelf: "center",
-        marginHorizontal: 5
-    },
-    googleContainer:{
-        alignItems: "center",
-        marginTop: 20
-    },
-    googleSignInButton:{ 
-        width: 200
-    }
-    
 
 })
 
