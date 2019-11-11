@@ -1,15 +1,14 @@
 import React from 'react'
 import { View, Text, StyleSheet,Image, TouchableOpacity } from 'react-native'
-const WelcomeScreen = ()=>{
+import Button from '../components/button'
+const WelcomeScreen = ({navigation})=>{
     return <View style={styles.container}>
         <View>
             <Image source={require('../assets/welcome.png')} style={styles.image}/>
         </View>
         <View>
             <Text style={styles.welcomeMessage}>Create, Facilitate, Join mastermind groups </Text>
-            <TouchableOpacity style={styles.getStartedButton}>
-                <Text style={styles.getStartedButtonText}> Get Started </Text>
-            </TouchableOpacity>
+            <Button text="Get Started" onPress={()=>navigation.navigate('Auth')}/>
         </View>
     </View>
 }
@@ -23,23 +22,10 @@ const styles = StyleSheet.create({
     },
     image:{
         width: 300,
-        height: 300
+        height: 300,
+        borderRadius: 50
     },
-    getStartedButton:{
-        marginTop: 5,
-        height: 45,
-        backgroundColor: '#067b7a',
-        borderRadius: 4,
-        flexDirection: "row",
-        alignItems: "center"
-    },
-    getStartedButtonText:{
-        color: "white",
-        fontWeight: "bold",
-        textAlign: "center",
-        letterSpacing: 2,
-        width: "100%"
-    },
+    
     welcomeMessage:{
         marginVertical: 20,
         textAlign: "center",
