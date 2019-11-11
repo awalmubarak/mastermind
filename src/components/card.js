@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
     cardContainer:{
         backgroundColor: "white",
         elevation: 20,
-        borderRadius: 20,
+        borderRadius: 10,
         flex: 1,
     },
 })

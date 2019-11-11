@@ -4,6 +4,7 @@ import WelcomeScreen from './src/screens/WelcomeScreen';
 import LoginScreen from './src/screens/LoginScreen';
 import RegisterScreen from './src/screens/RegisterScreen';
 import SignUpSuccessScreen from './src/screens/SignUpSuccessScreen';
+import CreateProfileScreen from './src/screens/CreateProfileScreen';
 
 
 
@@ -20,6 +21,13 @@ const CreateProfileNavigator = createStackNavigator({
     navigationOptions:{
       header: null
     }
+  },
+  CreateProfile: {
+    screen: CreateProfileScreen,
+    navigationOptions:{
+      header: null
+    }
+
   }
 },{
   defaultNavigationOptions:{

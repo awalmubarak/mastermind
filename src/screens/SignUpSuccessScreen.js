@@ -3,7 +3,7 @@ import { Text, StyleSheet, View, StatusBar, Image } from 'react-native'
 import Button from '../components/button'
 import Card from '../components/card'
 
-const SignUpSuccessScreen = ()=>{
+const SignUpSuccessScreen = ({navigation})=>{
     return <View style={styles.container}>
             <StatusBar backgroundColor="#067b7a" barStyle="light-content" />   
             <Card style={styles.cardContainer}>
@@ -15,7 +15,10 @@ const SignUpSuccessScreen = ()=>{
                     created successfully.</Text>
                     <Text style={styles.message}> We just need a few information
                     to finish setting you up.</Text>
-                    <Button text="Continue" style={styles.button}/>
+                    <Button text="Continue" 
+                        style={styles.button}
+                        onPress={()=>navigation.navigate("CreateProfile")}
+                     />
                 </View>
             </Card>     
     </View>
@@ -46,7 +49,6 @@ const styles = StyleSheet.create({
         marginBottom: 10
     },
     button:{
-        borderRadius: 20,
         marginTop: 20,
     }
 })
