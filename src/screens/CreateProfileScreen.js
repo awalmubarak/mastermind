@@ -15,7 +15,7 @@ const CreateProfieScreen = ({navigation})=>{
     }
     const nextStep = ()=>{
         if(step==3){
-            
+            navigation.navigate('ProfileSuccess')
         }else{
             setStep(step + 1)
         }

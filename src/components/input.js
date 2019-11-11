@@ -31,7 +31,8 @@ const styles = StyleSheet.create({
     },
     inputLabel:{
         fontWeight: "bold",
-        fontSize: 18
+        fontSize: 18,
+        color: "#424242"
     }
 })
 
