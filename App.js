@@ -12,6 +12,7 @@ import CreateProfileSuccessScreen from './src/screens/CreateProfileSuccessScreen
 import GroupsScreen from './src/screens/GroupsScreen';
 import CreateGroupScreen from './src/screens/CreateGroupScreen';
 import DrawerSidebar from './src/components/drawerSidebar';
+import JoinGroupScreen from './src/screens/JoinGroupScreen';
 
 
 
@@ -66,7 +67,8 @@ const AppNavigator = createStackNavigator({
 
 const DrawerNavigator = createDrawerNavigator({
   Groups: AppNavigator,
-  CreateGroup: CreateGroupScreen
+  CreateGroup: CreateGroupScreen,
+  JoinGroup: JoinGroupScreen
 }, {
   contentComponent: props=><DrawerSidebar {...props}/>
 })

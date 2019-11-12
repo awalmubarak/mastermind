@@ -22,17 +22,17 @@ export default DrawerSidebar = ({navigation})=> {
         </View>
 
         <View style={styles.containerBottom}>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             onPress={() => navigation.navigate('Groups')}
             style={styles.containerBottomItem}
           >
             <View style={styles.button}>
               <Text style={styles.txtBottom}>My Groups</Text>
             </View>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
 
           <TouchableOpacity
-            onPress={() => navigation.navigate('')}
+            onPress={() => navigation.navigate('JoinGroup')}
             style={styles.containerBottomItem}
           >
             <View style={styles.button}>
