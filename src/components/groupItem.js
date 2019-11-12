@@ -1,10 +1,9 @@
 import React from 'react'
 import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native'
 import Card from './card'
-import { TouchableHighlight } from 'react-native-gesture-handler'
 
 const GroupItem = ()=>{
-return <TouchableHighlight>
+return <TouchableOpacity>
     
     <View style={styles.cardContainer}>
         <View style={styles.groupContainer}>
@@ -18,7 +17,7 @@ return <TouchableHighlight>
         </View>
         </View>
     </View>
-</TouchableHighlight>
+</TouchableOpacity>
 }
 
 const styles = StyleSheet.create({
