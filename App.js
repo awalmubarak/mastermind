@@ -58,12 +58,7 @@ const AppNavigator = createStackNavigator({
       title: "Mastermind Groups"
     }
   }
-}, {
-  ...defaultConfigs,
-  navigationOptions: {
-    headerLeft: <Text>Drawer</Text>
-  },
-});
+}, defaultConfigs);
 
 const DrawerNavigator = createDrawerNavigator({
   Groups: AppNavigator,
@@ -74,12 +69,12 @@ const DrawerNavigator = createDrawerNavigator({
 })
 
 const Navigator = createSwitchNavigator({
-  App: DrawerNavigator,
   Home: WelcomeScreen,
   Register: RegisterScreen,
   Login: LoginScreen,
   CreateProfile: CreateProfileNavigator,
   ProfileSuccess: CreateProfileSuccessScreen,
+  App: DrawerNavigator,
 })
 
 export default createAppContainer(Navigator)

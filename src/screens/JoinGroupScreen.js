@@ -1,16 +1,16 @@
-import React from 'react'
+import React, {useState} from 'react'
 import { View, StyleSheet, Text } from 'react-native'
 import ScreenContainer from '../components/screenContainer'
 import Input from '../components/input'
 import Button from '../components/button'
 
 const JoinGroupScreen = ()=>{
-    let step = 2;
+    const [step, setStep] = useState(1)
     const renderStepOne = ()=>{
         return <View style={styles.container}>
             <Text style={styles.description}>Enter Mastermind Group ID to continue</Text>
             <Input label="Group ID"/>
-           <Button text="Continue"/>
+           <Button text="Continue" onPress={()=>setStep(step + 1)}/>
             
         </View>
     }
@@ -43,7 +43,9 @@ const JoinGroupScreen = ()=>{
                 <Text style={styles.body}>Sir Larbie Jonas</Text>
             </View> 
 
-            <Button text="Join Now" style={{marginVertical: 20}}/>            
+            <Button text="Join Now" 
+                style={{marginVertical: 20}}
+                onPress={()=>setStep(step - 1)} />            
             
         </View>
     }

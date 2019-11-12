@@ -14,7 +14,7 @@ const GroupsScreen = ()=>{
 }
 GroupsScreen.navigationOptions = ({navigation})=>({
     headerLeft: <TouchableOpacity onPress={()=>navigation.openDrawer()}>
-        <Image source={require('../assets/menu.png')} style={{width:25, height: 25, marginLeft: 10}}/>
+        <Image source={require('../assets/menu.png')} style={{width:25, height: 25, marginLeft: 10, padding:10}}/>
     </TouchableOpacity>
 })
 
