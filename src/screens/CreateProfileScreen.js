@@ -59,7 +59,7 @@ const CreateProfieScreen = ({navigation})=>{
             <View style={styles.imageContainer}>
                 <ImageBackground  style={styles.profileImage}>
                 <TouchableOpacity style={styles.chooseImageButton}>
-                    <Image source={require('../assets/plus.png')} style={styles.chooseImage}/>                    
+                    <Image source={require('../assets/profile.png')} style={styles.chooseImage}/>                    
                 </TouchableOpacity>
                 </ImageBackground>
    
@@ -87,8 +87,8 @@ const styles = StyleSheet.create({
         marginTop: 8
     },
     chooseImage:{
-        height: 100,
-        width: 100
+        height: 50,
+        width: 50
     },
     imageContainer: {
         marginHorizontal: 20,
@@ -101,7 +101,8 @@ const styles = StyleSheet.create({
         height: "100%",
         justifyContent: "center",
         alignItems: "center"
-    }
+    },
+    
 
 })
 
