@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
     },
     groupTitle:{
         fontSize: 19,
-        color: "#067b7a",
+        color: "#212121",
     }
 })
 
