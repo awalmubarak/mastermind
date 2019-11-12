@@ -10,6 +10,7 @@ import SignUpSuccessScreen from './src/screens/SignUpSuccessScreen';
 import CreateProfileScreen from './src/screens/CreateProfileScreen';
 import CreateProfileSuccessScreen from './src/screens/CreateProfileSuccessScreen';
 import GroupsScreen from './src/screens/GroupsScreen';
+import CreateGroupScreen from './src/screens/CreateGroupScreen';
 import DrawerSidebar from './src/components/drawerSidebar';
 
 
@@ -50,7 +51,7 @@ const CreateProfileNavigator = createStackNavigator({
 });
 
 const AppNavigator = createStackNavigator({
-  Groups: {
+  Group: {
     screen: GroupsScreen,
     navigationOptions: {
       title: "Mastermind Groups"
@@ -63,14 +64,15 @@ const AppNavigator = createStackNavigator({
   },
 });
 
-const DrawerNavi = createDrawerNavigator({
-  "My Groups": AppNavigator,
+const DrawerNavigator = createDrawerNavigator({
+  Groups: AppNavigator,
+  CreateGroup: CreateGroupScreen
 }, {
   contentComponent: props=><DrawerSidebar {...props}/>
 })
 
 const Navigator = createSwitchNavigator({
-  App: DrawerNavi,
+  App: DrawerNavigator,
   Home: WelcomeScreen,
   Register: RegisterScreen,
   Login: LoginScreen,

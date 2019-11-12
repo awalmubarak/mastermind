@@ -9,7 +9,7 @@ import {
 } from "react-native";
 
 export default DrawerSidebar = ({navigation})=> {
-    const { navigate } = navigation;
+
     return (
       <View style={styles.container}>
         <View style={styles.containertopRow}>
@@ -23,7 +23,7 @@ export default DrawerSidebar = ({navigation})=> {
 
         <View style={styles.containerBottom}>
           <TouchableOpacity
-            onPress={() => navigate('Groups')}
+            onPress={() => navigation.navigate('Groups')}
             style={styles.containerBottomItem}
           >
             <View style={styles.button}>
@@ -32,7 +32,7 @@ export default DrawerSidebar = ({navigation})=> {
           </TouchableOpacity>
 
           <TouchableOpacity
-            onPress={() => navigate('')}
+            onPress={() => navigation.navigate('')}
             style={styles.containerBottomItem}
           >
             <View style={styles.button}>
@@ -41,7 +41,7 @@ export default DrawerSidebar = ({navigation})=> {
           </TouchableOpacity>
 
           <TouchableOpacity
-            onPress={() => navigate('')}
+            onPress={() => navigation.navigate('CreateGroup')}
             style={styles.containerBottomItem}
           >
             <View style={styles.button}>
