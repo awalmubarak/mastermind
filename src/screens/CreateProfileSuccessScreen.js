@@ -14,7 +14,7 @@ const CreateProfileSuccessScreen = ({navigation})=>{
                     <Text style={styles.message}>Your profile has been created successfully.</Text>
                     <Button text="Continue" 
                         style={styles.button}
-                        onPress={()=>navigation.navigate("CreateProfile")}
+                        onPress={()=>navigation.navigate("App")}
                      />
                 </View>
             </Card>     

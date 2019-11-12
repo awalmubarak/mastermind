@@ -6,14 +6,22 @@ import RegisterScreen from './src/screens/RegisterScreen';
 import SignUpSuccessScreen from './src/screens/SignUpSuccessScreen';
 import CreateProfileScreen from './src/screens/CreateProfileScreen';
 import CreateProfileSuccessScreen from './src/screens/CreateProfileSuccessScreen';
+import GroupsScreen from './src/screens/GroupsScreen';
 
 
 
-const defaultConfig = {
-  defaultNavigationOptions:{
-    title: "MasterMind"
+const defaultConfigs = {
+  defaultNavigationOptions: {
+    title: "Mastermind",
+    headerStyle:{
+      backgroundColor: "#067b7a"
+    },
+    headerTitleStyle:{
+      color:"white",
+    },
+    headerTintColor: "white"
   },
-  headerLayoutPreset: "center"
+  headerLayoutPreset: 'center'
 }
 
 const CreateProfileNavigator = createStackNavigator({
@@ -37,9 +45,14 @@ const CreateProfileNavigator = createStackNavigator({
   headerLayoutPreset: "center"
 });
 
-// const AppNavigator = createStackNavigator({
-
-// });
+const AppNavigator = createStackNavigator({
+  Group: {
+    screen: GroupsScreen,
+    navigationOptions: {
+      title: "Mastermind Groups"
+    }
+  }
+}, defaultConfigs);
 
 const Navigator = createSwitchNavigator({
   Home: WelcomeScreen,
@@ -47,6 +60,7 @@ const Navigator = createSwitchNavigator({
   Login: LoginScreen,
   CreateProfile: CreateProfileNavigator,
   ProfileSuccess: CreateProfileSuccessScreen,
+  App: AppNavigator
 })
 
 export default createAppContainer(Navigator)
