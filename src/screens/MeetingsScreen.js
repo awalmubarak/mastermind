@@ -1,8 +1,10 @@
 import React from 'react'
 import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native'
+import MeetingItem from '../components/meetingItem'
 
 const MeetingsScreen = ()=>{
-return <View style={styles.cardContainer}>
+return <View style={styles.container}>
+    <View style={styles.cardContainer}>
         <View style={styles.groupContainer}>
         <Text style={styles.groupTitle} numberOfLines={1}>Groups Masters A </Text>
         <View style={styles.groupDetailsContainer}>
@@ -14,6 +16,9 @@ return <View style={styles.cardContainer}>
         </View>
         </View>
     </View>
+
+    <MeetingItem/>
+</View>
 }
 
 MeetingsScreen.navigationOptions = ()=>({
@@ -30,6 +35,9 @@ MeetingsScreen.navigationOptions = ()=>({
 })
 
 const styles = StyleSheet.create({
+    container:{
+        flex: 1
+    },
     headerRight:{
         marginRight: 10,
         fontSize: 15, 
