@@ -5,7 +5,7 @@ import GroupItem from '../components/groupItem'
 
 const GroupsScreen = ({navigation})=>{
     const groupItemClicked = (item)=>{
-        navigation.navigate('JoinGroup');
+        navigation.navigate('MeetingsTab');
     }
 
     return <View style={styles.container}>
@@ -15,16 +15,18 @@ const GroupsScreen = ({navigation})=>{
             renderItem={({item})=> (<TouchableOpacity onPress={()=>groupItemClicked(item)}>
                 <GroupItem/>
             </TouchableOpacity>)}
-            keyExtractor={item => item}
+            keyExtractor={item => item.toString()}
             ListFooterComponent={<View style={{marginTop: 100}}/>}
             showsVerticalScrollIndicator={false}
         />      
     </View>
 }
 GroupsScreen.navigationOptions = ({navigation})=>({
-    headerLeft: <TouchableOpacity onPress={()=>navigation.openDrawer()}>
+    headerLeft: (<TouchableOpacity onPress={()=>navigation.openDrawer()}>
         <Image source={require('../assets/menu.png')} style={{width:25, height: 25, marginLeft: 10, padding:10}}/>
-    </TouchableOpacity>
+    </TouchableOpacity>),
+    title: "Mastermind Groups"
+    
 })
 
 const styles = StyleSheet.create({

@@ -1,8 +1,9 @@
+import React from 'react'; 
+import { TouchableOpacity, Text } from 'react-native';
 import {createAppContainer, createSwitchNavigator} from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import {createDrawerNavigator} from 'react-navigation-drawer';
-import React from 'react';
-import {Text} from 'react-native'
+import {createBottomTabNavigator, BottomTabBar} from 'react-navigation-tabs'
 import WelcomeScreen from './src/screens/WelcomeScreen';
 import LoginScreen from './src/screens/LoginScreen';
 import RegisterScreen from './src/screens/RegisterScreen';
@@ -13,6 +14,8 @@ import GroupsScreen from './src/screens/GroupsScreen';
 import CreateGroupScreen from './src/screens/CreateGroupScreen';
 import DrawerSidebar from './src/components/drawerSidebar';
 import JoinGroupScreen from './src/screens/JoinGroupScreen';
+import MeetingScreen from './src/screens/MeetingsScreen';
+import TabBarButton from './src/components/tabBarButton';
 
 
 
@@ -51,11 +54,39 @@ const CreateProfileNavigator = createStackNavigator({
   headerLayoutPreset: "center"
 });
 
+const TabBarComponent = props => <BottomTabBar {...props} />;
+
+
+const ButtomTabNavigator = createBottomTabNavigator({
+  UpcomingMeetings: MeetingScreen,
+  MeetingsHistory: MeetingScreen
+}, {
+  defaultNavigationOptions: ({ navigation }) => ({
+    tabBarButtonComponent: (props)=>(
+      <TabBarButton routeName={navigation.state.routeName} {...props}/>
+    ),
+  }),
+  tabBarComponent: props => (
+    <TabBarComponent {...props} style={{ borderTopColor: 'white' }} />
+  ),
+})
+
 const AppNavigator = createStackNavigator({
-  Group: {
-    screen: GroupsScreen,
+  Group: GroupsScreen,
+  MeetingsTab: {
+    screen: ButtomTabNavigator,
     navigationOptions: {
-      title: "Mastermind Groups"
+      title: "",
+    headerRight: (<TouchableOpacity style={{
+        marginRight: 10,
+        fontSize: 15, 
+        borderColor: "white", 
+        borderWidth: 1,
+        padding: 4,
+        borderRadius:4
+    }}>
+        <Text style={{color: "white"}}>Create Meeting</Text>
+    </TouchableOpacity>)
     }
   }
 }, defaultConfigs);
@@ -69,12 +100,12 @@ const DrawerNavigator = createDrawerNavigator({
 })
 
 const Navigator = createSwitchNavigator({
+  App: DrawerNavigator,
   Home: WelcomeScreen,
   Register: RegisterScreen,
   Login: LoginScreen,
   CreateProfile: CreateProfileNavigator,
   ProfileSuccess: CreateProfileSuccessScreen,
-  App: DrawerNavigator,
 })
 
 export default createAppContainer(Navigator)
