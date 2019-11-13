@@ -18,7 +18,7 @@ const ChatScreen = ({navigation})=>{
         />  
         </View>
         <View style={styles.footer}>
-            <SendMessage/>
+            <SendMessage status="started"/>
         </View>
     </View>
 }

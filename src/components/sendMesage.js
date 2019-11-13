@@ -1,8 +1,10 @@
 import React from 'react'
 import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native'
 import Ionicons from 'react-native-vector-icons/Ionicons'
-const SendMessage = ()=>{
-    return <View style={styles.container}>
+
+const SendMessage = ({status})=>{
+    const meetingStarted = ()=>{
+        return <View style={styles.container}>
         <TextInput 
             style={styles.input} 
             placeholder="Say something..."
@@ -12,7 +14,21 @@ const SendMessage = ()=>{
         <TouchableOpacity style={styles.sendButton}>
             <Ionicons name="md-send" size={32} color="#067b7a"/>
         </TouchableOpacity>
-    </View>
+    </View> 
+    }
+
+    const meetingNotStarted = (message)=>{
+        return <View style={styles.container}>
+            <Text style={styles.meetingPendingText}>{message}</Text>
+        </View> 
+    }
+    
+    if(status==="pending"){
+        return meetingNotStarted("You can't send messages here because the facilitator hasn't started this meeting.")
+    }else if(status==="started"){
+        return meetingStarted()
+    }
+    return meetingNotStarted("You can't send messages here because the facilitator has ended this meeting.")
 }
 
 const styles = StyleSheet.create({
@@ -36,6 +52,10 @@ const styles = StyleSheet.create({
     sendButton:{
         flex: 0.2,
         alignItems: "center"
+    },
+    meetingPendingText:{
+        textAlign: "center",
+        padding: 4
     }
 })
 
