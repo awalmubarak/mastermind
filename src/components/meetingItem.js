@@ -1,9 +1,8 @@
 import React from 'react'
 import { View, Text, StyleSheet,TouchableOpacity } from 'react-native'
 
-const MeetingItem = ()=>{
-    return <TouchableOpacity>
-        <View style={styles.container}>
+const MeetingItem = ({navigation})=>{
+    return <View style={styles.container}>
         <View style={styles.dateContainer}>
             <Text style={styles.dateText}>13th Oct 2017</Text>
         </View>
@@ -16,7 +15,6 @@ const MeetingItem = ()=>{
             <Text style={styles.actionText}>Start</Text>
         </TouchableOpacity> */}
     </View>
-    </TouchableOpacity>
 }
 
 styles = StyleSheet.create({

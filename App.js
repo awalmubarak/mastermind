@@ -16,6 +16,7 @@ import DrawerSidebar from './src/components/drawerSidebar';
 import JoinGroupScreen from './src/screens/JoinGroupScreen';
 import MeetingScreen from './src/screens/MeetingsScreen';
 import TabBarButton from './src/components/tabBarButton';
+import ChatScreen from './src/screens/ChatScreen';
 
 
 
@@ -88,7 +89,8 @@ const AppNavigator = createStackNavigator({
         <Text style={{color: "white"}}>Create Meeting</Text>
     </TouchableOpacity>)
     }
-  }
+  },
+  Chat: ChatScreen
 }, defaultConfigs);
 
 const DrawerNavigator = createDrawerNavigator({
