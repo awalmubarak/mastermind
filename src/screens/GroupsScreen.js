@@ -1,15 +1,24 @@
 import React from 'react'
-import { StyleSheet, View, Image, StatusBar, TouchableOpacity } from 'react-native'
+import { StyleSheet, View, Image, StatusBar, TouchableOpacity, FlatList } from 'react-native'
 import GroupItem from '../components/groupItem'
 
-const GroupsScreen = ()=>{
+
+const GroupsScreen = ({navigation})=>{
+    const groupItemClicked = (item)=>{
+        navigation.navigate('JoinGroup');
+    }
+
     return <View style={styles.container}>
         <StatusBar backgroundColor="#067b7a" barStyle="light-content" />   
-        
-        <GroupItem/>
-        <GroupItem/>
-        <GroupItem/>
-        
+        <FlatList 
+            data={[1,2,3,4,5,6,7,8,9,11,10,12,13,14,15,16,17,18]}
+            renderItem={({item})=> (<TouchableOpacity onPress={()=>groupItemClicked(item)}>
+                <GroupItem/>
+            </TouchableOpacity>)}
+            keyExtractor={item => item}
+            ListFooterComponent={<View style={{marginTop: 100}}/>}
+            showsVerticalScrollIndicator={false}
+        />      
     </View>
 }
 GroupsScreen.navigationOptions = ({navigation})=>({
@@ -22,7 +31,7 @@ const styles = StyleSheet.create({
     container:{
         flex: 1,
         marginHorizontal: 4
-    },
+    }
     
 })
 

@@ -1,13 +1,10 @@
 import React from 'react'
 import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native'
-import Card from './card'
 
 const GroupItem = ()=>{
-return <TouchableOpacity>
-    
-    <View style={styles.cardContainer}>
+return <View style={styles.cardContainer}>
         <View style={styles.groupContainer}>
-        <Text style={styles.groupTitle}>Groups Masters A </Text>
+        <Text style={styles.groupTitle} numberOfLines={1}>Groups Masters A </Text>
         <View style={styles.groupDetailsContainer}>
             <Text style={styles.groupDetailsText}><Text>Facilitator: </Text>Frederick Bans Gondita</Text>
             <View style={styles.groupNumberContainer}>
@@ -17,7 +14,6 @@ return <TouchableOpacity>
         </View>
         </View>
     </View>
-</TouchableOpacity>
 }
 
 const styles = StyleSheet.create({
