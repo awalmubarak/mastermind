@@ -14,9 +14,10 @@ import GroupsScreen from './src/screens/GroupsScreen';
 import CreateGroupScreen from './src/screens/CreateGroupScreen';
 import DrawerSidebar from './src/components/drawerSidebar';
 import JoinGroupScreen from './src/screens/JoinGroupScreen';
-import MeetingScreen from './src/screens/MeetingsScreen';
+import MeetingsScreen from './src/screens/MeetingsScreen';
 import TabBarButton from './src/components/tabBarButton';
 import ChatScreen from './src/screens/ChatScreen';
+import MeetingsHistoryScreen from './src/screens/MeetingHistoryScreen';
 
 
 
@@ -56,11 +57,9 @@ const CreateProfileNavigator = createStackNavigator({
 });
 
 const TabBarComponent = props => <BottomTabBar {...props} />;
-
-
 const ButtomTabNavigator = createBottomTabNavigator({
-  UpcomingMeetings: MeetingScreen,
-  MeetingsHistory: MeetingScreen
+  UpcomingMeetings: MeetingsScreen,
+  MeetingsHistory: MeetingsHistoryScreen
 }, {
   defaultNavigationOptions: ({ navigation }) => ({
     tabBarButtonComponent: (props)=>(

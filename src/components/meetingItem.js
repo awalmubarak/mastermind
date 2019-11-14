@@ -11,9 +11,6 @@ const MeetingItem = ({navigation})=>{
         <Text style={styles.titleText} numberOfLines={2}>Second Meeting of the month</Text>
         </View>
 
-        {/* <TouchableOpacity style={styles.actionContainer}>
-            <Text style={styles.actionText}>Start</Text>
-        </TouchableOpacity> */}
     </View>
 }
 
