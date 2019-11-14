@@ -73,4 +73,4 @@ styles = StyleSheet.create({
     
 })
 
-export default MessageItem;
+export default React.memo(MessageItem);

@@ -2,8 +2,8 @@ import React from 'react'
 import {  } from 'react-native'
 import MeetingsContainer from '../components/meetingsContainer'
 
-const MeetingsScreen = ({navigation})=>{
-    return <MeetingsContainer/>
+const MeetingsScreen = (props)=>{
+    return <MeetingsContainer {...props}/>
 }
 
 export default MeetingsScreen;
