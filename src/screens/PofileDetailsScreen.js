@@ -2,25 +2,36 @@ import React from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView } from 'react-native'
 import HeadedText from '../components/HeadedText'
 
-const ProfileDetailsScreen = (props)=>{
-    return <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-                <View style={styles.imageContainer}>
-                    <Image  style={styles.profileImage} source={require('../assets/profile.png')}/>
-                </View>
-                <HeadedText heading="Name" body="James Outsider"/>
-                <HeadedText heading="Bio" body="tabbar using react-native,support android and ios,mobile bottom tab bar with more freedom.And what's more,solved the problem overflow parent hidden on the android,also it can be defined center item by itself. tabbar using react-native,support android and ios,mobile bottom tab bar with more freedom.And what's more,solved the problem overflow parent hidden on the android,also it can be defined center item by itself.
+class ProfileDetailsScreen extends React.Component{
+    constructor(props){
+        super(props)
+    }
 
-"/>
-                <HeadedText heading="LinkedIn URL" body="https://linkedin.com/react-navigation/"/>
-                <HeadedText heading="Twitter URL" body="https://twitter.com/react-navigation/"/>
-                <HeadedText heading="Facebook URL URL" body="https://facebook.com/react-navigation/" style={{marginBottom: 60}}/>
-                
-            </ScrollView>
+    static navigationOptions = (props)=>{
+        const isCurrentUser = props.navigation.getParam("isCurrentUser", true);
+        console.log(isCurrentUser);
+        return {
+        title: isCurrentUser? "Profile": "About",
+        headerRight: isCurrentUser? <HeaderRightComponent/> : ""
+    }}
+
+    render(){
+        return <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+                    <View style={styles.imageContainer}>
+                        <Image  style={styles.profileImage} source={require('../assets/profile.png')}/>
+                    </View>
+                    <HeadedText heading="Name" body="James Outsider"/>
+                    <HeadedText heading="Bio" body="I am trying to make a button appear in headerRight of the header bar in a React Navigation screen, but I cant seem to get it to work."/>
+                    <HeadedText heading="LinkedIn URL" body="https://linkedin.com/react-navigation/"/>
+                    <HeadedText heading="Twitter URL" body="https://twitter.com/react-navigation/"/>
+                    <HeadedText heading="Facebook URL URL" body="https://facebook.com/react-navigation/" style={{marginBottom: 60}}/>
+                    
+                </ScrollView>
+    }
 }
 
-ProfileDetailsScreen.navigationOptions = ({navigation})=>({
-    title: "Profile",
-    headerRight: (<TouchableOpacity style={{
+const HeaderRightComponent = ()=>{
+    return (<TouchableOpacity style={{
         marginRight: 10,
         fontSize: 15, 
         borderColor: "white", 
@@ -31,7 +42,7 @@ ProfileDetailsScreen.navigationOptions = ({navigation})=>({
     }} onPress={()=>navigation.navigate("EditProfile")}>
         <Text style={{color: "white"}}>Edit</Text>
     </TouchableOpacity>)
-})
+}
 
 const styles = StyleSheet.create({
     container:{

@@ -43,7 +43,7 @@ const GroupDetailsScreen = (props)=>{
         data={["Bob", "Samuel Allotey", "Henry Say", "Donald Trump", "Charles Memphis", "Brains Goddon", "Samuel Allotey", "Henry Say", "Donald Trump", "Charles Memphis", "Brains Goddon","Samuel Allotey", "Henry Say", "Donald Trump", "Charles Memphis", "Brains Goddon","Samuel Allotey", "Henry Say", "Donald Trump", "Charles Memphis", "Brains Goddon","Samuel Allotey", "Henry Say", "Donald Trump", "Charles Memphis", "Brains Goddon","Samuel Allotey", "Henry Say", "Donald Trump", "Charles Memphis", "Brains Goddon","Samuel Allotey", "Henry Say", "Donald Trump", "Charles Memphis", "Brains Goddon"]}   
         keyExtractor={(item, index)=>index.toString()}  
         ListHeaderComponent={renderHeaderComponent()}   
-        renderItem={({item})=>(<TouchableOpacity>
+        renderItem={({item})=>(<TouchableOpacity onPress={()=>props.navigation.navigate("ProfileDetails", {isCurrentUser: false})}>
             <ListItem
             title={item}
             // leftAvatar={{source: require("../assets/user-white.png")}}
