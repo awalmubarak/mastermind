@@ -26,7 +26,7 @@ const EditProfileScreen = (props)=>{
                 <Input label="Twitter URL" placeholder="https://twitter.com/username"/>
                 <Input label="Facebook URL" placeholder="https://facebook.com/username"/>   
                 
-                <Button text="updateProfile" style={styles.buttonStyle}/>
+                <Button text="Update Profile" style={styles.buttonStyle}/>
             </View>
     </ScrollView>
 }
