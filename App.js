@@ -18,6 +18,7 @@ import MeetingsScreen from './src/screens/MeetingsScreen';
 import TabBarButton from './src/components/tabBarButton';
 import ChatScreen from './src/screens/ChatScreen';
 import MeetingsHistoryScreen from './src/screens/MeetingHistoryScreen';
+import GroupDetailsScreen from './src/screens/GroupDetailsScreen';
 
 
 
@@ -89,6 +90,12 @@ const AppNavigator = createStackNavigator({
     </TouchableOpacity>)
     }
   },
+  GroupDetails: {
+    screen: GroupDetailsScreen,
+    navigationOptions: {
+      title: "Group Info"
+    }
+  }, 
   Chat: ChatScreen
 }, defaultConfigs);
 
@@ -101,12 +108,13 @@ const DrawerNavigator = createDrawerNavigator({
 })
 
 const Navigator = createSwitchNavigator({
+  App: DrawerNavigator,
   Home: WelcomeScreen,
   Register: RegisterScreen,
   Login: LoginScreen,
   CreateProfile: CreateProfileNavigator,
   ProfileSuccess: CreateProfileSuccessScreen,
-  App: DrawerNavigator,
+  
 })
 
 export default createAppContainer(Navigator)

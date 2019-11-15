@@ -13,7 +13,9 @@ const MeetingsContainer = ({navigation, data, isHistory})=>{
 return <View style={styles.container}>
     <View style={styles.cardContainer}>
         <View style={styles.groupContainer}>
-        <Text style={styles.groupTitle} numberOfLines={1}>Groups Masters A </Text>
+            <TouchableOpacity onPress={()=>{navigation.navigate("GroupDetails")}}>
+                <Text style={styles.groupTitle} numberOfLines={1}>Groups Masters A </Text>
+            </TouchableOpacity>
         <View style={styles.groupDetailsContainer}>
             <Text style={styles.groupDetailsText}><Text>Facilitator: </Text>Frederick Bans Gondita</Text>
             <View style={styles.groupNumberContainer}>
