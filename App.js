@@ -79,17 +79,7 @@ const AppNavigator = createStackNavigator({
   MeetingsTab: {
     screen: ButtomTabNavigator,
     navigationOptions: {
-      title: "",
-    headerRight: (<TouchableOpacity style={{
-        marginRight: 10,
-        fontSize: 15, 
-        borderColor: "white", 
-        borderWidth: 1,
-        padding: 4,
-        borderRadius:4
-    }}>
-        <Text style={{color: "white"}}>Create Meeting</Text>
-    </TouchableOpacity>)
+      header: null
     }
   },
   GroupDetails: {
@@ -112,12 +102,12 @@ const DrawerNavigator = createDrawerNavigator({
 })
 
 const Navigator = createSwitchNavigator({
+  App: DrawerNavigator,  
   Home: WelcomeScreen,
   Register: RegisterScreen,
   Login: LoginScreen,
   CreateProfile: CreateProfileNavigator,
   ProfileSuccess: CreateProfileSuccessScreen,
-  App: DrawerNavigator,  
 })
 
 export default createAppContainer(Navigator)

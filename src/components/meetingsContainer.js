@@ -1,17 +1,69 @@
-import React from 'react'
-import { StyleSheet, View, Text, Image, TouchableOpacity, FlatList } from 'react-native'
+import React, {useState} from 'react'
+import { StyleSheet, View, Text, Image, TouchableOpacity, FlatList, ScrollView, TextInput } from 'react-native'
 import MeetingItem from './meetingItem'
+import { Header } from 'react-native-elements';
+import moment from "moment"
+import CreateMeetingModal from './createMeetingModal';
+
+
 
 const MeetingsContainer = ({navigation, data, isHistory})=>{
-
+    const [modalVisible, setModalVisible] = useState(false)
+    const [dateTime, setDateTime] = useState({
+        show: false,
+        date: moment().format("D MMM YYYY"),
+        time: moment().format("HH:mm"),
+        mode: "date"
+    })
     const renderMeetingItem = ({item})=>(
         <TouchableOpacity onPress={()=>navigation.navigate("Chat")}>
             <MeetingItem item={item} isHistory={isHistory? true: false}/>
         </TouchableOpacity>
     )
+
+    const setDate = (event, date) => {
+        if(!date)return;
+        setDateTime({
+            ...dateTime, 
+          show: Platform.OS === 'ios' ? true : false,
+          time: dateTime.mode==="time"? moment(date).format("HH:mm"):dateTime.time,
+          date: dateTime.mode==="date"? moment(date).format("D MMM YYYY"):dateTime.date,
+        });
+        
+      }
+
+    const showPicker = (mode)=>{
+        setDateTime({...dateTime, mode, show: true})
+    }
     
 return <View style={styles.container}>
+    <Header
+    barStyle="light-content"
+    centerComponent={(<TouchableOpacity style={{
+            fontSize: 15, 
+            borderColor: "white", 
+            borderWidth: 1,
+            borderRadius: 4,
+            padding: 4
+        }} onPress={()=>setModalVisible(!modalVisible)}>
+            <Text style={{color: "white"}}>Create Meeting</Text>
+        </TouchableOpacity>)}
+        containerStyle={{
+            backgroundColor: '#067b7a'
+          }}
+        />
     <View style={styles.cardContainer}>
+        <CreateMeetingModal
+            isVisible={modalVisible}
+            date={dateTime.date}
+            time={dateTime.time}
+            createMeeting={()=>setModalVisible(false)}
+            cancel={()=>setModalVisible(false)}
+            mode={dateTime.mode}
+            showPicker={showPicker}
+            setDate={setDate}
+            show={dateTime.show}
+        />
         <View style={styles.groupContainer}>
             <TouchableOpacity onPress={()=>{navigation.navigate("GroupDetails")}}>
                 <Text style={styles.groupTitle} numberOfLines={1}>Groups Masters A </Text>
@@ -32,10 +84,7 @@ return <View style={styles.container}>
             ListFooterComponent={<View style={{marginTop: 100}}/>}
             showsVerticalScrollIndicator={false}
         />  
-        {/* <MeetingItem/>
-        <MeetingItem/>
-        <MeetingItem/>
-     */}
+        
 </View>
 }
 
