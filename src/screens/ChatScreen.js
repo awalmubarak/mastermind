@@ -30,7 +30,8 @@ ChatScreen.navigationOptions = ()=>({
         fontSize: 15, 
         borderColor: "white", 
         borderWidth: 1,
-        padding: 4
+        padding: 4,
+        borderRadius: 4
     }}>
         <Text style={{color: "white"}}>Start Meeting</Text>
     </TouchableOpacity>)

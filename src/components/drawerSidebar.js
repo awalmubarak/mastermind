@@ -13,7 +13,7 @@ export default DrawerSidebar = ({navigation})=> {
     return (
       <View style={styles.container}>
         <View style={styles.containertopRow}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={()=>navigation.navigate("ProfileDetails")}>
             <Image
                 style={styles.imageTopRow}
                 source={require('../assets/user-white.png')}

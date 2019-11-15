@@ -19,6 +19,8 @@ import TabBarButton from './src/components/tabBarButton';
 import ChatScreen from './src/screens/ChatScreen';
 import MeetingsHistoryScreen from './src/screens/MeetingHistoryScreen';
 import GroupDetailsScreen from './src/screens/GroupDetailsScreen';
+import ProfileDetailsScreen from './src/screens/PofileDetailsScreen';
+import EditProfileScreen from './src/screens/EditProfileScreen';
 
 
 
@@ -96,7 +98,9 @@ const AppNavigator = createStackNavigator({
       title: "Group Info"
     }
   }, 
-  Chat: ChatScreen
+  Chat: ChatScreen,
+  ProfileDetails: ProfileDetailsScreen,
+  EditProfile: EditProfileScreen
 }, defaultConfigs);
 
 const DrawerNavigator = createDrawerNavigator({
