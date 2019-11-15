@@ -112,13 +112,12 @@ const DrawerNavigator = createDrawerNavigator({
 })
 
 const Navigator = createSwitchNavigator({
-  App: DrawerNavigator,
   Home: WelcomeScreen,
   Register: RegisterScreen,
   Login: LoginScreen,
   CreateProfile: CreateProfileNavigator,
   ProfileSuccess: CreateProfileSuccessScreen,
-  
+  App: DrawerNavigator,  
 })
 
 export default createAppContainer(Navigator)

@@ -35,7 +35,7 @@ EditProfileScreen.navigationOptions = ()=>({
     title: "Edit Profile"
 })
 
-styles = StyleSheet.create({
+const styles = StyleSheet.create({
     container:{
 
     },
