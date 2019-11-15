@@ -1,8 +1,15 @@
 import React from 'react'
 import { StyleSheet, View, Text, Image, TouchableOpacity, FlatList } from 'react-native'
-import MeetingItem from '../components/meetingItem'
+import MeetingItem from './meetingItem'
 
-const MeetingsContainer = ({navigation, data})=>{
+const MeetingsContainer = ({navigation, data, isHistory})=>{
+
+    const renderMeetingItem = ({item})=>(
+        <TouchableOpacity onPress={()=>navigation.navigate("Chat")}>
+            <MeetingItem item={item} isHistory={isHistory? true: false}/>
+        </TouchableOpacity>
+    )
+    
 return <View style={styles.container}>
     <View style={styles.cardContainer}>
         <View style={styles.groupContainer}>
@@ -18,14 +25,15 @@ return <View style={styles.container}>
     </View>
     <FlatList 
             data={[1,2,3,4,5,6,7,8,9,11,10,12,13,14,15,16,17,18]}
-            renderItem={({item})=> (<TouchableOpacity onPress={()=>navigation.navigate("Chat")}>
-            <MeetingItem/>
-        </TouchableOpacity>)}
+            renderItem={renderMeetingItem}
             keyExtractor={item => item.toString()}
             ListFooterComponent={<View style={{marginTop: 100}}/>}
             showsVerticalScrollIndicator={false}
         />  
-    
+        {/* <MeetingItem/>
+        <MeetingItem/>
+        <MeetingItem/>
+     */}
 </View>
 }
 

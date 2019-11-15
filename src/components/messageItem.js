@@ -2,7 +2,7 @@ import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 
 const renderIncomingMessage = ()=>{
-    return <View style={styles.container}>
+    return <View style={styles.messageItemContainer}>
         <View style={styles.messageContainer}>
         <Text style={styles.senderName}>Marine Hanaman</Text>
         <View style={styles.messageBodyContainer}>
@@ -13,7 +13,7 @@ const renderIncomingMessage = ()=>{
 }
 
 const renderOutGoingMessage = ()=>{
-    return <View style={[styles.container, {justifyContent: "flex-end"}]}>
+    return <View style={[styles.messageItemContainer, {justifyContent: "flex-end"}]}>
         <View style={styles.outGoingMessageContainer}>
             <Text style={styles.messageBodyText} > Web and UWP by enabling developers to use</Text>
         </View>
@@ -28,7 +28,8 @@ const MessageItem = ({item})=>{
 }
 
 styles = StyleSheet.create({
-    container:{
+    messageItemContainer:{
+        flex: 1,
         flexDirection: "row",
         justifyContent: "flex-start",
         marginVertical: 10,
