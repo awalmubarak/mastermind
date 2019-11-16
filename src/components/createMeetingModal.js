@@ -9,9 +9,11 @@ const CreateMeetingModal = ({isVisible, date, time, createMeeting,cancel, mode, 
     <View style={styles.modalContainer}>
           <View style={styles.modalContentContainer}>
               <ScrollView showsVerticalScrollIndicator={false}>
-              <TextInput style={styles.selectDate} placeholder="Meeting Agenda" multiline/>
+            <Text style={styles.itemLabel}>Meeting Agenda</Text>
+              <TextInput style={styles.selectDate} placeholder="Agenda" multiline/>
               <TouchableOpacity onPress={()=>showPicker('date')}>
-                  <Text style={styles.selectDate}>{date}</Text>
+                <Text style={styles.itemLabel}>Meeting Date</Text>
+                <Text style={styles.selectDate}>{date}</Text>
               </TouchableOpacity>
               { show && <DateTimePicker value={new Date()}
               mode={mode}
@@ -19,7 +21,8 @@ const CreateMeetingModal = ({isVisible, date, time, createMeeting,cancel, mode, 
               display="default"
               onChange={setDate} />}
               <TouchableOpacity onPress={()=>showPicker('time')}>
-                  <Text style={styles.selectDate}>{time}</Text>
+                <Text style={styles.itemLabel}>Meeting Time</Text>
+                <Text style={styles.selectDate}>{time}</Text>
               </TouchableOpacity>
               <Button text="Create Meeting" onPress={createMeeting}/>
               <TouchableOpacity onPress={cancel} style={{alignItems: "center"}}>
@@ -49,10 +52,9 @@ const styles = StyleSheet.create({
         borderColor: "#067b7a",
         borderRadius: 3,
         padding: 5,
-        fontSize: 20,
-        color: "#787878",
+        fontSize: 18,
+        color: "#333333",
         opacity: 0.7,
-        textAlign: "center",
         marginVertical: 10
     },
     cancelText:{
@@ -60,6 +62,11 @@ const styles = StyleSheet.create({
         marginTop: 20,
         borderBottomColor: "grey",
         borderBottomWidth: 1,
+    },
+    itemLabel:{
+        fontSize: 17,
+        marginTop: 10,
+        color: "#4d4d4d"
     }
 })
 
