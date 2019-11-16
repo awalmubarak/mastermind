@@ -1,10 +1,31 @@
-import React from 'react'
-import {View, Text, StyleSheet, FlatList, TouchableOpacity, ScrollView } from 'react-native'
+import React, {useState} from 'react'
+import {View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native'
 import MessageItem from '../components/messageItem'
 import SendMessage from '../components/sendMesage'
+import { Header } from 'react-native-elements';
 
 const ChatScreen = ({navigation})=>{
+    const [chatStatus, setChatStatus] = useState({status: "pending", buttonText: "Start"})
     return <View style={styles.container}>
+        <Header
+            barStyle="light-content"
+            centerComponent={(<TouchableOpacity style={{
+                    fontSize: 15, 
+                    borderColor: "white", 
+                    borderWidth: 1,
+                    borderRadius: 4,
+                    padding: 4
+                }} onPress={()=>{
+                    chatStatus.status==="pending"?
+                        setChatStatus({status: "started", buttonText: "End"}): 
+                        setChatStatus({status: "pending", buttonText: "Start"})
+                }}>
+                    <Text style={{color: "white"}}>{chatStatus.buttonText} Meeting</Text>
+                </TouchableOpacity>)}
+                containerStyle={{
+                    backgroundColor: '#067b7a'
+                }}
+        />
         <View style={styles.header}>
             <Text style={styles.headerText} numberOfLines={1}>Second Meeting of Month 5</Text>
         </View>
@@ -18,23 +39,13 @@ const ChatScreen = ({navigation})=>{
         />  
         </View>
         <View style={styles.footer}>
-            <SendMessage status="started"/>
+            <SendMessage status={chatStatus.status}/>
         </View>
     </View>
 }
 
 ChatScreen.navigationOptions = ()=>({
-    title: "",
-    headerRight: (<TouchableOpacity style={{
-        marginRight: 10,
-        fontSize: 15, 
-        borderColor: "white", 
-        borderWidth: 1,
-        padding: 4,
-        borderRadius: 4
-    }}>
-        <Text style={{color: "white"}}>Start Meeting</Text>
-    </TouchableOpacity>)
+    header:null
 })
 
 const styles = StyleSheet.create({

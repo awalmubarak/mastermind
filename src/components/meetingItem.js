@@ -10,6 +10,7 @@ const MeetingItem = ({navigation, isHistory})=>{
         marginHorizontal: 10,
         borderWidth: 1,
         borderColor: isHistory?"#bdbdbd": "#067b7a",
+        borderRadius: 3
     }}>
         <View style={{
         flex: 0.3,
@@ -19,11 +20,13 @@ const MeetingItem = ({navigation, isHistory})=>{
         alignItems: "center",
         padding: 10,
         borderRightWidth: 1,
-        borderColor: isHistory?"#bdbdbd": "#067b7a"
+        borderColor: isHistory?"#bdbdbd": "#067b7a",
+        backgroundColor: isHistory?"": "#bfbfbf"
     }}>
             <Text style={{
-        textAlign: "center",
-        fontSize:19
+            textAlign: "center",
+            fontSize:19,
+            color: isHistory?"#242424": "white",
     }}>13th Oct 2017</Text>
         </View>
 
