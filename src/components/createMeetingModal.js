@@ -3,6 +3,7 @@ import { StyleSheet, View, Text, TouchableOpacity, ScrollView, TextInput } from 
 import Modal from "react-native-modal";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Button from './button';
+import moment from 'moment';
 
 const CreateMeetingModal = ({isVisible, date, time, createMeeting,cancel, mode, showPicker, setDate, show})=>{
     return <Modal isVisible={isVisible} avoidKeyboard={false}>
@@ -16,10 +17,11 @@ const CreateMeetingModal = ({isVisible, date, time, createMeeting,cancel, mode, 
                 <Text style={styles.selectDate}>{date}</Text>
               </TouchableOpacity>
               { show && <DateTimePicker value={new Date()}
-              mode={mode}
-              is24Hour={true}
-              display="default"
-              onChange={setDate} />}
+                mode={mode}
+                is24Hour={true}
+                display="default"
+                minimumDate={moment().toDate()}
+                onChange={setDate} />}
               <TouchableOpacity onPress={()=>showPicker('time')}>
                 <Text style={styles.itemLabel}>Meeting Time</Text>
                 <Text style={styles.selectDate}>{time}</Text>
