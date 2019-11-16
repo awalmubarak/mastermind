@@ -22,7 +22,13 @@ const MeetingsContainer = ({navigation, data, isHistory})=>{
     )
 
     const setDate = (event, date) => {
-        if(!date)return;
+        if(!date){
+            setDateTime({
+                ...dateTime, 
+              show: Platform.OS === 'ios' ? true : false
+             });
+            return
+        };
         setDateTime({
             ...dateTime, 
           show: Platform.OS === 'ios' ? true : false,
