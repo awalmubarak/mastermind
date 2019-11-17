@@ -35,7 +35,7 @@ const ChatScreen = ({navigation})=>{
             data={[1,2,3,4,5,6,7,8,9,11,10,12,13,14,15,16,17,18]}
             renderItem={({item})=> (<MessageItem item={item}/>)}
             keyExtractor={item => item.toString()}
-            ListFooterComponent={<View style={{marginBottom: 200}}/>}
+            ListFooterComponent={<View style={{marginBottom: 300}}/>}
             showsVerticalScrollIndicator={false}
         />  
         </View>

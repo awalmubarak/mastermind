@@ -4,6 +4,7 @@ import Input from "../components/input"
 import Button from '../components/button'
 import GoogleAction from '../components/googleAction'
 import AppStyles from '../commons/AppStyles'
+import Loader from '../components/loader'
 
 const LoginScreen = ({navigation})=>{
     return <View style={styles.container}>
@@ -22,6 +23,7 @@ const LoginScreen = ({navigation})=>{
             
             <GoogleAction actionText="Sign Up" actionMessage="Don't Have An Account?" action={()=>navigation.navigate("Register")}/>
         </ScrollView>
+        <Loader visible={false} message="Signing in..."/>
     </View>
 }
 
