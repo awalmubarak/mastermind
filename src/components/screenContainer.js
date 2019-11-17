@@ -1,5 +1,6 @@
 import React from 'react'
 import { Text, View, StyleSheet, StatusBar, ScrollView } from 'react-native'
+import AppStyles from '../commons/AppStyles'
 
 
 const ScreenContainer = ({ children, title, subTitle})=>{
@@ -22,7 +23,7 @@ const ScreenContainer = ({ children, title, subTitle})=>{
 
 const styles = StyleSheet.create({
     container:{
-        backgroundColor: '#067b7a',
+        backgroundColor: AppStyles.colors.primary,
         flex: 1
     },
     headerContainer:{

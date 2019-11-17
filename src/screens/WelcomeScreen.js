@@ -1,6 +1,7 @@
 import React from 'react'
 import { View, Text, StyleSheet,Image } from 'react-native'
 import Button from '../components/button'
+import AppStyles from '../commons/AppStyles'
 const WelcomeScreen = ({navigation})=>{
     return <View style={styles.container}>
         <View>
@@ -28,7 +29,7 @@ const styles = StyleSheet.create({
     welcomeMessage:{
         marginVertical: 20,
         textAlign: "center",
-        fontSize: 15
+        fontSize: AppStyles.sizes.defaultTextSize
     }
 
 })

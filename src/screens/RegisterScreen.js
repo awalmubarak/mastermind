@@ -3,6 +3,7 @@ import { Text, View, StyleSheet, StatusBar } from 'react-native'
 import Input from "../components/input"
 import Button from '../components/button'
 import GoogleAction from '../components/googleAction'
+import AppStyles from '../commons/AppStyles'
 
 const RegisterScreen = ({navigation})=>{
     return <View style={styles.container}>
@@ -28,7 +29,7 @@ const RegisterScreen = ({navigation})=>{
 
 const styles = StyleSheet.create({
     container:{
-        backgroundColor: '#067b7a',
+        backgroundColor: AppStyles.colors.primary,
         flex: 1
     },
     headerContainer:{

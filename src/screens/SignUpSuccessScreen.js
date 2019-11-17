@@ -2,6 +2,7 @@ import React from 'react'
 import { Text, StyleSheet, View, StatusBar, Image } from 'react-native'
 import Button from '../components/button'
 import Card from '../components/card'
+import AppStyles from '../commons/AppStyles'
 
 const SignUpSuccessScreen = ({navigation})=>{
     return <View style={styles.container}>
@@ -27,7 +28,7 @@ const SignUpSuccessScreen = ({navigation})=>{
 const styles = StyleSheet.create({
     container:{
         flex:1,
-        backgroundColor: "#067b7a",
+        backgroundColor: AppStyles.colors.primary,
         justifyContent: "center"
     },
     cardContainer:{

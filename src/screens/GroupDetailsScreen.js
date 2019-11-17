@@ -1,6 +1,7 @@
 import React from 'react'
 import { StyleSheet, View, Text, FlatList, TouchableOpacity, Image } from 'react-native'
 import { ListItem } from 'react-native-elements'
+import AppStyles from '../commons/AppStyles'
 
 const renderHeaderComponent = ()=>{
     return <View style={styles.container}>
@@ -67,7 +68,7 @@ const styles = StyleSheet.create({
         flex: 1
     },
     description:{
-        fontSize: 15
+        fontSize: AppStyles.sizes.defaultTextSize
     },
     headedTextContainer:{
         marginVertical: 10
@@ -78,7 +79,7 @@ const styles = StyleSheet.create({
         marginBottom: 2
     },
     body:{
-        fontSize: 15
+        fontSize: AppStyles.sizes.defaultTextSize
     },
     groupTitle:{
         fontSize: 21,

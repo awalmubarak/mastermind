@@ -2,9 +2,10 @@ import React from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, ImageBackground, Image, ScrollView } from 'react-native'
 import Input from '../components/input'
 import Button from '../components/button'
+import AppStyles from '../commons/AppStyles'
 
 const EditProfileScreen = (props)=>{
-    return <ScrollView style={styles.container}>
+    return <ScrollView>
         <View style={styles.formContainer}>
                 <View style={styles.imageContainer}>
                     <ImageBackground  style={styles.profileImage}>
@@ -36,9 +37,6 @@ EditProfileScreen.navigationOptions = ()=>({
 })
 
 const styles = StyleSheet.create({
-    container:{
-
-    },
     formContainer:{
         marginHorizontal: 20
     },
@@ -55,7 +53,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         height: 150,
         borderWidth: 1,
-        borderColor: "#067b7a",
+        borderColor: AppStyles.colors.primary,
         marginTop: 30,
     },
     profileImage:{

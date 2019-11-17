@@ -3,6 +3,7 @@ import { Text, View, StyleSheet, StatusBar, TouchableOpacity } from 'react-nativ
 import Input from "../components/input"
 import Button from '../components/button'
 import { TouchableNativeFeedback } from 'react-native-gesture-handler'
+import AppStyles from '../commons/AppStyles'
 
 const ProfileContainer = ({navigation, children, prevAction, nextAction, title, step})=>{
     return <View style={styles.container}>
@@ -42,7 +43,7 @@ const ProfileContainer = ({navigation, children, prevAction, nextAction, title, 
 
 const styles = StyleSheet.create({
     container:{
-        backgroundColor: '#067b7a',
+        backgroundColor: AppStyles.colors.primary,
         flex: 1
     },
     headerContainer:{
@@ -84,14 +85,14 @@ const styles = StyleSheet.create({
     },
     actionPrev:{
         backgroundColor: "white",
-        borderColor: "#067b7a",
+        borderColor: AppStyles.colors.primary,
         borderWidth: 1,
     },
     prevText: {
-        color: "#067b7a"
+        color: AppStyles.colors.primary
     },
     skipText:{
-        borderBottomColor: "#067b7a",
+        borderBottomColor: AppStyles.colors.primary,
         borderBottomWidth: 1,
         color: "#8c8c8c"
     },

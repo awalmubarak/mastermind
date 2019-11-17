@@ -3,6 +3,7 @@ import { View, StyleSheet, Text } from 'react-native'
 import ScreenContainer from '../components/screenContainer'
 import Input from '../components/input'
 import Button from '../components/button'
+import AppStyles from '../commons/AppStyles'
 
 const JoinGroupScreen = ()=>{
     const [step, setStep] = useState(1)
@@ -73,7 +74,7 @@ const styles = StyleSheet.create({
         marginBottom: 2
     },
     body:{
-        fontSize: 15
+        fontSize: AppStyles.sizes.defaultTextSize
     },
     groupTitle:{
         fontSize: 21,

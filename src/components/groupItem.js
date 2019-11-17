@@ -1,5 +1,6 @@
 import React from 'react'
-import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native'
+import { StyleSheet, View, Text, Image } from 'react-native'
+import AppStyles from '../commons/AppStyles'
 
 const GroupItem = ()=>{
 return <View style={styles.cardContainer}>
@@ -47,7 +48,7 @@ const styles = StyleSheet.create({
         flex: 0.2
     },
     groupNumber:{
-        fontSize: 15,
+        fontSize: AppStyles.sizes.defaultTextSize,
         marginRight: 5,
         color: "#5e5e5e"
     },

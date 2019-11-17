@@ -4,6 +4,7 @@ import MeetingItem from './meetingItem'
 import { Header } from 'react-native-elements';
 import moment from "moment"
 import CreateMeetingModal from './createMeetingModal';
+import AppStyles from '../commons/AppStyles';
 
 
 
@@ -55,7 +56,7 @@ return <View style={styles.container}>
             <Text style={{color: "white"}}>Create Meeting</Text>
         </TouchableOpacity>)}
         containerStyle={{
-            backgroundColor: '#067b7a'
+            backgroundColor: AppStyles.colors.primary
           }}
         />
     <View style={styles.cardContainer}>
@@ -113,7 +114,7 @@ const styles = StyleSheet.create({
     },
     headerRight:{
         marginRight: 10,
-        fontSize: 15, 
+        fontSize: AppStyles.sizes.defaultTextSize, 
         borderColor: "white", 
         borderWidth: 1,
         padding: 4
@@ -122,7 +123,7 @@ const styles = StyleSheet.create({
         height: 90,
         borderRadius: 0,
         justifyContent: "center",
-        backgroundColor: "#067b7a",
+        backgroundColor: AppStyles.colors.primary,
         elevation: 3
     },
     groupIcon:{
@@ -149,7 +150,7 @@ const styles = StyleSheet.create({
         flex: 0.2
     },
     groupNumber:{
-        fontSize: 15,
+        fontSize: AppStyles.sizes.defaultTextSize,
         marginRight: 5,
         color: "white"
     },

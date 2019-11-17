@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Platform,
 } from "react-native";
+import AppStyles from "../commons/AppStyles";
 
 export default DrawerSidebar = ({navigation})=> {
 
@@ -67,7 +68,7 @@ export default DrawerSidebar = ({navigation})=> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#067b7a'
+    backgroundColor: AppStyles.colors.primary
   },
   containertopRow: {
     marginTop: 10,
@@ -113,7 +114,7 @@ const styles = StyleSheet.create({
   },
 
   containerBottom: {
-    backgroundColor: '#067b7a',
+    backgroundColor: AppStyles.colors.primary,
     marginTop: 20,
     flex: 0.6
   },

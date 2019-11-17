@@ -3,6 +3,7 @@ import {View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native'
 import MessageItem from '../components/messageItem'
 import SendMessage from '../components/sendMesage'
 import { Header } from 'react-native-elements';
+import AppStyles from '../commons/AppStyles';
 
 const ChatScreen = ({navigation})=>{
     const [chatStatus, setChatStatus] = useState({status: "pending", buttonText: "Start"})
@@ -58,7 +59,7 @@ const styles = StyleSheet.create({
         borderRadius: 0,
         justifyContent: "center",
         elevation: 0.5,
-        backgroundColor: "#067b7a",
+        backgroundColor: AppStyles.colors.primary,
         elevation: 3,
         alignItems: "center"
     },

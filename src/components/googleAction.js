@@ -1,6 +1,7 @@
 import React from 'react'
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native'
 import { GoogleSignin, GoogleSigninButton } from '@react-native-community/google-signin';
+import AppStyles from '../commons/AppStyles';
 
 const GoogleAction = ({actionMessage, actionText, action})=>{
     return <>
@@ -51,7 +52,7 @@ const styles = StyleSheet.create({
         marginVertical: 20,
     },
     signInText:{
-        borderBottomColor: "#067b7a",
+        borderBottomColor: AppStyles.colors.primary,
         borderBottomWidth: 1
     },
 })

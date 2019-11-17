@@ -1,5 +1,6 @@
 import React from 'react'
 import { View, Text } from 'react-native'
+import AppStyles from '../commons/AppStyles'
 
 const renderIncomingMessage = ()=>{
     return <View style={{
@@ -45,7 +46,7 @@ const renderOutGoingMessage = ()=>{
         flex: 0.7,
         padding: 10,
         borderWidth: 1,
-        borderColor: "#067b7a",
+        borderColor: AppStyles.colors.primary,
         borderBottomLeftRadius: 10,
         borderTopLeftRadius: 10}}>
             <Text style={{

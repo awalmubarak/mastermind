@@ -1,6 +1,7 @@
 import React from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView } from 'react-native'
 import HeadedText from '../components/HeadedText'
+import AppStyles from '../commons/AppStyles'
 
 class ProfileDetailsScreen extends React.Component{
     constructor(props){
@@ -33,7 +34,7 @@ class ProfileDetailsScreen extends React.Component{
 const HeaderRightComponent = ()=>{
     return (<TouchableOpacity style={{
         marginRight: 10,
-        fontSize: 15, 
+        fontSize: AppStyles.sizes.defaultTextSize, 
         borderColor: "white", 
         borderWidth: 1,
         padding: 4,
@@ -54,7 +55,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         height: 150,
         borderWidth: 1,
-        borderColor: "#067b7a",
+        borderColor: AppStyles.colors.primary,
         marginVertical: 30,
     },
     profileImage:{

@@ -4,6 +4,8 @@ import Modal from "react-native-modal";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Button from './button';
 import moment from 'moment';
+import AppStyles from '../commons/AppStyles';
+
 
 const CreateMeetingModal = ({isVisible, date, time, createMeeting,cancel, mode, showPicker, setDate, show})=>{
     return <Modal isVisible={isVisible} avoidKeyboard={false}>
@@ -51,11 +53,11 @@ const styles = StyleSheet.create({
     },
     selectDate:{
         borderWidth: 1,
-        borderColor: "#067b7a",
+        borderColor: AppStyles.colors.primary,
         borderRadius: 3,
         padding: 5,
         fontSize: 18,
-        color: "#333333",
+        color: AppStyles.colors.textSecondary,
         opacity: 0.7,
         marginVertical: 10
     },
@@ -68,7 +70,7 @@ const styles = StyleSheet.create({
     itemLabel:{
         fontSize: 17,
         marginTop: 10,
-        color: "#4d4d4d"
+        color: AppStyles.colors.textPrimary
     }
 })
 

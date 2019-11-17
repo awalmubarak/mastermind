@@ -1,5 +1,6 @@
 import React from 'react'
 import { View, StyleSheet, Text } from 'react-native'
+import AppStyles from '../commons/AppStyles'
 
 const HeadedText = ({heading, body, style})=>{
     return <View style={[styles.headedTextContainer, style&& style]}>
@@ -18,7 +19,7 @@ const styles = StyleSheet.create({
         marginBottom: 2
     },
     body:{
-        fontSize: 15
+        fontSize: AppStyles.sizes.defaultTextSize
     }
 })
 
