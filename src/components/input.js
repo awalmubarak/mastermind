@@ -2,7 +2,7 @@ import React from 'react'
 import { StyleSheet, View, Text, TextInput } from 'react-native'
 import AppStyles from '../commons/AppStyles'
 
-const Input = ({label, placeholder, secure, value, onchange, numberOfLines, multiline, style})=>{
+const Input = ({label, placeholder, error, secure, value, onchange, numberOfLines, multiline, style, touched, ...rest})=>{
     return <View style={styles.inputContainer}>
                 <Text style={styles.inputLabel}>{label}</Text>
                 <TextInput style={[styles.textInput, style]}
@@ -14,7 +14,9 @@ const Input = ({label, placeholder, secure, value, onchange, numberOfLines, mult
                     onChangeText={onchange}
                     numberOfLines={numberOfLines}
                     multiline={multiline}
+                    {...rest}
                 />
+                {touched && (error && <Text style={styles.errorMessage}>{error}</Text>)}
             </View>
 }
 
@@ -34,6 +36,9 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         fontSize: 18,
         color: "#424242"
+    },
+    errorMessage:{
+        color: "red"
     }
 })
 
