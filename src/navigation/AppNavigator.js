@@ -20,6 +20,7 @@ import MeetingsHistoryScreen from '../screens/MeetingHistoryScreen';
 import GroupDetailsScreen from '../screens/GroupDetailsScreen';
 import ProfileDetailsScreen from '../screens/PofileDetailsScreen';
 import EditProfileScreen from '../screens/EditProfileScreen';
+import AuthLoadingScreen from '../screens/AuthLoadingScreen';
 
 
 
@@ -101,12 +102,13 @@ const DrawerNavigator = createDrawerNavigator({
 })
 
 const Navigator = createSwitchNavigator({
+  AuthLoading: AuthLoadingScreen,
   Home: WelcomeScreen,
   Register: RegisterScreen,
   Login: LoginScreen,
   CreateProfile: CreateProfileNavigator,
   ProfileSuccess: CreateProfileSuccessScreen,
   App: DrawerNavigator,  
-})
+}, {initialRouteName:"AuthLoading"})
 
 export default createAppContainer(Navigator)
