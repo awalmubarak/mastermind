@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, View, StyleSheet, StatusBar } from 'react-native'
+import { Text, View, StyleSheet, StatusBar, ScrollView } from 'react-native'
 import Input from "../components/input"
 import Button from '../components/button'
 import GoogleAction from '../components/googleAction'
@@ -13,7 +13,7 @@ const RegisterScreen = ({navigation})=>{
             <Text style={styles.actionText}>Sign Up</Text>
         </View>
 
-        <View style={styles.cardContainer}>
+        <ScrollView style={styles.cardContainer}>
             <View style={styles.formContainer}>
                 <Input label="Full Name" placeholder="John Smith"/>
                 <Input label="Email" placeholder="name@example.com"/>
@@ -22,7 +22,8 @@ const RegisterScreen = ({navigation})=>{
             </View>
             
             <GoogleAction actionText="Sign In" actionMessage="Already Have An Account?" action={()=>navigation.navigate("Login")}/>
-        </View>
+        </ScrollView>
+        
     </View>
 }
 
