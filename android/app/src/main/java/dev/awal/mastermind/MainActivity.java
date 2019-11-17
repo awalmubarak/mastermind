@@ -1,4 +1,4 @@
-package com.mastermind;
+package dev.awal.mastermind;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;

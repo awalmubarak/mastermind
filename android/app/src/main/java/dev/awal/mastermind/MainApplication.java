@@ -1,4 +1,4 @@
-package com.mastermind;
+package dev.awal.mastermind;
 
 import android.app.Application;
 import android.content.Context;

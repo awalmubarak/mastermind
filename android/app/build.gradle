@@ -128,7 +128,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.mastermind"
+        applicationId "dev.awal.mastermind"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
@@ -192,6 +192,8 @@ dependencies {
     }
     implementation 'androidx.appcompat:appcompat:1.1.0-rc01'
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0-alpha02'
+    implementation platform("com.google.firebase:firebase-bom:24.1.0")
+    implementation "com.google.firebase:firebase-core"
 }
 
 // Run this once to be able to run the application with BUCK
