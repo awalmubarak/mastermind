@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { View, ActivityIndicator,StatusBar } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import { GoogleSignin } from '@react-native-community/google-signin';
 import { navigateAfterAuth, signOut } from '../firebase/FirebaseAuth'
+import { UserContext } from '../contexts/UserContext';
 
 const configureGoogleSignIn = async()=>{
   await GoogleSignin.configure({
@@ -11,15 +12,12 @@ const configureGoogleSignIn = async()=>{
 }
 
 const AuthLoadingScreen =({navigation}) =>{
-
-  const [user, setUser] = useState();
+  const {setUser} = useContext(UserContext)
  
   
   // Handle user state changes
   const onAuthStateChanged=(newUuser)=> {
-    
-    setUser(newUuser);
-    console.log(user);
+    setUser(newUuser)
   }
  
   useEffect(() => {
@@ -28,6 +26,7 @@ const AuthLoadingScreen =({navigation}) =>{
     const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
     const currentUser = auth().currentUser;
     if(currentUser){
+      setUser(currentUser)
       navigateAfterAuth();
     }else{
       navigation.navigate(currentUser? "App": "Home")

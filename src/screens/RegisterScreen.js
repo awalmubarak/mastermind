@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useContext} from 'react'
 import { Text, View, StyleSheet, StatusBar, ScrollView, SafeAreaView, Alert } from 'react-native'
 import Input from "../components/input"
 import Button from '../components/button'
@@ -8,11 +8,13 @@ import { Formik } from 'formik'
 import UserSchema from '../validationSchemas/UserSchema'
 import Loader from '../components/loader'
 import {handleGoogleLogin, handleEmailAuth} from '../firebase/FirebaseAuth'
+import { UserContext } from '../contexts/UserContext'
 
 
 
 const RegisterScreen = ({navigation})=>{
     const [isLoading, setIsLoading] = useState(false)
+    const {setUser} = useContext(UserContext)
 
     return <SafeAreaView style={styles.container}>
         <StatusBar backgroundColor="#067b7a" barStyle="light-content" />        
@@ -56,7 +58,7 @@ const RegisterScreen = ({navigation})=>{
                 </Formik>
             </View>
             
-            <GoogleAction actionText="Sign In" actionMessage="Already Have An Account?" googleAction={handleGoogleLogin} linkAction={()=>navigation.navigate("Login")}/>
+            <GoogleAction actionText="Sign In" actionMessage="Already Have An Account?" googleAction={()=>handleGoogleLogin(setUser)} linkAction={()=>navigation.navigate("Login")}/>
         </ScrollView>
         <Loader visible={isLoading} message="Creating Account..."/>
     </SafeAreaView>

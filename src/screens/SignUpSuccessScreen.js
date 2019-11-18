@@ -1,11 +1,16 @@
-import React from 'react'
+import React, {useState} from 'react'
 import { Text, StyleSheet, View, StatusBar, Image, TouchableOpacity } from 'react-native'
 import Button from '../components/button'
 import Card from '../components/card'
 import AppStyles from '../commons/AppStyles'
+import { withUserHOC } from '../contexts/UserContext'
+import { signOut } from '../firebase/FirebaseAuth'
+import Loader from '../components/loader'
 
 
-const SignUpSuccessScreen = ({navigation})=>{
+const SignUpSuccessScreen = ({navigation, context})=>{
+    const {user} = context
+    const [isLoading, setIsLoading] = useState(false)
     return <View style={styles.container}>
             <StatusBar backgroundColor="#067b7a" barStyle="light-content" />   
             <Card style={styles.cardContainer}>
@@ -13,18 +18,20 @@ const SignUpSuccessScreen = ({navigation})=>{
                     <Image source={require('../assets/signup-success.png')} style={styles.image}/>
                 </View>
                 <View style={styles.messageContainer}>
-                    <Text style={styles.message}>Welcome %user email% </Text>
+                    <Text style={styles.message}>Welcome! </Text>
+                    <Text style={[styles.message, {fontSize: 20, fontWeight: "bold"}]}>{user.email} </Text>
                     <Text style={styles.message}> We just need a few information
                     to finish setting you up.</Text>
                     <Button text="Continue" 
                         style={styles.button}
                         onPress={()=>navigation.navigate("CreateProfile")}
                      />
-                     <TouchableOpacity style={styles.skipButton} onPress={()=>navigation.navigate("Login")}>
+                     <TouchableOpacity style={styles.skipButton} onPress={()=>signOut(setIsLoading)}>
                     <Text style={styles.skipText}>Use a different account</Text>
                 </TouchableOpacity>
                 </View>
-            </Card>     
+            </Card>  
+            <Loader message="Signing Out..." visible={isLoading}/>   
     </View>
 }
 
@@ -36,8 +43,9 @@ const styles = StyleSheet.create({
     },
     cardContainer:{
         alignItems: "center",        
-        flex: 0.6,
+        flex: 0.8,
         marginHorizontal: 10,
+        justifyContent: "center"
     },
     image:{
         width: 200,
@@ -47,10 +55,10 @@ const styles = StyleSheet.create({
         marginHorizontal: 10,
     },
     message:{
-        fontSize: 20,
+        fontSize: 18,
         textAlign: "center",
         color: "#616161",
-        marginBottom: 10
+        marginBottom: 5
     },
     button:{
         marginTop: 20,
@@ -66,4 +74,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default SignUpSuccessScreen;
+export default withUserHOC(SignUpSuccessScreen);

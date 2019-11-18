@@ -5,12 +5,13 @@ import firestore from '@react-native-firebase/firestore';
 import NavigationService from '../navigation/NavigationService';
 
 
-const handleGoogleLogin = async()=>{
+const handleGoogleLogin = async(setUser)=>{
 
     try {
         const { accessToken, idToken } = await GoogleSignin.signIn();
         const credential = firebase.auth.GoogleAuthProvider.credential(idToken, accessToken);
-        await firebase.auth().signInWithCredential(credential);
+        const results = await firebase.auth().signInWithCredential(credential);
+        setUser(results.user)
         navigateAfterAuth()
         DropDownHolder.dropDown.alertWithType('success', 'Success', 'Sign In Successful');
 
@@ -24,19 +25,22 @@ const getCurrentUser = async()=>{
     return currentUser;
 } 
 
-const signOut= async()=>{
+const signOut= async(setIsLoading)=>{
     try {
         const currentUser = await GoogleSignin.getCurrentUser();
         if(currentUser){
             await GoogleSignin.revokeAccess();
             await GoogleSignin.signOut();
-            NavigationService.navigate("Home")
-            DropDownHolder.dropDown.alertWithType('success', 'Success', "Sign Out Successful");
         }
-        auth().signOut()
+        firebase.auth().signOut()
+        NavigationService.navigate("Home")
+        DropDownHolder.dropDown.alertWithType('success', 'Success', "Sign Out Successful");
+
     } catch (error) {
         DropDownHolder.dropDown.alertWithType('error', 'Error', error.message);
-
+        if(setIsLoading){
+            setIsLoading(false)
+        }
     }
   }
 
@@ -59,14 +63,17 @@ const navigateAfterAuth = async()=>{
 }
 
 
-const handleEmailAuth = async (values, action, setIsLoading, message)=>{  
+const handleEmailAuth = async (values, action, setIsLoading, message, setUser)=>{  
     setIsLoading(true)
     try {
+        let results;
         if(action==="sign in"){
-            await firebase.auth().signInWithEmailAndPassword(values.email, values.password)
+             results = await firebase.auth().signInWithEmailAndPassword(values.email, values.password)
         }else{
-            await firebase.auth().createUserWithEmailAndPassword(values.email, values.password)
+             results = await firebase.auth().createUserWithEmailAndPassword(values.email, values.password)
         }
+        console.log("Email", results.user);
+        
         navigateAfterAuth()
         DropDownHolder.dropDown.alertWithType('success', 'Success', message);
 
@@ -74,8 +81,9 @@ const handleEmailAuth = async (values, action, setIsLoading, message)=>{
         console.log(error.code);
         const message = getAuthErrorMessage(error.code) || error.message
         DropDownHolder.dropDown.alertWithType('error', 'Error', message, {}, 7000);
+    }finally{
+        setIsLoading(false)
     }
-    setIsLoading(false)
     // alert(JSON.stringify(values))    
 }
 

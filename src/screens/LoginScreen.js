@@ -8,11 +8,12 @@ import { Formik } from 'formik'
 import UserSchema from '../validationSchemas/UserSchema'
 import Loader from '../components/loader'
 import {handleGoogleLogin, handleEmailAuth} from '../firebase/FirebaseAuth'
+import { withUserHOC } from '../contexts/UserContext'
 
 
-const RegisterScreen = ({navigation})=>{
+const RegisterScreen = ({navigation, context})=>{
     const [isLoading, setIsLoading] = useState(false)
-
+    const {setUser} = context
     return <SafeAreaView style={styles.container}>
         <StatusBar backgroundColor="#067b7a" barStyle="light-content" />        
         <View style={styles.headerContainer}>
@@ -24,7 +25,7 @@ const RegisterScreen = ({navigation})=>{
             <View style={styles.formContainer}>
                 <Formik
                     initialValues={{email: "", password:""}}
-                    onSubmit={values => handleEmailAuth(values, "sign in", setIsLoading, 'Sign in successful')}
+                    onSubmit={values => handleEmailAuth(values, "sign in", setIsLoading, 'Sign in successful', setUser)}
                     validationSchema={UserSchema}
                 >
                 {({values, handleChange, handleSubmit, errors, handleBlur, touched})=>(
@@ -53,7 +54,7 @@ const RegisterScreen = ({navigation})=>{
                 </Formik>
             </View>
             
-            <GoogleAction actionText="Sign Up" actionMessage="Don't have an account?" googleAction={handleGoogleLogin} linkAction={()=>navigation.navigate("Register")}/>
+            <GoogleAction actionText="Sign Up" actionMessage="Don't have an account?" googleAction={()=>handleGoogleLogin(setUser)} linkAction={()=>navigation.navigate("Register")}/>
         </ScrollView>
         <Loader visible={isLoading} message="Signing In..."/>
     </SafeAreaView>
@@ -92,4 +93,4 @@ const styles = StyleSheet.create({
 
 })
 
-export default RegisterScreen;
+export default withUserHOC(RegisterScreen)
