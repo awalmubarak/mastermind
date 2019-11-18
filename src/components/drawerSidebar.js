@@ -8,6 +8,7 @@ import {
   Platform,
 } from "react-native";
 import AppStyles from "../commons/AppStyles";
+import { signOut } from '../firebase/FirebaseAuth'
 
 export default DrawerSidebar = ({navigation})=> {
 
@@ -53,7 +54,7 @@ export default DrawerSidebar = ({navigation})=> {
 
         <View style={styles.containerFooter}>
         <TouchableOpacity
-            onPress={() => navigate('')}
+            onPress={signOut}
             style={styles.containerBottomItem}
           >
             <View style={styles.button}>

@@ -1,6 +1,9 @@
 import { GoogleSignin } from '@react-native-community/google-signin';
 import { firebase } from '@react-native-firebase/auth';
-import { DropDownHolder } from '../commons/DropDownHolder'
+import { DropDownHolder } from '../commons/DropDownHolder';
+import firestore from '@react-native-firebase/firestore';
+import NavigationService from '../navigation/NavigationService';
+
 
 const handleGoogleLogin = async()=>{
 
@@ -8,12 +11,53 @@ const handleGoogleLogin = async()=>{
         const { accessToken, idToken } = await GoogleSignin.signIn();
         const credential = firebase.auth.GoogleAuthProvider.credential(idToken, accessToken);
         await firebase.auth().signInWithCredential(credential);
+        navigateAfterAuth()
         DropDownHolder.dropDown.alertWithType('success', 'Success', 'Sign In Successful');
 
     } catch (error) {
         console.log(error);
     }
 }
+
+const getCurrentUser = async()=>{
+    const currentUser = await GoogleSignin.getCurrentUser();
+    return currentUser;
+} 
+
+const signOut= async()=>{
+    try {
+        const currentUser = await GoogleSignin.getCurrentUser();
+        if(currentUser){
+            await GoogleSignin.revokeAccess();
+            await GoogleSignin.signOut();
+            NavigationService.navigate("Home")
+            DropDownHolder.dropDown.alertWithType('success', 'Success', "Sign Out Successful");
+        }
+        auth().signOut()
+    } catch (error) {
+        DropDownHolder.dropDown.alertWithType('error', 'Error', error.message);
+
+    }
+  }
+
+const navigateAfterAuth = async()=>{
+    try {
+        const user = firebase.auth().currentUser;
+        const results = await firestore()
+            .collection('users')
+            .doc(user.uid)
+            .get()
+        if(results.data()){
+            NavigationService.navigate("App")
+        }else{
+            NavigationService.navigate("CreateProfile")
+        }
+        
+    } catch (error) {
+        console.log(error);   
+    }
+}
+
 
 const handleEmailAuth = async (values, action, setIsLoading, message)=>{  
     setIsLoading(true)
@@ -23,6 +67,7 @@ const handleEmailAuth = async (values, action, setIsLoading, message)=>{
         }else{
             await firebase.auth().createUserWithEmailAndPassword(values.email, values.password)
         }
+        navigateAfterAuth()
         DropDownHolder.dropDown.alertWithType('success', 'Success', message);
 
     } catch (error) {
@@ -45,4 +90,4 @@ const getAuthErrorMessage = (key)=>{
     return null;
 }
 
-export {handleGoogleLogin, errors, getAuthErrorMessage, handleEmailAuth}
+export {handleGoogleLogin, getAuthErrorMessage, handleEmailAuth, navigateAfterAuth, signOut, getCurrentUser}
