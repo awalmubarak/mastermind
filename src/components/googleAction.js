@@ -16,7 +16,7 @@ const GoogleAction = ({actionMessage, actionText, action})=>{
                 style={styles.googleSignInButton}
                 size={GoogleSigninButton.Size.Wide}
                 color={GoogleSigninButton.Color.Light}
-                onPress={()=>{}}
+                onPress={action}
                 disabled={false} />
             </View>
 

@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import { Text, View, StyleSheet, StatusBar, ScrollView, SafeAreaView } from 'react-native'
+import { Text, View, StyleSheet, StatusBar, ScrollView, SafeAreaView, Alert } from 'react-native'
 import Input from "../components/input"
 import Button from '../components/button'
 import GoogleAction from '../components/googleAction'
@@ -7,12 +7,26 @@ import AppStyles from '../commons/AppStyles'
 import { Formik } from 'formik'
 import UserSchema from '../validationSchemas/UserSchema'
 import Loader from '../components/loader'
+import auth from '@react-native-firebase/auth';
+import { DropDownHolder } from '../commons/DropDownHolder'
+import { getAuthErrorMessage } from '../commons/FirebaseAuthErrors'
+import {handleGoogleLogin} from '../commons/GoogleSignIn'
+
 
 
 const RegisterScreen = ({navigation})=>{
     const [isLoading, setIsLoading] = useState(false)
-    const handleFormSubmittion = (values)=>{  
-            setIsLoading(true)    
+    const handleFormSubmittion = async (values)=>{  
+        setIsLoading(true)
+        try {
+            await auth().createUserWithEmailAndPassword(values.email, values.password)
+            DropDownHolder.dropDown.alertWithType('success', 'Success', 'Your Account has been created successfully');
+
+        } catch (error) {
+            const message = getAuthErrorMessage(error.code) || error.message
+            DropDownHolder.dropDown.alertWithType('error', 'Error', message, {}, 7000);
+        }
+        setIsLoading(false)
     }
 
 
@@ -56,7 +70,7 @@ const RegisterScreen = ({navigation})=>{
                 </Formik>
             </View>
             
-            <GoogleAction actionText="Sign In" actionMessage="Already Have An Account?" action={()=>navigation.navigate("Login")}/>
+            <GoogleAction actionText="Sign In" actionMessage="Already Have An Account?" action={handleGoogleLogin}/>
         </ScrollView>
         <Loader visible={isLoading} message="Creating Account..."/>
     </SafeAreaView>
