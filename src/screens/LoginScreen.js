@@ -7,28 +7,11 @@ import AppStyles from '../commons/AppStyles'
 import { Formik } from 'formik'
 import UserSchema from '../validationSchemas/UserSchema'
 import Loader from '../components/loader'
-import auth from '@react-native-firebase/auth';
-import { DropDownHolder } from '../commons/DropDownHolder'
-import { getAuthErrorMessage } from '../commons/FirebaseAuthErrors'
+import {handleGoogleLogin, handleEmailAuth} from '../firebase/FirebaseAuth'
 
 
 const RegisterScreen = ({navigation})=>{
     const [isLoading, setIsLoading] = useState(false)
-    const handleFormSubmittion = async (values)=>{  
-        setIsLoading(true)
-        try {
-            await auth().signInWithEmailAndPassword(values.email, values.password)
-            DropDownHolder.dropDown.alertWithType('success', 'Success', 'Sign in successful');
-
-        } catch (error) {
-            console.log(error.code);
-            const message = getAuthErrorMessage(error.code) || error.message
-            DropDownHolder.dropDown.alertWithType('error', 'Error', message, {}, 7000);
-        }
-        setIsLoading(false)
-        // alert(JSON.stringify(values))    
-    }
-
 
     return <SafeAreaView style={styles.container}>
         <StatusBar backgroundColor="#067b7a" barStyle="light-content" />        
@@ -41,7 +24,7 @@ const RegisterScreen = ({navigation})=>{
             <View style={styles.formContainer}>
                 <Formik
                     initialValues={{email: "", password:""}}
-                    onSubmit={values => handleFormSubmittion(values)}
+                    onSubmit={values => handleEmailAuth(values, "sign in", setIsLoading, 'Sign in successful')}
                     validationSchema={UserSchema}
                 >
                 {({values, handleChange, handleSubmit, errors, handleBlur, touched})=>(
@@ -70,7 +53,7 @@ const RegisterScreen = ({navigation})=>{
                 </Formik>
             </View>
             
-            <GoogleAction actionText="Sign Up" actionMessage="Don't have an account?" action={()=>navigation.navigate("Register")}/>
+            <GoogleAction actionText="Sign Up" actionMessage="Don't have an account?" googleAction={handleGoogleLogin} linkAction={()=>navigation.navigate("Register")}/>
         </ScrollView>
         <Loader visible={isLoading} message="Signing In..."/>
     </SafeAreaView>

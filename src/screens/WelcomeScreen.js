@@ -1,20 +1,10 @@
-import React, {useEffect} from 'react'
+import React from 'react'
 import { View, Text, StyleSheet,Image } from 'react-native'
 import Button from '../components/button'
 import AppStyles from '../commons/AppStyles'
-import { GoogleSignin } from '@react-native-community/google-signin';
 
 const WelcomeScreen = ({navigation})=>{
-    const configureGoogleSignIn = async()=>{
-        await GoogleSignin.configure({
-            webClientId: '74421600413-t9r8ngkfrvpsk10vmj2t7ascce9k9htf.apps.googleusercontent.com', 
-          });
-    }
-    useEffect(() => {
-        configureGoogleSignIn()
-        return () => {
-        };
-    }, [])
+    
     return <View style={styles.container}>
         <View>
             <Image source={require('../assets/welcome.png')} style={styles.image}/>

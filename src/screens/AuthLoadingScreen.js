@@ -3,6 +3,12 @@ import { View, ActivityIndicator,StatusBar } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import { GoogleSignin } from '@react-native-community/google-signin';
 
+const configureGoogleSignIn = async()=>{
+  await GoogleSignin.configure({
+      webClientId: '74421600413-t9r8ngkfrvpsk10vmj2t7ascce9k9htf.apps.googleusercontent.com', 
+    });
+}
+
 const AuthLoadingScreen =({navigation}) =>{
 
   const [user, setUser] = useState();
@@ -27,6 +33,7 @@ const AuthLoadingScreen =({navigation}) =>{
   }
  
   useEffect(() => {
+    configureGoogleSignIn()
     // signOut()
     const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
     const currentUser = auth().currentUser;

@@ -3,7 +3,7 @@ import { Text, View, StyleSheet, TouchableOpacity } from 'react-native'
 import { GoogleSignin, GoogleSigninButton } from '@react-native-community/google-signin';
 import AppStyles from '../commons/AppStyles';
 
-const GoogleAction = ({actionMessage, actionText, action})=>{
+const GoogleAction = ({actionMessage, actionText, googleAction, linkAction})=>{
     return <>
         <View style={styles.dividerContainer}>
                 <View style={styles.divider}></View>
@@ -16,13 +16,13 @@ const GoogleAction = ({actionMessage, actionText, action})=>{
                 style={styles.googleSignInButton}
                 size={GoogleSigninButton.Size.Wide}
                 color={GoogleSigninButton.Color.Light}
-                onPress={action}
+                onPress={googleAction}
                 disabled={false} />
             </View>
 
             <View style={styles.loginActionContainer}>
                 <Text>{actionMessage}   </Text>
-                <TouchableOpacity onPress={()=>action()}>
+                <TouchableOpacity onPress={()=>linkAction()}>
                     <Text style={styles.signInText}>{actionText}</Text>
                 </TouchableOpacity>
             </View>
