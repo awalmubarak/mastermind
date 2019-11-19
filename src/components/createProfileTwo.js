@@ -4,7 +4,6 @@ import Input from "../components/input"
 import ProfileContainer from '../components/profileContainer'
 import {Formik} from 'formik'
 import { stepTwo } from '../validationSchemas/ProfileSchema'
-import { withUserHOC } from '../contexts/UserContext'
 
     const ProfileStepTwo = ({nextStep, context, prevAction})=>{
         const {profile, setProfile} = context
@@ -90,4 +89,4 @@ import { withUserHOC } from '../contexts/UserContext'
     
     })
 
-    export default withUserHOC(ProfileStepTwo)
+    export default ProfileStepTwo;

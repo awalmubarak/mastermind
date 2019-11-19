@@ -62,6 +62,22 @@ const navigateAfterAuth = async()=>{
     }
 }
 
+const createUserProfile = async(profile, callback)=>{
+    try {
+        const user = firebase.auth().currentUser;
+        const results = await firestore()
+            .collection('users')
+            .doc(user.uid)
+            .set(profile)
+        console.log(results);
+        callback()
+        
+    } catch (error) {
+        const message = getAuthErrorMessage(error.code) || error.message
+        DropDownHolder.dropDown.alertWithType('error', 'Error', message, {});   
+    }
+}
+
 
 const handleEmailAuth = async (values, action, setIsLoading, message, setUser)=>{  
     setIsLoading(true)
@@ -98,4 +114,4 @@ const getAuthErrorMessage = (key)=>{
     return null;
 }
 
-export {handleGoogleLogin, getAuthErrorMessage, handleEmailAuth, navigateAfterAuth, signOut, getCurrentUser}
+export {handleGoogleLogin, getAuthErrorMessage, handleEmailAuth, navigateAfterAuth, signOut, getCurrentUser, createUserProfile}

@@ -1,23 +1,28 @@
 import React, {useState} from 'react'
-import { Text, View, StyleSheet, Image, ImageBackground, TextInput } from 'react-native'
-import Input from "../components/input"
+import {  View, StyleSheet, Image, ImageBackground } from 'react-native'
 import ProfileContainer from '../components/profileContainer'
 import { TouchableOpacity } from 'react-native-gesture-handler'
-import {Formik} from 'formik'
-import { stepOne,stepTwo } from '../validationSchemas/ProfileSchema'
 import ProfileStepOne from '../components/createProfileOne'
 import ProfileStepTwo from '../components/createProfileTwo'
 import ProfileStepThree from '../components/createProfileThree'
+import Loader from '../components/loader'
+import { createUserProfile} from '../firebase/FirebaseAuth'
+import { withUserHOC } from '../contexts/UserContext'
 
-
-const CreateProfieScreen = ({navigation})=>{
+const CreateProfieScreen = ({navigation, context})=>{
+    const [isLoading, setIsLoading] = useState(false)
+    const {profile} = context
     const [step, setStep] = useState(1)
     const previousStep = ()=>{
         setStep(step - 1)
     }
     const nextStep = ()=>{
         if(step==3){
-            navigation.navigate('ProfileSuccess')
+            setIsLoading(true)
+            createUserProfile(profile, ()=>{
+                setIsLoading(false)
+                navigation.navigate('ProfileSuccess')
+            })
         }else{
             setStep(step + 1)
         }
@@ -38,11 +43,14 @@ const CreateProfieScreen = ({navigation})=>{
     }
 
     if(step==1){
-        return <ProfileStepOne nextStep={nextStep}/>
+        return <ProfileStepOne nextStep={nextStep} context={context}/>
     }else if(step==2){
-        return <ProfileStepTwo nextStep={nextStep} prevAction={previousStep}/>
+        return <ProfileStepTwo nextStep={nextStep} prevAction={previousStep} context={context}/>
     }else if(step==3){
-        return <ProfileStepThree nextStep={nextStep} prevAction={previousStep}/>
+        return <>
+        <ProfileStepThree nextStep={nextStep} prevAction={previousStep} context={context}/>
+        <Loader visible={isLoading} message='Creating Profile...'/>
+        </>
     }
 }
 
@@ -76,4 +84,4 @@ const styles = StyleSheet.create({
 
 })
 
-export default CreateProfieScreen;
+export default withUserHOC(CreateProfieScreen);
