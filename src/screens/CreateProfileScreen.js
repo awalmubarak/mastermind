@@ -1,15 +1,17 @@
 import React, {useState} from 'react'
-import { Text, View, StyleSheet, Image, ImageBackground } from 'react-native'
+import { Text, View, StyleSheet, Image, ImageBackground, TextInput } from 'react-native'
 import Input from "../components/input"
-import Button from '../components/button'
 import ProfileContainer from '../components/profileContainer'
 import { TouchableOpacity } from 'react-native-gesture-handler'
-
+import {Formik} from 'formik'
+import { stepOne,stepTwo } from '../validationSchemas/ProfileSchema'
+import ProfileStepOne from '../components/createProfileOne'
+import ProfileStepTwo from '../components/createProfileTwo'
+import ProfileStepThree from '../components/createProfileThree'
 
 
 const CreateProfieScreen = ({navigation})=>{
     const [step, setStep] = useState(1)
-
     const previousStep = ()=>{
         setStep(step - 1)
     }
@@ -19,37 +21,6 @@ const CreateProfieScreen = ({navigation})=>{
         }else{
             setStep(step + 1)
         }
-    }
-    const renderStepOne = ()=>{
-        return <ProfileContainer 
-            title="About You" 
-            step={step} 
-            nextAction={nextStep}>
-            <View style={styles.formContainer}>
-                <Input label="Your Name" placeholder="John Smith"/>
-                <Input label="Bio"  
-                    placeholder="short info about yourself"
-                    numberOfLines={10}
-                    multiline={true}
-                    style={styles.input}
-                    />
-                
-            </View>
-        </ProfileContainer>
-    }
-    
-    const renderStepTwo = ()=>{
-        return <ProfileContainer 
-            title="Social Proof" 
-            step={step} nextAction={nextStep} prevAction={previousStep}>
-            <View style={styles.formContainer}>
-                <Input label="LinkedIn URL" placeholder="https://linkedin.com/in/username"/>
-                <Input label="Twitter URL" placeholder="https://twitter.com/username"/>
-                <Input label="Facebook URL" placeholder="https://facebook.com/username"/>
-               
-                
-            </View>
-        </ProfileContainer>
     }
 
     const renderStepThree = ()=>{
@@ -62,17 +33,16 @@ const CreateProfieScreen = ({navigation})=>{
                     <Image source={require('../assets/profile.png')} style={styles.chooseImage}/>                    
                 </TouchableOpacity>
                 </ImageBackground>
-   
             </View>
         </ProfileContainer>
     }
 
     if(step==1){
-        return renderStepOne()
+        return <ProfileStepOne nextStep={nextStep}/>
     }else if(step==2){
-        return renderStepTwo()
+        return <ProfileStepTwo nextStep={nextStep} prevAction={previousStep}/>
     }else if(step==3){
-        return renderStepThree()
+        return <ProfileStepThree nextStep={nextStep} prevAction={previousStep}/>
     }
 }
 

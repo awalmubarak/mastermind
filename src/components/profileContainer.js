@@ -30,7 +30,7 @@ const ProfileContainer = ({navigation, children, prevAction, nextAction, title, 
                         onPress={()=>nextAction()}
                         />
                 </View>
-                {step>1 && <TouchableOpacity style={styles.skipButton}>
+                {step>1 && <TouchableOpacity style={styles.skipButton} onPress={nextAction}>
                     <Text style={styles.skipText}>Skip this step</Text>
                 </TouchableOpacity>}
             </View>

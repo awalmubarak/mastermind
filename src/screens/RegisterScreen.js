@@ -58,7 +58,10 @@ const RegisterScreen = ({navigation})=>{
                 </Formik>
             </View>
             
-            <GoogleAction actionText="Sign In" actionMessage="Already Have An Account?" googleAction={()=>handleGoogleLogin(setUser)} linkAction={()=>navigation.navigate("Login")}/>
+            <GoogleAction actionText="Sign In" actionMessage="Already Have An Account?" googleAction={()=>{
+                setIsLoading(true)
+                handleGoogleLogin(setUser)
+                }} linkAction={()=>navigation.navigate("Login")}/>
         </ScrollView>
         <Loader visible={isLoading} message="Creating Account..."/>
     </SafeAreaView>

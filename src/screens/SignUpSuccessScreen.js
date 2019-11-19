@@ -26,7 +26,10 @@ const SignUpSuccessScreen = ({navigation, context})=>{
                         style={styles.button}
                         onPress={()=>navigation.navigate("CreateProfile")}
                      />
-                     <TouchableOpacity style={styles.skipButton} onPress={()=>signOut(setIsLoading)}>
+                     <TouchableOpacity style={styles.skipButton} onPress={()=>{
+                         setIsLoading(true)
+                         signOut(setIsLoading)
+                         }}>
                     <Text style={styles.skipText}>Use a different account</Text>
                 </TouchableOpacity>
                 </View>
