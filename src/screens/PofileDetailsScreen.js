@@ -13,7 +13,7 @@ class ProfileDetailsScreen extends React.Component{
         console.log(isCurrentUser);
         return {
         title: isCurrentUser? "Profile": "About",
-        headerRight: isCurrentUser? <HeaderRightComponent/> : ""
+        headerRight: isCurrentUser? <HeaderRightComponent navigation={props.navigation}/> : ""
     }}
 
     render(){
@@ -31,7 +31,7 @@ class ProfileDetailsScreen extends React.Component{
     }
 }
 
-const HeaderRightComponent = ()=>{
+const HeaderRightComponent = ({navigation})=>{
     return (<TouchableOpacity style={{
         marginRight: 10,
         fontSize: AppStyles.sizes.defaultTextSize, 
