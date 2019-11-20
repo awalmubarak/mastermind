@@ -89,7 +89,7 @@ const handleEmailAuth = async (values, action, message, callback, onError)=>{
              results = await firebase.auth().createUserWithEmailAndPassword(values.email, values.password)
         }
         
-        navigateAfterAuth(callback)
+        await navigateAfterAuth(callback)
         DropDownHolder.dropDown.alertWithType('success', 'Success', message);
 
     } catch (error) {

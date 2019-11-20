@@ -2,12 +2,14 @@ import React from 'react'
 import { StyleSheet, View, Text, Image } from 'react-native'
 import AppStyles from '../commons/AppStyles'
 
-const GroupItem = ()=>{
+const GroupItem = ({item})=>{
+    const group = item.data()
+        
 return <View style={styles.cardContainer}>
         <View style={styles.groupContainer}>
-        <Text style={styles.groupTitle} numberOfLines={1}>Groups Masters A </Text>
+        <Text style={styles.groupTitle} numberOfLines={1}>{group.title} </Text>
         <View style={styles.groupDetailsContainer}>
-            <Text style={styles.groupDetailsText}><Text>Facilitator: </Text>Frederick Bans Gondita</Text>
+            <Text style={styles.groupDetailsText}><Text>Facilitator: </Text>{group.creator.name}</Text>
             <View style={styles.groupNumberContainer}>
                 <Text style={styles.groupNumber}>25</Text>
                 <Image source={require('../assets/group.png')} style={styles.groupIcon}/>
