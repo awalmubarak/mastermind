@@ -12,7 +12,7 @@ const configureGoogleSignIn = async()=>{
 }
 
 const AuthLoadingScreen =({navigation}) =>{
-  const {setUser} = useContext(UserContext)
+  const {setUser, setProfile, profile} = useContext(UserContext)
  
   
   // Handle user state changes
@@ -26,8 +26,10 @@ const AuthLoadingScreen =({navigation}) =>{
     const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
     const currentUser = auth().currentUser;
     if(currentUser){
-      setUser(currentUser)
-      navigateAfterAuth();
+      navigateAfterAuth((user, userProfile)=>{
+        setUser(user)
+        setProfile({...profile, ...userProfile, email: user.email})
+    })
     }else{
       navigation.navigate(currentUser? "App": "Home")
     }

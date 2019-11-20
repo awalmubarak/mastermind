@@ -1,9 +1,12 @@
 import React from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView, Dimensions } from 'react-native'
 import HeadedText from '../components/HeadedText'
 import AppStyles from '../commons/AppStyles'
+import { UserContext } from '../contexts/UserContext'
+const {width} = Dimensions.get('screen')
 
 class ProfileDetailsScreen extends React.Component{
+    static contextType = UserContext
     constructor(props){
         super(props)
     }
@@ -13,19 +16,22 @@ class ProfileDetailsScreen extends React.Component{
         console.log(isCurrentUser);
         return {
         title: isCurrentUser? "Profile": "About",
-        headerRight: isCurrentUser? <HeaderRightComponent navigation={props.navigation}/> : ""
+        headerRight: isCurrentUser? <HeaderRightComponent navigation={props.navigation}/> : "no"
     }}
 
     render(){
+        const {profile} = this.context
+
         return <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
                     <View style={styles.imageContainer}>
-                        <Image  style={styles.profileImage} source={require('../assets/profile.png')}/>
+                        <Image  style={styles.profileImage} source={profile.avatar} />
                     </View>
-                    <HeadedText heading="Name" body="James Outsider"/>
-                    <HeadedText heading="Bio" body="I am trying to make a button appear in headerRight of the header bar in a React Navigation screen, but I cant seem to get it to work."/>
-                    <HeadedText heading="LinkedIn URL" body="https://linkedin.com/react-navigation/"/>
-                    <HeadedText heading="Twitter URL" body="https://twitter.com/react-navigation/"/>
-                    <HeadedText heading="Facebook URL URL" body="https://facebook.com/react-navigation/" style={{marginBottom: 60}}/>
+                    <HeadedText heading="Name" body={profile.name}/>
+                    <HeadedText heading="Email" body={profile.email}/>
+                    <HeadedText heading="Bio" body={profile.bio}/>
+                    <HeadedText heading="LinkedIn URL" body={profile.linkedin? profile.linkedin: "Not provided"}/>
+                    <HeadedText heading="Twitter URL" body={profile.twitter? profile.twitter: "Not provided"}/>
+                    <HeadedText heading="Facebook URL URL" body={profile.facebook? profile.facebook: "Not provided"} style={{marginBottom: 60}}/>
                     
                 </ScrollView>
     }
@@ -53,16 +59,16 @@ const styles = StyleSheet.create({
     imageContainer: {
         justifyContent: "center",
         alignItems: "center",
-        height: 150,
-        borderWidth: 1,
-        borderColor: AppStyles.colors.primary,
+        height: width - 40,
         marginVertical: 30,
     },
     profileImage:{
         width: "100%",
         height: "100%",
         justifyContent: "center",
-        alignItems: "center"
+        alignItems: "center",
+        borderRadius: 50
+
     }
     
 })

@@ -14,7 +14,7 @@ import { UserContext } from '../contexts/UserContext'
 
 const RegisterScreen = ({navigation})=>{
     const [isLoading, setIsLoading] = useState(false)
-    const {setUser} = useContext(UserContext)
+    const {setUser, profile, setProfile} = useContext(UserContext)
 
     return <SafeAreaView style={styles.container}>
         <StatusBar backgroundColor="#067b7a" barStyle="light-content" />        
@@ -27,8 +27,13 @@ const RegisterScreen = ({navigation})=>{
             <View style={styles.formContainer}>
                 <Formik
                     initialValues={{email: "", password:""}}
-                    onSubmit={values => 
-                        handleEmailAuth(values, "sign up", setIsLoading, 'Your Account has been created successfully')
+                    onSubmit={values =>{
+                        setIsLoading(true)
+                        handleEmailAuth(values, "sign up", 'Your Account has been created successfully', (user, userProfile)=>{
+                            setUser(user)
+                            setProfile({...profile, ...userProfile, email: user.email})
+                            setIsLoading(false)
+                        }, ()=>setIsLoading(false))}
                     }
                     validationSchema={UserSchema}
                 >
@@ -60,7 +65,11 @@ const RegisterScreen = ({navigation})=>{
             
             <GoogleAction actionText="Sign In" actionMessage="Already Have An Account?" googleAction={()=>{
                 setIsLoading(true)
-                handleGoogleLogin(setUser)
+                handleGoogleLogin((user, userProfile)=>{
+                    setUser(user)
+                    setProfile({...profile, ...userProfile, email: user.email})
+                    setIsLoading(false)
+                }, ()=>setIsLoading(false))
                 }} linkAction={()=>navigation.navigate("Login")}/>
         </ScrollView>
         <Loader visible={isLoading} message="Creating Account..."/>

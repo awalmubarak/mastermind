@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState} from "react";
 import {
   View,
   Text,
@@ -9,16 +9,19 @@ import {
 } from "react-native";
 import AppStyles from "../commons/AppStyles";
 import { signOut } from '../firebase/FirebaseAuth'
+import { withUserHOC } from "../contexts/UserContext";
+import Loader from "./loader";
 
-export default DrawerSidebar = ({navigation})=> {
-
+const DrawerSidebar = ({navigation, context})=> {
+    const [isLoading, setIsLoading] = useState(false)
+    const {profile, setProfile} = context
     return (
       <View style={styles.container}>
         <View style={styles.containertopRow}>
           <TouchableOpacity onPress={()=>navigation.navigate("ProfileDetails")}>
             <Image
                 style={styles.imageTopRow}
-                source={require('../assets/user-white.png')}
+                source={profile.avatar}
             />
           </TouchableOpacity>
         </View>
@@ -54,7 +57,13 @@ export default DrawerSidebar = ({navigation})=> {
 
         <View style={styles.containerFooter}>
         <TouchableOpacity
-            onPress={signOut}
+            onPress={()=>{
+              setIsLoading(true)
+              signOut(()=>{
+                setProfile({name:"", bio:"", linkedin:"", twitter:"", facebook:"", avatar:{ uri: null }})
+              }, ()=>setIsLoading(false))
+              
+            }}
             style={styles.containerBottomItem}
           >
             <View style={styles.button}>
@@ -62,6 +71,7 @@ export default DrawerSidebar = ({navigation})=> {
             </View>
           </TouchableOpacity>
         </View>
+        <Loader message="Signing Out..." visible={isLoading}/>
       </View>
     );
   }
@@ -134,3 +144,5 @@ const styles = StyleSheet.create({
       marginBottom: 20
   }
 });
+
+export default withUserHOC(DrawerSidebar)

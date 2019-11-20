@@ -5,18 +5,19 @@ import firestore from '@react-native-firebase/firestore';
 import NavigationService from '../navigation/NavigationService';
 
 
-const handleGoogleLogin = async(setUser)=>{
+const handleGoogleLogin = async(callback, onError)=>{
 
     try {
         const { accessToken, idToken } = await GoogleSignin.signIn();
         const credential = firebase.auth.GoogleAuthProvider.credential(idToken, accessToken);
         const results = await firebase.auth().signInWithCredential(credential);
-        setUser(results.user)
-        navigateAfterAuth()
+        navigateAfterAuth(callback)
         DropDownHolder.dropDown.alertWithType('success', 'Success', 'Sign In Successful');
 
     } catch (error) {
-        console.log(error);
+        
+        DropDownHolder.dropDown.alertWithType('error', 'Error', error.message);
+        onError()
     }
 }
 
@@ -25,7 +26,7 @@ const getCurrentUser = async()=>{
     return currentUser;
 } 
 
-const signOut= async(setIsLoading)=>{
+const signOut= async(callback, onError)=>{
     try {
         const currentUser = await GoogleSignin.getCurrentUser();
         if(currentUser){
@@ -37,14 +38,13 @@ const signOut= async(setIsLoading)=>{
         DropDownHolder.dropDown.alertWithType('success', 'Success', "Sign Out Successful");
 
     } catch (error) {
+        onError()
         DropDownHolder.dropDown.alertWithType('error', 'Error', error.message);
-        if(setIsLoading){
-            setIsLoading(false)
-        }
     }
+    callback()
   }
 
-const navigateAfterAuth = async()=>{
+const navigateAfterAuth = async(callback)=>{
     try {
         const user = firebase.auth().currentUser;
         const results = await firestore()
@@ -52,8 +52,10 @@ const navigateAfterAuth = async()=>{
             .doc(user.uid)
             .get()
         if(results.data()){
+            callback && callback(user, results.data())
             NavigationService.navigate("App")
         }else{
+            callback(user, {})
             NavigationService.navigate("CreateProfile")
         }
         
@@ -69,7 +71,6 @@ const createUserProfile = async(profile, callback)=>{
             .collection('users')
             .doc(user.uid)
             .set(profile)
-        console.log(results);
         callback()
         
     } catch (error) {
@@ -79,8 +80,7 @@ const createUserProfile = async(profile, callback)=>{
 }
 
 
-const handleEmailAuth = async (values, action, setIsLoading, message, setUser)=>{  
-    setIsLoading(true)
+const handleEmailAuth = async (values, action, message, callback, onError)=>{  
     try {
         let results;
         if(action==="sign in"){
@@ -88,17 +88,14 @@ const handleEmailAuth = async (values, action, setIsLoading, message, setUser)=>
         }else{
              results = await firebase.auth().createUserWithEmailAndPassword(values.email, values.password)
         }
-        console.log("Email", results.user);
         
-        navigateAfterAuth()
+        navigateAfterAuth(callback)
         DropDownHolder.dropDown.alertWithType('success', 'Success', message);
 
     } catch (error) {
-        console.log(error.code);
         const message = getAuthErrorMessage(error.code) || error.message
         DropDownHolder.dropDown.alertWithType('error', 'Error', message, {}, 7000);
-    }finally{
-        setIsLoading(false)
+        onError()
     }
     // alert(JSON.stringify(values))    
 }
