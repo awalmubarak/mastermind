@@ -3,28 +3,27 @@ import { StyleSheet, View, Text, FlatList, TouchableOpacity, Image } from 'react
 import { ListItem } from 'react-native-elements'
 import AppStyles from '../commons/AppStyles'
 
-const renderHeaderComponent = ()=>{
+const renderHeaderComponent = (groupData)=>{
     return <View style={styles.container}>
-    <Text style={styles.groupTitle}>Success Alliance CEOs Group</Text>
+    <Text style={styles.groupTitle}>{groupData.title}</Text>
     <View style={styles.headedTextContainer}>
         <Text style={styles.heading}>About</Text>
-        <Text style={styles.body}>This is a description about the group,
-             we are very well into tihs group and we want to make it big.  </Text>
+        <Text style={styles.body}>{groupData.description} </Text>
     </View> 
 
     <View style={styles.headedTextContainer}>
         <Text style={styles.heading}>Niche</Text>
-        <Text style={styles.body}>Accounting </Text>
+        <Text style={styles.body}>{groupData.niche}</Text>
     </View> 
 
     <View style={styles.headedTextContainer}>
         <Text style={styles.heading}>Experince Level</Text>
-        <Text style={styles.body}>Newbies</Text>
+        <Text style={styles.body}>{groupData.experience}</Text>
     </View>
 
     <View style={styles.headedTextContainer}>
         <Text style={styles.heading}>Creator</Text>
-        <Text style={styles.body}>Sir Larbie Jonas</Text>
+        <Text style={styles.body}>{groupData.creator.name}</Text>
     </View> 
 
       <View style={styles.headedTextContainer}>
@@ -35,7 +34,9 @@ const renderHeaderComponent = ()=>{
 </View>     
 }
 
-const GroupDetailsScreen = (props)=>{
+const GroupDetailsScreen = ({navigation})=>{
+    const group = navigation.getParam('group', null);
+    const groupData = group.data()
 
     return <View style={styles.container}>
     
@@ -43,7 +44,7 @@ const GroupDetailsScreen = (props)=>{
         showsVerticalScrollIndicator={false}
         data={["Bob", "Samuel Allotey", "Henry Say", "Donald Trump", "Charles Memphis", "Brains Goddon", "Samuel Allotey", "Henry Say", "Donald Trump", "Charles Memphis", "Brains Goddon","Samuel Allotey", "Henry Say", "Donald Trump", "Charles Memphis", "Brains Goddon","Samuel Allotey", "Henry Say", "Donald Trump", "Charles Memphis", "Brains Goddon","Samuel Allotey", "Henry Say", "Donald Trump", "Charles Memphis", "Brains Goddon","Samuel Allotey", "Henry Say", "Donald Trump", "Charles Memphis", "Brains Goddon","Samuel Allotey", "Henry Say", "Donald Trump", "Charles Memphis", "Brains Goddon"]}   
         keyExtractor={(item, index)=>index.toString()}  
-        ListHeaderComponent={renderHeaderComponent()}   
+        ListHeaderComponent={renderHeaderComponent(groupData)}   
         renderItem={({item})=>(<TouchableOpacity onPress={()=>props.navigation.navigate("ProfileDetails", {isCurrentUser: false})}>
             <ListItem
             title={item}

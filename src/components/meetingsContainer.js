@@ -1,23 +1,39 @@
-import React, {useState} from 'react'
-import { StyleSheet, View, Text, Image, TouchableOpacity, FlatList, ScrollView, TextInput } from 'react-native'
+import React, {useState, useEffect} from 'react'
+import { StyleSheet, View, Text, Image, TouchableOpacity, FlatList, RefreshControl } from 'react-native'
 import MeetingItem from './meetingItem'
 import { Header } from 'react-native-elements';
 import moment from "moment"
 import CreateMeetingModal from './createMeetingModal';
 import AppStyles from '../commons/AppStyles';
+import Loader from '../components/loader'
+import { createNewMeeting, GetAllMeetings } from '../firebase/MeetingsApi';
+import { withUserHOC } from '../contexts/UserContext';
 
 
 
-const MeetingsContainer = ({navigation, data, isHistory})=>{
+
+
+const MeetingsContainer = ({navigation, isHistory, context})=>{
     const [modalVisible, setModalVisible] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
+    const [title, setTitle] = useState("")
+    const [titleError, setTitleError] = useState(null)
+    const [meetings, setMeetings] = useState([])
+    const [refreshing, setRefreshing] = useState(false)
     const [dateTime, setDateTime] = useState({
         show: false,
         date: moment().format("D MMM YYYY"),
         time: moment().format("HH:mm"),
         mode: "date"
     })
+    const {profile, user} = context
+
+    const group = navigation.getParam("group", null);   
+    const groupData = group.data() 
+    
+
     const renderMeetingItem = ({item})=>(
-        <TouchableOpacity onPress={()=>navigation.navigate("Chat")}>
+        <TouchableOpacity onPress={()=>navigation.navigate("Chat", {meeting:item,group})}>
             <MeetingItem item={item} isHistory={isHistory? true: false}/>
         </TouchableOpacity>
     )
@@ -42,57 +58,104 @@ const MeetingsContainer = ({navigation, data, isHistory})=>{
     const showPicker = (mode)=>{
         setDateTime({...dateTime, mode, show: true})
     }
+
+    const onRefresh = () =>{
+        async function getUserMeetings(){
+            setRefreshing(true)
+            const userMeetings = await GetAllMeetings()
+            setMeetings(userMeetings)
+            setRefreshing(false)            
+        }
+        getUserMeetings()
+    }
     
-return <View style={styles.container}>
-    <Header
-    barStyle="light-content"
-    centerComponent={(<TouchableOpacity style={{
-            fontSize: 15, 
-            borderColor: "white", 
-            borderWidth: 1,
-            borderRadius: 4,
-            padding: 4
-        }} onPress={()=>setModalVisible(!modalVisible)}>
-            <Text style={{color: "white"}}>Create Meeting</Text>
-        </TouchableOpacity>)}
-        containerStyle={{
-            backgroundColor: AppStyles.colors.primary
-          }}
-        />
-    <View style={styles.cardContainer}>
-        <CreateMeetingModal
-            isVisible={modalVisible}
-            date={dateTime.date}
-            time={dateTime.time}
-            createMeeting={()=>setModalVisible(false)}
-            cancel={()=>setModalVisible(false)}
-            mode={dateTime.mode}
-            showPicker={showPicker}
-            setDate={setDate}
-            show={dateTime.show}
-        />
-        <View style={styles.groupContainer}>
-            <TouchableOpacity onPress={()=>{navigation.navigate("GroupDetails")}}>
-                <Text style={styles.groupTitle} numberOfLines={1}>Groups Masters A </Text>
-            </TouchableOpacity>
-        <View style={styles.groupDetailsContainer}>
-            <Text style={styles.groupDetailsText}><Text>Facilitator: </Text>Frederick Bans Gondita</Text>
-            <View style={styles.groupNumberContainer}>
-                <Text style={styles.groupNumber}>25</Text>
-                <Image source={require('../assets/group-white.png')} style={styles.groupIcon}/>
+    useEffect(() => {
+        async function getUserMeetings(){
+            const userMeetings = await GetAllMeetings()
+            setMeetings(userMeetings)
+            setIsLoading(false)            
+        }
+        getUserMeetings()
+        return () => {
+        };
+    }, [])
+
+
+    return <View style={styles.container}>
+        {(user.uid===groupData.creator.id) && <Header
+        barStyle="light-content"
+        centerComponent={(<TouchableOpacity style={{
+                fontSize: 15, 
+                borderColor: "white", 
+                borderWidth: 1,
+                borderRadius: 4,
+                padding: 4
+            }} onPress={()=>setModalVisible(!modalVisible)}>
+                <Text style={{color: "white"}}>Create Meeting</Text>
+            </TouchableOpacity>)}
+            containerStyle={{
+                backgroundColor: AppStyles.colors.primary
+            }}
+            />}
+        <View style={styles.cardContainer}>
+            <CreateMeetingModal
+                isVisible={modalVisible}
+                date={dateTime.date}
+                time={dateTime.time}
+                createMeeting={()=>{
+                    if(title.trim().length===0){
+                        setTitleError(true)
+                        return;
+                    }else{
+                        setTitleError(false)
+                    }
+                    setModalVisible(false)
+                    setIsLoading(true)
+                    createNewMeeting({title: title, date: dateTime.date, time: dateTime.time, createdAt: moment().unix(), creator: {name:profile.name, id:user.uid}, status:"pending"}, ()=>{
+                        setIsLoading(false)
+                    })
+                }}
+                cancel={()=>setModalVisible(false)}
+                mode={dateTime.mode}
+                showPicker={showPicker}
+                setDate={setDate}
+                show={dateTime.show}
+                setTitle={(text)=>{
+                    if(text.trim().length===0){
+                        setTitleError(true)
+                    }
+                    setTitleError(false)
+                    setTitle(text)
+                    
+                }}
+                titleError={titleError}
+            />
+            <View style={styles.groupContainer}>
+                <TouchableOpacity onPress={()=>{navigation.navigate("GroupDetails", {group})}}>
+                    <Text style={styles.groupTitle} numberOfLines={1}>{groupData.title}</Text>
+                </TouchableOpacity>
+            <View style={styles.groupDetailsContainer}>
+                <Text style={styles.groupDetailsText}><Text>Facilitator: </Text>{groupData.creator.name}</Text>
+                <View style={styles.groupNumberContainer}>
+                    <Text style={styles.groupNumber}>25</Text>
+                    <Image source={require('../assets/group-white.png')} style={styles.groupIcon}/>
+                </View>
+            </View>
             </View>
         </View>
-        </View>
+        <FlatList 
+                contentContainerStyle={meetings.length === 0 && styles.centerEmptySet}
+                data={meetings}
+                renderItem={renderMeetingItem}
+                keyExtractor={(item, index) => index.toString()}
+                ListFooterComponent={<View style={{marginTop: 100}}/>}
+                showsVerticalScrollIndicator={false}
+                ListEmptyComponent={<NoMeetingsComponent/>}
+                refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}
+            />  
+            
+            <Loader visible={isLoading} message="Creating meeting..."/>
     </View>
-    <FlatList 
-            data={[1,2,3,4,5,6,7,8,9,11,10,12,13,14,15,16,17,18]}
-            renderItem={renderMeetingItem}
-            keyExtractor={item => item.toString()}
-            ListFooterComponent={<View style={{marginTop: 100}}/>}
-            showsVerticalScrollIndicator={false}
-        />  
-        
-</View>
 }
 
 MeetingsContainer.navigationOptions = ()=>({
@@ -108,9 +171,20 @@ MeetingsContainer.navigationOptions = ()=>({
     </TouchableOpacity>)
 })
 
+const NoMeetingsComponent = ()=>{
+    return <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
+    <Text style={{fontSize: 18, opacity: 0.5, textAlign: "center"}}>You don't have any meetings yet.</Text>
+</View>
+}
+
 const styles = StyleSheet.create({
     container:{
         flex: 1
+    },
+    centerEmptySet: { 
+        justifyContent: 'center', 
+        alignItems: 'center',
+         height: '100%' 
     },
     headerRight:{
         marginRight: 10,
@@ -160,4 +234,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default MeetingsContainer;
+export default withUserHOC(MeetingsContainer);

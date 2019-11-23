@@ -7,13 +7,14 @@ import moment from 'moment';
 import AppStyles from '../commons/AppStyles';
 
 
-const CreateMeetingModal = ({isVisible, date, time, createMeeting,cancel, mode, showPicker, setDate, show})=>{
+const CreateMeetingModal = ({isVisible, date, time, createMeeting,cancel, mode, showPicker, setDate, show, titleError, setTitle})=>{
     return <Modal isVisible={isVisible} avoidKeyboard={false}>
     <View style={styles.modalContainer}>
           <View style={styles.modalContentContainer}>
               <ScrollView showsVerticalScrollIndicator={false}>
             <Text style={styles.itemLabel}>Meeting Agenda</Text>
-              <TextInput style={styles.selectDate} placeholder="Agenda" multiline/>
+              <TextInput style={styles.selectDate} placeholder="Agenda" multiline onChangeText={setTitle}/>
+              {titleError && <Text style={{color: "red"}}> Please Enter a title for your meeting</Text>}
               <TouchableOpacity onPress={()=>showPicker('date')}>
                 <Text style={styles.itemLabel}>Meeting Date</Text>
                 <Text style={styles.selectDate}>{date}</Text>

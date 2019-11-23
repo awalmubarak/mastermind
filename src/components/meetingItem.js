@@ -2,7 +2,8 @@ import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import AppStyles from '../commons/AppStyles'
 
-const MeetingItem = ({navigation, isHistory})=>{
+const MeetingItem = ({navigation, isHistory, item})=>{
+    const meeting = item.data()
     return <View style={{
         flexDirection: "row",
         height: 70,
@@ -28,7 +29,7 @@ const MeetingItem = ({navigation, isHistory})=>{
             textAlign: "center",
             fontSize:19,
             color: isHistory?"#242424": "white",
-    }}>13th Oct 2017</Text>
+    }}>{meeting.date}</Text>
         </View>
 
         <View style={{
@@ -42,7 +43,7 @@ const MeetingItem = ({navigation, isHistory})=>{
         <Text style={{
         textAlign: "center",
         fontSize: 16
-    }} numberOfLines={2}>Second Meeting of the month</Text>
+    }} numberOfLines={2}>{meeting.title}</Text>
         </View>
 
     </View>
