@@ -6,7 +6,7 @@ import moment from "moment"
 import CreateMeetingModal from './createMeetingModal';
 import AppStyles from '../commons/AppStyles';
 import Loader from '../components/loader'
-import { createNewMeeting, GetAllMeetings } from '../firebase/MeetingsApi';
+import { createNewMeeting, getAllGroupMeetings } from '../firebase/MeetingsApi';
 import { withUserHOC } from '../contexts/UserContext';
 import firestore from '@react-native-firebase/firestore';
 
@@ -59,7 +59,7 @@ const MeetingsContainer = ({navigation, isHistory, context})=>{
     const onRefresh = () =>{
         async function getUserMeetings(){
             setRefreshing(true)
-            const userMeetings = await GetAllMeetings()
+            const userMeetings = await getAllGroupMeetings(group)
             setMeetings(userMeetings)
             setRefreshing(false)            
         }
@@ -68,7 +68,9 @@ const MeetingsContainer = ({navigation, isHistory, context})=>{
 
     useEffect(() => {
         const unsubscribe = firestore()
-          .collection('meetings')
+            .collection('group_meetings')
+            .doc(group.id)
+            .collection("meetings")
           .orderBy('createdAt', 'desc')
           .onSnapshot((querySnapshot) => {
             const userMeetings = querySnapshot.docs.map((documentSnapshot) => {
@@ -136,7 +138,7 @@ const MeetingsContainer = ({navigation, isHistory, context})=>{
                     }
                     setModalVisible(false)
                     setIsLoading(true)
-                    createNewMeeting({title: title, date: dateTime.date, time: dateTime.time, createdAt: moment().unix(), creator: {name:profile.name, id:user.uid}, status:"pending"}, ()=>{
+                    createNewMeeting({title: title, date: dateTime.date, time: dateTime.time, createdAt: moment().unix(), creator: {name:profile.name, id:user.uid}, status:"pending"},group.id, ()=>{
                         setIsLoading(false)
                     })
                 }}

@@ -2,10 +2,12 @@ import { DropDownHolder } from '../commons/DropDownHolder';
 import firestore from '@react-native-firebase/firestore';
 import NavigationService from '../navigation/NavigationService';
 
-export const createNewMeeting = async(meetingInfo, callback)=>{
+export const createNewMeeting = async(meetingInfo,groupId, callback)=>{
     try {
         const results = await firestore()
-            .collection('meetings')
+            .collection('group_meetings')
+            .doc(groupId)
+            .collection("meetings")
             .add(meetingInfo)
         // console.log(results);
         callback()
@@ -14,11 +16,13 @@ export const createNewMeeting = async(meetingInfo, callback)=>{
     }
 }
 
-export const GetAllMeetings = async()=>{
+export const getAllGroupMeetings = async(group)=>{
     let results;
     try {
         results = await firestore()
-            .collection('meetings')
+            .collection('group_meetings')
+            .doc(group.id)
+            .collection("meetings")
             .orderBy('createdAt', 'desc')
             .get()
     } catch (error) {

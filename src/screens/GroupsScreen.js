@@ -38,7 +38,7 @@ import { UserContext } from '../contexts/UserContext';
         const userGroups = querySnapshot.docs.map((documentSnapshot) => {
           return {
             ...documentSnapshot.data(),
-            key: documentSnapshot.id, // required for FlatList
+            id: documentSnapshot.id, // required for FlatList
           };
         });
  
@@ -70,7 +70,7 @@ import { UserContext } from '../contexts/UserContext';
             renderItem={({item})=> (<TouchableOpacity onPress={()=>groupItemClicked(item)}>
                 <GroupItem group={item}/>
             </TouchableOpacity>)}
-            keyExtractor={(item) => item.key}
+            keyExtractor={(item) => item.id}
             ListFooterComponent={<View style={{marginTop: 100}}/>}
             ListEmptyComponent={<NoGroupsComponent/>}
             showsVerticalScrollIndicator={false}
