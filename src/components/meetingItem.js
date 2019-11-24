@@ -30,6 +30,7 @@ const MeetingItem = ({navigation, isHistory, meeting})=>{
             fontSize:19,
             color: isHistory?"#242424": "white",
     }}>{meeting.date}</Text>
+        <Text style={{color:isHistory?"#242424": "white", borderTopColor: isHistory?"#242424": "white", borderTopWidth: 0.3, fontSize: 12.5}}>{meeting.time}</Text>
         </View>
 
         <View style={{

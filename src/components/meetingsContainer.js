@@ -96,6 +96,15 @@ const MeetingsContainer = ({navigation, isHistory, context})=>{
             </View>
         );
         }
+        const filteredMeetings = meetings.filter((value)=>{
+            if(isHistory){
+                
+                return value.status==="ended"
+            }
+            return (value.status==="pending"|| value.status==="started")
+        })
+        console.log(filteredMeetings,isHistory);
+        
 
     return <View style={styles.container}>
         {(user.uid===group.creator.id) && <Header
@@ -160,8 +169,8 @@ const MeetingsContainer = ({navigation, isHistory, context})=>{
             </View>
         </View>
         <FlatList 
-                contentContainerStyle={meetings.length === 0 && styles.centerEmptySet}
-                data={meetings}
+                contentContainerStyle={filteredMeetings.length === 0 && styles.centerEmptySet}
+                data={filteredMeetings}
                 renderItem={renderMeetingItem}
                 keyExtractor={(item, index) => item.key}
                 ListFooterComponent={<View style={{marginTop: 100}}/>}
