@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState,useEffect} from 'react'
 import {View, Text, StyleSheet, FlatList, TouchableOpacity,Alert } from 'react-native'
 import MessageItem from '../components/messageItem'
 import SendMessage from '../components/sendMesage'
@@ -25,6 +25,7 @@ const getHeaderButtonText=(status)=>{
 const ChatScreen = ({navigation, context})=>{
     const group = navigation.getParam('group', null);
     const meeting = navigation.getParam('meeting', null);
+    const isHistory = navigation.getParam('isHistory', true);
     const {user} = context
     const [chatStatus, setChatStatus] = useState({status: meeting.status, buttonText: getHeaderButtonText(meeting.status)})
     const [loader, setLoader] = useState({loading:false, message: ""})
@@ -34,21 +35,21 @@ const ChatScreen = ({navigation, context})=>{
             let alertMessage = 'Are you sure you want to START this meeting now?'
             let loaderMessage = "Starting meeting..."
             let newStatus = "started"
-            let toastMessage = "Meeting Started Successfully"
-            toggleMeeting(alertMessage,loaderMessage,newStatus,toastMessage)
+            toggleMeeting(alertMessage,loaderMessage,newStatus)
         }else{
             let alertMessage = 'Are you sure you want to END this meeting now?'
             let loaderMessage = "Ending meeting..."
             let newStatus = "ended"
-            let toastMessage = "Meeting Ended Successfully"
-            toggleMeeting(alertMessage,loaderMessage,newStatus,toastMessage)
+            toggleMeeting(alertMessage,loaderMessage,newStatus)
         }
     }
     const updateMeeting = async(status, callback, onError)=>{
         try {
             await firestore()
-            .collection('meetings')
-            .doc(meeting.key)
+            .collection('group_meetings')
+            .doc(group.id)
+            .collection("meetings")
+            .doc(meeting.id)
             .update({status})
             callback()
         } catch (error) {
@@ -56,7 +57,7 @@ const ChatScreen = ({navigation, context})=>{
         }
     }
 
-    const toggleMeeting = (alertMessage, loaderMessage, newStatus, toastMessage)=>{
+    const toggleMeeting = (alertMessage, loaderMessage, newStatus)=>{
         Alert.alert(
             '',
             alertMessage,
@@ -70,8 +71,6 @@ const ChatScreen = ({navigation, context})=>{
                 setLoader({loading: true, message: loaderMessage})
                 updateMeeting(newStatus, ()=>{
                     setLoader({loading: false, message: ""})
-                    setChatStatus({status: newStatus, buttonText: getHeaderButtonText(newStatus)})
-                    DropDownHolder.dropDown.alertWithType('success', 'Success', toastMessage);
 
                 }, (error)=>{
                     setLoader({loading: false, message: ""})
@@ -82,6 +81,27 @@ const ChatScreen = ({navigation, context})=>{
             ],
             {cancelable: true},
           );
+    }
+    
+    if (!isHistory) {
+        useEffect(() => {
+            const unsubscribe = firestore()
+                .collection('group_meetings')
+                .doc(group.id)
+                .collection("meetings")
+                .doc(meeting.id)
+              .onSnapshot((querySnapshot) => {
+                const meeting = querySnapshot.data()
+                setChatStatus({status: meeting.status, buttonText: getHeaderButtonText(meeting.status)})
+                if(meeting.status==="started"){
+                    DropDownHolder.dropDown.alertWithType('success', 'Success', 'Meeting Started');
+                }else if(meeting.status==="ended"){
+                    DropDownHolder.dropDown.alertWithType('success', 'Success', 'Meeting Ended');
+                }
+              });
+         
+              return () => unsubscribe(); // Stop listening for updates whenever the component unmounts
+          }, []);   
     }
     
     return <View style={styles.container}>
@@ -102,7 +122,7 @@ const ChatScreen = ({navigation, context})=>{
                 }}
         />}
         <View style={styles.header}>
-            <Text style={styles.headerText} numberOfLines={1}>Second Meeting of Month 5</Text>
+        <Text style={styles.headerText} numberOfLines={1}>{meeting.title}</Text>
         </View>
         <View style={styles.mainContainer}>
         <FlatList 

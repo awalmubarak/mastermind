@@ -30,7 +30,7 @@ const MeetingsContainer = ({navigation, isHistory, context})=>{
     
 
     const renderMeetingItem = ({item})=>(
-        <TouchableOpacity onPress={()=>navigation.navigate("Chat", {meeting:item,group})}>
+        <TouchableOpacity onPress={()=>navigation.navigate("Chat", {meeting:item,group,isHistory})}>
             <MeetingItem meeting={item} isHistory={isHistory? true: false}/>
         </TouchableOpacity>
     )
@@ -76,7 +76,7 @@ const MeetingsContainer = ({navigation, isHistory, context})=>{
             const userMeetings = querySnapshot.docs.map((documentSnapshot) => {
               return {
                 ...documentSnapshot.data(),
-                key: documentSnapshot.id, // required for FlatList
+                id: documentSnapshot.id, // required for FlatList
               };
             });
      
@@ -174,7 +174,7 @@ const MeetingsContainer = ({navigation, isHistory, context})=>{
                 contentContainerStyle={filteredMeetings.length === 0 && styles.centerEmptySet}
                 data={filteredMeetings}
                 renderItem={renderMeetingItem}
-                keyExtractor={(item, index) => item.key}
+                keyExtractor={(item, index) => item.id}
                 ListFooterComponent={<View style={{marginTop: 100}}/>}
                 showsVerticalScrollIndicator={false}
                 ListEmptyComponent={<NoMeetingsComponent/>}
