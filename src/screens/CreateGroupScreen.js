@@ -11,9 +11,16 @@ import { createNewGroup } from '../firebase/GroupsApi'
 import { DropDownHolder } from '../commons/DropDownHolder';
 import moment from 'moment'
 
+const getUniqueID = ()=>{
+    let firstPart = Math.floor(Math.random()*8999+1000);
+    let secondPart = (0|Math.random()*9e6).toString(36);
+    return firstPart + "-"+ secondPart
+
+}
 
 
 const CreateGroupScreen = ({context, navigation})=>{
+    
     const {profile, user} = context
     const [isLoading, setIsLoading] = useState(false)
     return <>
@@ -23,11 +30,14 @@ const CreateGroupScreen = ({context, navigation})=>{
             initialValues={{title: "", description: "", niche: "", experience: ""}}
             onSubmit={values => {
                     setIsLoading(true)
-                const newGroup = {creator:{name: profile.name, id: user.uid}, ...values, createdAt: moment().unix()}
-                createNewGroup(newGroup, ()=>{
+                const newGroup = {creator:{name: profile.name, id: user.uid}, ...values, createdAt: moment().unix(), uid: getUniqueID()}
+                createNewGroup(newGroup,user, profile, ()=>{
                     setIsLoading(false)
                     navigation.navigate("Groups", {created: 1})
                     DropDownHolder.dropDown.alertWithType('success', 'Success', "Group Created Successfully");
+                },(error)=>{
+                    setIsLoading(false)
+                    DropDownHolder.dropDown.alertWithType('error', 'Error', error.message);
                 })
             }}
             validationSchema={NewGroupSchema}

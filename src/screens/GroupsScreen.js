@@ -1,15 +1,17 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, useContext} from 'react'
 import { StyleSheet,Text, View, Image, StatusBar, TouchableOpacity, FlatList, ActivityIndicator, RefreshControl } from 'react-native'
 import GroupItem from '../components/groupItem'
-import { GetAllGroups } from '../firebase/GroupsApi'
+import { getAllUserGroups } from '../firebase/GroupsApi'
 import firestore from '@react-native-firebase/firestore';
+import { UserContext } from '../contexts/UserContext';
 
 
 
-    const GroupsScreen = ({navigation})=>{
+    const GroupsScreen = ({navigation, context})=>{
         const [groups, setGroups] = useState([])
         const [isLoading, setIsLoading] = useState(true)
         const [refreshing, setRefreshing] = useState(false)
+        const {user} = useContext(UserContext)
 
         const groupItemClicked = (item)=>{
             navigation.navigate('MeetingsTab', {group: item});
@@ -18,7 +20,7 @@ import firestore from '@react-native-firebase/firestore';
     const onRefresh = ()=>{
         setRefreshing(true)
         async function getUserGroups(){
-            const userGroups = await GetAllGroups()
+            const userGroups = await getAllUserGroups(user)
             setGroups(userGroups)
             setRefreshing(false)            
         }
@@ -28,7 +30,9 @@ import firestore from '@react-native-firebase/firestore';
 
   useEffect(() => {
     const unsubscribe = firestore()
-      .collection('groups')
+      .collection('user_groups')
+      .doc(user.uid)
+      .collection("groups")
       .orderBy('createdAt', 'desc')
       .onSnapshot((querySnapshot) => {
         const userGroups = querySnapshot.docs.map((documentSnapshot) => {

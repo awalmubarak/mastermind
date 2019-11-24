@@ -36,7 +36,6 @@ const renderHeaderComponent = (groupData)=>{
 
 const GroupDetailsScreen = ({navigation})=>{
     const group = navigation.getParam('group', null);
-    const groupData = group.data()
 
     return <View style={styles.container}>
     
@@ -44,7 +43,7 @@ const GroupDetailsScreen = ({navigation})=>{
         showsVerticalScrollIndicator={false}
         data={["Bob", "Samuel Allotey", "Henry Say", "Donald Trump", "Charles Memphis", "Brains Goddon", "Samuel Allotey", "Henry Say", "Donald Trump", "Charles Memphis", "Brains Goddon","Samuel Allotey", "Henry Say", "Donald Trump", "Charles Memphis", "Brains Goddon","Samuel Allotey", "Henry Say", "Donald Trump", "Charles Memphis", "Brains Goddon","Samuel Allotey", "Henry Say", "Donald Trump", "Charles Memphis", "Brains Goddon","Samuel Allotey", "Henry Say", "Donald Trump", "Charles Memphis", "Brains Goddon","Samuel Allotey", "Henry Say", "Donald Trump", "Charles Memphis", "Brains Goddon"]}   
         keyExtractor={(item, index)=>index.toString()}  
-        ListHeaderComponent={renderHeaderComponent(groupData)}   
+        ListHeaderComponent={renderHeaderComponent(group)}   
         renderItem={({item})=>(<TouchableOpacity onPress={()=>props.navigation.navigate("ProfileDetails", {isCurrentUser: false})}>
             <ListItem
             title={item}
