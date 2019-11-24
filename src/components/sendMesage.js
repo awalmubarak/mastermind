@@ -1,8 +1,9 @@
-import React from 'react'
+import React, {useState} from 'react'
 import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 
-const SendMessage = ({status})=>{
+const SendMessage = ({status,onSend})=>{
+    const [message, setMessage] = useState("")
     const meetingStarted = ()=>{
         return <View style={styles.container}>
         <TextInput 
@@ -10,8 +11,13 @@ const SendMessage = ({status})=>{
             placeholder="Say something..."
             multiline
             clearButtonMode="always"
+            onChangeText={setMessage}
+            value={message}
             />
-        <TouchableOpacity style={styles.sendButton}>
+        <TouchableOpacity style={styles.sendButton} onPress={()=>{
+            onSend(message)
+            setMessage("")
+        }}>
             <Ionicons name="md-send" size={32} color="#067b7a"/>
         </TouchableOpacity>
     </View> 

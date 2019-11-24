@@ -1,5 +1,5 @@
 import React, {useState,useEffect} from 'react'
-import {View, Text, StyleSheet, FlatList, TouchableOpacity,Alert } from 'react-native'
+import {View, Text, StyleSheet, FlatList, TouchableOpacity,Alert,ActivityIndicator, StatusBar } from 'react-native'
 import MessageItem from '../components/messageItem'
 import SendMessage from '../components/sendMesage'
 import { Header } from 'react-native-elements';
@@ -8,6 +8,8 @@ import { withUserHOC } from '../contexts/UserContext';
 import firestore from '@react-native-firebase/firestore';
 import { DropDownHolder } from '../commons/DropDownHolder';
 import Loader from '../components/loader';
+import { sendMeetingMessage } from '../firebase/ChatsApi';
+import NoItems from '../components/NoItems';
 
 
 
@@ -26,9 +28,11 @@ const ChatScreen = ({navigation, context})=>{
     const group = navigation.getParam('group', null);
     const meeting = navigation.getParam('meeting', null);
     const isHistory = navigation.getParam('isHistory', true);
-    const {user} = context
+    const {user,profile} = context
     const [chatStatus, setChatStatus] = useState({status: meeting.status, buttonText: getHeaderButtonText(meeting.status)})
     const [loader, setLoader] = useState({loading:false, message: ""})
+    const [messages, setMessages] = useState([])
+    const [isLoading, setIsLoading] = useState(true)
 
     const toggleMeetingButton = ()=>{
         if(chatStatus.status==="pending"){
@@ -83,26 +87,55 @@ const ChatScreen = ({navigation, context})=>{
           );
     }
     
-    if (!isHistory) {
         useEffect(() => {
-            const unsubscribe = firestore()
+            let unsubscribeGroup;
+            if (!isHistory) {
+             unsubscribeGroup = firestore()
                 .collection('group_meetings')
                 .doc(group.id)
                 .collection("meetings")
                 .doc(meeting.id)
-              .onSnapshot((querySnapshot) => {
-                const meeting = querySnapshot.data()
-                setChatStatus({status: meeting.status, buttonText: getHeaderButtonText(meeting.status)})
-                if(meeting.status==="started"){
-                    DropDownHolder.dropDown.alertWithType('success', 'Success', 'Meeting Started');
-                }else if(meeting.status==="ended"){
-                    DropDownHolder.dropDown.alertWithType('success', 'Success', 'Meeting Ended');
-                }
+                .onSnapshot((querySnapshot) => {
+                    const meeting = querySnapshot.data()
+                    setChatStatus({status: meeting.status, buttonText: getHeaderButtonText(meeting.status)})
+                    if(meeting.status==="started"){
+                        DropDownHolder.dropDown.alertWithType('success', 'Success', 'Meeting Started');
+                    }else if(meeting.status==="ended"){
+                        DropDownHolder.dropDown.alertWithType('success', 'Success', 'Meeting Ended');
+                    }
+              });
+
+            }
+
+              const unsubscribeMessages = firestore()
+                .collection('meeting_messages')
+                .doc(meeting.id)
+                .collection("messages")
+                .orderBy('createdAt', 'desc')
+                .onSnapshot({ includeMetadataChanges: true },(querySnapshot) => {
+                    const meetingMessages = querySnapshot.docs.map((documentSnapshot) => {
+                        console.log("from cache",  documentSnapshot.metadata.fromCache);
+                        return {
+                          ...documentSnapshot.data(),
+                          id: documentSnapshot.id, // required for FlatList
+                        };
+                      });
+               
+                      setMessages(meetingMessages)
+               
+                      if (isLoading) {
+                        setIsLoading(false);
+                      }
               });
          
-              return () => unsubscribe(); // Stop listening for updates whenever the component unmounts
+              return () => {
+                  if (unsubscribeGroup) {
+                    unsubscribeGroup() // Stop listening for updates whenever the component unmounts
+                  }
+                  unsubscribeMessages() // Stop listening for updates whenever the component unmounts
+                };
           }, []);   
-    }
+
     
     return <View style={styles.container}>
         
@@ -124,17 +157,29 @@ const ChatScreen = ({navigation, context})=>{
         <View style={styles.header}>
         <Text style={styles.headerText} numberOfLines={1}>{meeting.title}</Text>
         </View>
-        <View style={styles.mainContainer}>
-        <FlatList 
-            data={[1,2,3,4,5,6,7,8,9,11,10,12,13,14,15,16,17,18]}
-            renderItem={({item})=> (<MessageItem item={item}/>)}
-            keyExtractor={item => item.toString()}
-            ListFooterComponent={<View style={{marginBottom: 300}}/>}
-            showsVerticalScrollIndicator={false}
-        />  
+        {isLoading? 
+        <View style={{flex: 1, alignItems: "center", justifyContent: "center"}}>
+            <ActivityIndicator />
         </View>
+            : 
+        <View style={styles.mainContainer}>
+            <FlatList 
+                data={messages}
+                contentContainerStyle={messages.length === 0 && styles.centerEmptySet}
+                renderItem={({item})=> (<MessageItem message={item}/>)}
+                keyExtractor={item => item.id}
+                inverted={messages.length > 0}
+                ListEmptyComponent={<NoItems message="No Messages"/>}
+                ListHeaderComponent={<View style={{marginBottom: 250}}/>}
+                refreshing={true}
+                showsVerticalScrollIndicator={false}
+            />  
+        </View>}
+
         <View style={styles.footer}>
-            <SendMessage status={chatStatus.status}/>
+            <SendMessage status={chatStatus.status} onSend={(message)=>{
+                sendMeetingMessage(message,{name: profile.name, id: user.uid}, meeting.id)
+            }}/>
         </View>
         <Loader message={loader.message} visible={loader.loading}/>
     </View>
@@ -144,6 +189,11 @@ const styles = StyleSheet.create({
     container:{
         flex: 1,
         backgroundColor: "#f1f1f1"
+    },
+    centerEmptySet: { 
+        justifyContent: 'center', 
+        alignItems: 'center',
+         height: '100%' 
     },
     header:{
         height: 60,

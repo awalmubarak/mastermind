@@ -4,6 +4,7 @@ import GroupItem from '../components/groupItem'
 import { getAllUserGroups } from '../firebase/GroupsApi'
 import firestore from '@react-native-firebase/firestore';
 import { UserContext } from '../contexts/UserContext';
+import NoItems from '../components/NoItems';
 
 
 
@@ -72,7 +73,7 @@ import { UserContext } from '../contexts/UserContext';
             </TouchableOpacity>)}
             keyExtractor={(item) => item.id}
             ListFooterComponent={<View style={{marginTop: 100}}/>}
-            ListEmptyComponent={<NoGroupsComponent/>}
+            ListEmptyComponent={<NoItems message="You don't have any groups yet. Groups you create or Join will display here."/>}
             showsVerticalScrollIndicator={false}
             refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}
         />      
@@ -85,12 +86,6 @@ GroupsScreen.navigationOptions = ({navigation})=>({
     title: "Mastermind Groups"
     
 })
-
-const NoGroupsComponent = ()=>{
-    return <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
-    <Text style={{fontSize: 18, opacity: 0.5, textAlign: "center"}}>You don't have any groups yet. Groups you create or Join will display here.</Text>
-</View>
-}
 
 const styles = StyleSheet.create({
     container:{

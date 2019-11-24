@@ -9,12 +9,14 @@ import Loader from '../components/loader'
 import { createNewMeeting, getAllGroupMeetings } from '../firebase/MeetingsApi';
 import { withUserHOC } from '../contexts/UserContext';
 import firestore from '@react-native-firebase/firestore';
+import NoItems from './NoItems';
 
 
 
 const MeetingsContainer = ({navigation, isHistory, context})=>{
     const [modalVisible, setModalVisible] = useState(false)
-    const [isLoading, setIsLoading] = useState(true)
+    const [isLoading, setIsLoading] = useState(false)
+    const [loader, setLoader] = useState(true)
     const [title, setTitle] = useState("")
     const [titleError, setTitleError] = useState(null)
     const [meetings, setMeetings] = useState([])
@@ -82,22 +84,15 @@ const MeetingsContainer = ({navigation, isHistory, context})=>{
      
             setMeetings(userMeetings)
      
-            if (isLoading) {
-              setIsLoading(false);
+            if (loader) {
+                setLoader(false);
             }
           });
      
           return () => unsubscribe(); // Stop listening for updates whenever the component unmounts
       }, []);
 
-      if(isLoading){
-        return (
-            <View style={{flex: 1, alignItems: "center", justifyContent: "center"}}>
-                <StatusBar backgroundColor="#067b7a" barStyle="light-content" /> 
-                <ActivityIndicator />
-            </View>
-        );
-        }
+        
         const filteredMeetings = meetings.filter((value)=>{
             if(isHistory){
                 
@@ -105,7 +100,6 @@ const MeetingsContainer = ({navigation, isHistory, context})=>{
             }
             return (value.status==="pending"|| value.status==="started")
         })
-        console.log(filteredMeetings,isHistory);
         
 
     return <View style={styles.container}>
@@ -170,17 +164,22 @@ const MeetingsContainer = ({navigation, isHistory, context})=>{
             </View>
             </View>
         </View>
-        <FlatList 
-                contentContainerStyle={filteredMeetings.length === 0 && styles.centerEmptySet}
-                data={filteredMeetings}
-                renderItem={renderMeetingItem}
-                keyExtractor={(item, index) => item.id}
-                ListFooterComponent={<View style={{marginTop: 100}}/>}
-                showsVerticalScrollIndicator={false}
-                ListEmptyComponent={<NoMeetingsComponent/>}
-                refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}
-            />  
-            
+        {loader? <View style={{flex: 1, alignItems: "center", justifyContent: "center"}}>
+                <ActivityIndicator />
+            </View>: 
+             <FlatList 
+             contentContainerStyle={filteredMeetings.length === 0 && styles.centerEmptySet}
+             data={filteredMeetings}
+             renderItem={renderMeetingItem}
+             keyExtractor={(item, index) => item.id}
+             ListFooterComponent={<View style={{marginTop: 100}}/>}
+             showsVerticalScrollIndicator={false}
+             ListEmptyComponent={<NoItems message="You don't have any meetings yet."/>}
+             refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}
+         />  
+         
+            }
+       
             <Loader visible={isLoading} message="Creating meeting..."/>
     </View>
 }
@@ -188,12 +187,6 @@ const MeetingsContainer = ({navigation, isHistory, context})=>{
 MeetingsContainer.navigationOptions = ()=>({
     header: null
 })
-
-const NoMeetingsComponent = ()=>{
-    return <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
-    <Text style={{fontSize: 18, opacity: 0.5, textAlign: "center"}}>You don't have any meetings yet.</Text>
-</View>
-}
 
 const styles = StyleSheet.create({
     container:{

@@ -1,7 +1,5 @@
 import { DropDownHolder } from '../commons/DropDownHolder';
 import firestore from '@react-native-firebase/firestore';
-import NavigationService from '../navigation/NavigationService';
-
 export const createNewMeeting = async(meetingInfo,groupId, callback)=>{
     try {
         const results = await firestore()
