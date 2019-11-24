@@ -12,11 +12,9 @@ class ProfileDetailsScreen extends React.Component{
     }
 
     static navigationOptions = (props)=>{
-        const isCurrentUser = props.navigation.getParam("isCurrentUser", true);
-        console.log(isCurrentUser);
         return {
-        title: isCurrentUser? "Profile": "About",
-        headerRight: isCurrentUser? <HeaderRightComponent navigation={props.navigation}/> : "no"
+        title: "Profile",
+        headerRight: <HeaderRightComponent navigation={props.navigation}/>
     }}
 
     render(){

@@ -17,7 +17,7 @@ export const addUserToGroup= async (user,profile,group,callback,onError)=>{
      try {
         let batch =  firestore().batch()
         let userGroupsRef = firestore().collection('user_groups').doc(user.uid).collection('groups').doc(group.id)
-        let groupMembersRef = firestore().collection('groups_members').doc(group.id).collection('members').doc(user.uid)
+        let groupMembersRef = firestore().collection('group_members').doc(group.id).collection('members').doc(user.uid)
         batch.set(userGroupsRef, {title: group.title, creator: group.creator, id: group.id, createdAt: group.createdAt})
         batch.set(groupMembersRef, {name: profile.name, id: user.uid, avatar: profile.avatar})
         await batch.commit()
@@ -42,7 +42,7 @@ export const getAllUserGroups = async(user)=>{
          groups = results.docs.map((documentSnapshot) => {
             return {
                 ...documentSnapshot.data(),
-                key: documentSnapshot.id, // required for FlatList
+                id: documentSnapshot.id, // required for FlatList
             };
             });
     } catch (error) {
@@ -90,6 +90,43 @@ export const getUserGroupById = async(userId, groupId, onSuccess, onError)=>{
         }
     } catch (error) {
         onError(error)
+    }
+}
+
+
+export const getGroupById = async(groupId, onSuccess, onError)=>{
+    try {
+        const snapshot  = await firestore()
+                        .collection('groups')
+                        .doc(groupId)
+                        .get()
+        if (snapshot.exists) {
+            onSuccess({id:snapshot.id, ...snapshot.data()})
+        }else{
+            onSuccess(null)
+        }
+    } catch (error) {
+        onError(error)
+    }
+}
+
+
+export const getGroupMembers = async(groupId, onSuccess, onError)=>{
+    try {
+        const results = await firestore()
+            .collection('groups_members')
+            .doc(groupId)
+            .collection("members")
+            .get()
+        const members = results.docs.map((documentSnapshot) => {
+            return {
+                ...documentSnapshot.data(),
+                id: documentSnapshot.id, // required for FlatList
+            };
+            });
+        onSuccess(members)
+    } catch (error) {
+        onError(error) 
     }
 }
 

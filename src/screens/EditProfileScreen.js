@@ -28,7 +28,6 @@ const EditProfileScreen = ({navigation,context})=>{
             compressImageQuality: 0.7,
             includeBase64: true
           }).then(image => {
-            console.log(image);
             setProfile({...profile, avatar: {uri: `data:${image.mime};base64,${image.data}`}})
           }).catch((error)=>{
               if(error.code==="E_PERMISSION_MISSING"){

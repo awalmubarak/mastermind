@@ -1,58 +1,109 @@
-import React from 'react'
-import { StyleSheet, View, Text, FlatList, TouchableOpacity, Image } from 'react-native'
+import React,{useEffect,useState,useContext} from 'react'
+import { StyleSheet, View, Text, FlatList, TouchableOpacity, Image,ActivityIndicator,StatusBar, Clipboard } from 'react-native'
 import { ListItem } from 'react-native-elements'
 import AppStyles from '../commons/AppStyles'
+import { getGroupById,getGroupMembers } from '../firebase/GroupsApi'
+import { DropDownHolder } from '../commons/DropDownHolder'
+import { UserContext } from '../contexts/UserContext'
 
-const renderHeaderComponent = (groupData)=>{
-    return <View style={styles.container}>
-    <Text style={styles.groupTitle}>{groupData.title}</Text>
-    <View style={styles.headedTextContainer}>
-        <Text style={styles.heading}>About</Text>
-        <Text style={styles.body}>{groupData.description} </Text>
-    </View> 
 
-    <View style={styles.headedTextContainer}>
-        <Text style={styles.heading}>Niche</Text>
-        <Text style={styles.body}>{groupData.niche}</Text>
-    </View> 
-
-    <View style={styles.headedTextContainer}>
-        <Text style={styles.heading}>Experince Level</Text>
-        <Text style={styles.body}>{groupData.experience}</Text>
-    </View>
-
-    <View style={styles.headedTextContainer}>
-        <Text style={styles.heading}>Creator</Text>
-        <Text style={styles.body}>{groupData.creator.name}</Text>
-    </View> 
-
-      <View style={styles.headedTextContainer}>
-        <Text style={styles.heading}>Members</Text>
-        <Text style={styles.body}>34</Text>
-    </View> 
-    
-</View>     
-}
 
 const GroupDetailsScreen = ({navigation})=>{
-    const group = navigation.getParam('group', null);
+    const {user} = useContext(UserContext)
+    const groupInfo = navigation.getParam('group', null);
+    const [group, setGroup] = useState(groupInfo)
+    const [loading, setLoading] = useState(true)
+    const [members, setMembers] = useState([])
+
+
+    useEffect(() => {
+        const getGroupDetails = async()=>{
+            await getGroupById(group.id, (groupInfo)=>{
+                setGroup(groupInfo)
+                getGroupMembers(groupInfo.id, (groupMembers)=>{
+                    setMembers(groupMembers)
+                    setLoading(false)
+                }, (error)=>{
+                    DropDownHolder.dropDown.alertWithType('error', 'Error', error.message);  
+                })
+            },
+             (error)=>{
+                DropDownHolder.dropDown.alertWithType('error', 'Error', error.message); 
+            })
+            
+        }
+        getGroupDetails()
+        return () => {
+            
+        };
+    }, [])
+
+
+    const renderHeaderComponent = ()=>{
+
+        return <View style={styles.container}>
+        <Text style={styles.groupTitle}>{group.title}</Text>
+        {(user.uid===group.creator.id)&& <TouchableOpacity onPress={()=>{
+            Clipboard.setString(group.uid)
+            DropDownHolder.dropDown.alertWithType('success', 'Success', 'Group ID Copied!!');
+        }}>
+            <View style={styles.headedTextContainer}>
+            <Text style={[styles.heading, {color:"#4a9bff"}]}>Group ID (click to copy)</Text>
+            <Text style={[styles.body,{color:"#4a9bff"}]}>{group.uid} </Text>
+        </View>
+            </TouchableOpacity>}
+        <View style={styles.headedTextContainer}>
+            <Text style={styles.heading}>About</Text>
+            <Text style={styles.body}>{group.description} </Text>
+        </View> 
+    
+        <View style={styles.headedTextContainer}>
+            <Text style={styles.heading}>Niche</Text>
+            <Text style={styles.body}>{group.niche}</Text>
+        </View> 
+    
+        <View style={styles.headedTextContainer}>
+            <Text style={styles.heading}>Experince Level</Text>
+            <Text style={styles.body}>{group.experience}</Text>
+        </View>
+    
+        <View style={styles.headedTextContainer}>
+            <Text style={styles.heading}>Creator</Text>
+            <Text style={styles.body}>{group.creator.name}</Text>
+        </View> 
+    
+          <View style={styles.headedTextContainer}>
+            <Text style={styles.heading}>Members</Text>
+            <Text style={styles.body}>34</Text>
+        </View> 
+        
+    </View>     
+    }
+
+    if(loading){
+        return (
+            <View style={{flex: 1, alignItems: "center", justifyContent: "center"}}>
+                <StatusBar backgroundColor="#067b7a" barStyle="light-content" /> 
+                <ActivityIndicator />
+            </View>
+        );
+    }
 
     return <View style={styles.container}>
     
     <FlatList
         showsVerticalScrollIndicator={false}
-        data={["Bob", "Samuel Allotey", "Henry Say", "Donald Trump", "Charles Memphis", "Brains Goddon", "Samuel Allotey", "Henry Say", "Donald Trump", "Charles Memphis", "Brains Goddon","Samuel Allotey", "Henry Say", "Donald Trump", "Charles Memphis", "Brains Goddon","Samuel Allotey", "Henry Say", "Donald Trump", "Charles Memphis", "Brains Goddon","Samuel Allotey", "Henry Say", "Donald Trump", "Charles Memphis", "Brains Goddon","Samuel Allotey", "Henry Say", "Donald Trump", "Charles Memphis", "Brains Goddon","Samuel Allotey", "Henry Say", "Donald Trump", "Charles Memphis", "Brains Goddon"]}   
+        data={members}   
         keyExtractor={(item, index)=>index.toString()}  
-        ListHeaderComponent={renderHeaderComponent(group)}   
-        renderItem={({item})=>(<TouchableOpacity onPress={()=>props.navigation.navigate("ProfileDetails", {isCurrentUser: false})}>
+        ListHeaderComponent={renderHeaderComponent()}   
+        renderItem={({item})=>(<TouchableOpacity onPress={()=>navigation.navigate("MemberDetails", {isCurrentUser: false, user:item})}>
             <ListItem
-            title={item}
-            // leftAvatar={{source: require("../assets/user-white.png")}}
+            title={item.name}
             avatarStyle={{backgroundColor:'red' }}
             topDivider
             leftElement={<Image
                 style={{width: 34, height: 34, borderRadius: 17, backgroundColor: "#067b7a"}}
-                source={require("../assets/user-white.png")}
+                source={item.avatar}
                 />}
         />
         </TouchableOpacity>)}

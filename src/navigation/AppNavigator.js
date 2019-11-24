@@ -21,6 +21,7 @@ import GroupDetailsScreen from '../screens/GroupDetailsScreen';
 import ProfileDetailsScreen from '../screens/PofileDetailsScreen';
 import EditProfileScreen from '../screens/EditProfileScreen';
 import AuthLoadingScreen from '../screens/AuthLoadingScreen';
+import MemberDetailsScreen from '../screens/MemberDetailsScreen';
 
 
 
@@ -93,6 +94,7 @@ const AppNavigator = createStackNavigator({
     navigationOptions: {header:null}
   },
   ProfileDetails: ProfileDetailsScreen,
+  MemberDetails: MemberDetailsScreen,
   EditProfile: EditProfileScreen
 }, defaultConfigs);
 

@@ -111,4 +111,22 @@ const getAuthErrorMessage = (key)=>{
     return null;
 }
 
-export {handleGoogleLogin, getAuthErrorMessage, handleEmailAuth, navigateAfterAuth, signOut, getCurrentUser, createUserProfile}
+const getUserById = async(userId, onSuccess, onError)=>{
+    try {
+        const snapshot  = await firestore()
+                        .collection('users')
+                        .doc(userId)
+                        .get()
+        if (snapshot.exists) {
+            onSuccess({id:snapshot.id, ...snapshot.data()})
+        }else{
+            onSuccess(null)
+        }
+    } catch (error) {
+        onError(error)
+    }
+}
+
+
+
+export {handleGoogleLogin, getAuthErrorMessage, handleEmailAuth, navigateAfterAuth, signOut, getCurrentUser, createUserProfile, getUserById}
