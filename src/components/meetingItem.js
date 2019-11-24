@@ -3,6 +3,17 @@ import { View, Text, StyleSheet } from 'react-native'
 import AppStyles from '../commons/AppStyles'
 
 const MeetingItem = ({navigation, isHistory, meeting})=>{
+    let datebg = ""
+    let borderColor = "#bdbdbd"
+    if(!isHistory){
+        if(meeting.status==="started"){
+            datebg = "#30b844"
+            borderColor = "#30b844"
+        }else{
+            datebg = "#bfbfbf"
+            borderColor = AppStyles.colors.primary
+        }
+    }
      
     return <View style={{
         flexDirection: "row",
@@ -11,7 +22,7 @@ const MeetingItem = ({navigation, isHistory, meeting})=>{
         marginVertical: 10,
         marginHorizontal: 10,
         borderWidth: 1,
-        borderColor: isHistory?"#bdbdbd": AppStyles.colors.primary,
+        borderColor,
         borderRadius: 3
     }}>
         <View style={{
@@ -22,8 +33,8 @@ const MeetingItem = ({navigation, isHistory, meeting})=>{
         alignItems: "center",
         padding: 10,
         borderRightWidth: 1,
-        borderColor: isHistory?"#bdbdbd": AppStyles.colors.primary,
-        backgroundColor: isHistory?"": "#bfbfbf"
+        borderColor,
+        backgroundColor: datebg
     }}>
             <Text style={{
             textAlign: "center",
