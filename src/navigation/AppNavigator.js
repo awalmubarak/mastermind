@@ -88,7 +88,10 @@ const AppNavigator = createStackNavigator({
       title: "Group Info"
     }
   }, 
-  Chat: ChatScreen,
+  Chat: {
+    screen: ChatScreen,
+    navigationOptions: {header:null}
+  },
   ProfileDetails: ProfileDetailsScreen,
   EditProfile: EditProfileScreen
 }, defaultConfigs);

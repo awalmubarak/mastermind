@@ -1,14 +1,92 @@
 import React, {useState} from 'react'
-import {View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native'
+import {View, Text, StyleSheet, FlatList, TouchableOpacity,Alert } from 'react-native'
 import MessageItem from '../components/messageItem'
 import SendMessage from '../components/sendMesage'
 import { Header } from 'react-native-elements';
 import AppStyles from '../commons/AppStyles';
+import { withUserHOC } from '../contexts/UserContext';
+import firestore from '@react-native-firebase/firestore';
+import { DropDownHolder } from '../commons/DropDownHolder';
+import Loader from '../components/loader';
 
-const ChatScreen = ({navigation})=>{
-    const [chatStatus, setChatStatus] = useState({status: "pending", buttonText: "Start"})
+
+
+const getHeaderButtonText=(status)=>{
+    switch (status) {
+        case "pending":
+            return "Start"
+        case "started":
+            return "End"
+        default:
+            return null
+    }
+}
+
+const ChatScreen = ({navigation, context})=>{
+    const group = navigation.getParam('group', null);
+    const meeting = navigation.getParam('meeting', null);
+    const {user} = context
+    const [chatStatus, setChatStatus] = useState({status: meeting.status, buttonText: getHeaderButtonText(meeting.status)})
+    const [loader, setLoader] = useState({loading:false, message: ""})
+
+    const toggleMeetingButton = ()=>{
+        if(chatStatus.status==="pending"){
+            let alertMessage = 'Are you sure you want to START this meeting now?'
+            let loaderMessage = "Starting meeting..."
+            let newStatus = "started"
+            let toastMessage = "Meeting Started Successfully"
+            toggleMeeting(alertMessage,loaderMessage,newStatus,toastMessage)
+        }else{
+            let alertMessage = 'Are you sure you want to END this meeting now?'
+            let loaderMessage = "Ending meeting..."
+            let newStatus = "ended"
+            let toastMessage = "Meeting Ended Successfully"
+            toggleMeeting(alertMessage,loaderMessage,newStatus,toastMessage)
+        }
+    }
+    const updateMeeting = async(status, callback, onError)=>{
+        try {
+            await firestore()
+            .collection('meetings')
+            .doc(meeting.key)
+            .update({status})
+            callback()
+        } catch (error) {
+            onError(error)
+        }
+    }
+
+    const toggleMeeting = (alertMessage, loaderMessage, newStatus, toastMessage)=>{
+        Alert.alert(
+            '',
+            alertMessage,
+            [
+              {
+                text: 'Cancel',
+                onPress: ()=>console.log("Cancelled"),
+                style: 'cancel',
+              },
+              {text: 'Yes', onPress: () => {
+                setLoader({loading: true, message: loaderMessage})
+                updateMeeting(newStatus, ()=>{
+                    setLoader({loading: false, message: ""})
+                    setChatStatus({status: newStatus, buttonText: getHeaderButtonText(newStatus)})
+                    DropDownHolder.dropDown.alertWithType('success', 'Success', toastMessage);
+
+                }, (error)=>{
+                    setLoader({loading: false, message: ""})
+                    DropDownHolder.dropDown.alertWithType('error', 'Error', error.message);   
+                })
+            }
+         },
+            ],
+            {cancelable: true},
+          );
+    }
+    
     return <View style={styles.container}>
-        <Header
+        
+        {((user.uid===group.creator.id) && (chatStatus.status!=="ended")) &&<Header
             barStyle="light-content"
             centerComponent={(<TouchableOpacity style={{
                     fontSize: 15, 
@@ -16,17 +94,13 @@ const ChatScreen = ({navigation})=>{
                     borderWidth: 1,
                     borderRadius: 4,
                     padding: 4
-                }} onPress={()=>{
-                    chatStatus.status==="pending"?
-                        setChatStatus({status: "started", buttonText: "End"}): 
-                        setChatStatus({status: "pending", buttonText: "Start"})
-                }}>
+                }} onPress={toggleMeetingButton}>
                     <Text style={{color: "white"}}>{chatStatus.buttonText} Meeting</Text>
                 </TouchableOpacity>)}
                 containerStyle={{
                     backgroundColor: '#067b7a'
                 }}
-        />
+        />}
         <View style={styles.header}>
             <Text style={styles.headerText} numberOfLines={1}>Second Meeting of Month 5</Text>
         </View>
@@ -42,12 +116,9 @@ const ChatScreen = ({navigation})=>{
         <View style={styles.footer}>
             <SendMessage status={chatStatus.status}/>
         </View>
+        <Loader message={loader.message} visible={loader.loading}/>
     </View>
 }
-
-ChatScreen.navigationOptions = ()=>({
-    header:null
-})
 
 const styles = StyleSheet.create({
     container:{
@@ -80,4 +151,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default ChatScreen;
+export default withUserHOC(ChatScreen);

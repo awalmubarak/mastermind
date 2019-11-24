@@ -2,8 +2,8 @@ import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import AppStyles from '../commons/AppStyles'
 
-const MeetingItem = ({navigation, isHistory, item})=>{
-    const meeting = item.data()
+const MeetingItem = ({navigation, isHistory, meeting})=>{
+     
     return <View style={{
         flexDirection: "row",
         height: 70,

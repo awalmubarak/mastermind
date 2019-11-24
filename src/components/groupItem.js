@@ -2,8 +2,7 @@ import React from 'react'
 import { StyleSheet, View, Text, Image } from 'react-native'
 import AppStyles from '../commons/AppStyles'
 
-const GroupItem = ({item})=>{
-    const group = item.data()
+const GroupItem = ({group})=>{    
         
 return <View style={styles.cardContainer}>
         <View style={styles.groupContainer}>

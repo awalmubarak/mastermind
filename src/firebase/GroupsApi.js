@@ -15,16 +15,22 @@ export const createNewGroup = async(groupInfo, callback)=>{
 }
 
 export const GetAllGroups = async()=>{
-    let results;
+    let groups;
     try {
-        results = await firestore()
+        const results = await firestore()
             .collection('groups')
             .orderBy('createdAt', 'desc')
             .get()
+         groups = results.docs.map((documentSnapshot) => {
+            return {
+                ...documentSnapshot.data(),
+                key: documentSnapshot.id, // required for FlatList
+            };
+            });
     } catch (error) {
-        results = []
+        groups = []
         DropDownHolder.dropDown.alertWithType('error', 'Error', error.message, {});   
     }finally{
-        return results.docs
+        return groups
     }
 }

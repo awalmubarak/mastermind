@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import { StyleSheet, View, Text, Image, TouchableOpacity, FlatList, RefreshControl } from 'react-native'
+import { StyleSheet, View, Text, Image, TouchableOpacity, FlatList, RefreshControl,StatusBar,ActivityIndicator } from 'react-native'
 import MeetingItem from './meetingItem'
 import { Header } from 'react-native-elements';
 import moment from "moment"
@@ -8,14 +8,13 @@ import AppStyles from '../commons/AppStyles';
 import Loader from '../components/loader'
 import { createNewMeeting, GetAllMeetings } from '../firebase/MeetingsApi';
 import { withUserHOC } from '../contexts/UserContext';
-
-
+import firestore from '@react-native-firebase/firestore';
 
 
 
 const MeetingsContainer = ({navigation, isHistory, context})=>{
     const [modalVisible, setModalVisible] = useState(false)
-    const [isLoading, setIsLoading] = useState(false)
+    const [isLoading, setIsLoading] = useState(true)
     const [title, setTitle] = useState("")
     const [titleError, setTitleError] = useState(null)
     const [meetings, setMeetings] = useState([])
@@ -27,14 +26,12 @@ const MeetingsContainer = ({navigation, isHistory, context})=>{
         mode: "date"
     })
     const {profile, user} = context
-
     const group = navigation.getParam("group", null);   
-    const groupData = group.data() 
     
 
     const renderMeetingItem = ({item})=>(
         <TouchableOpacity onPress={()=>navigation.navigate("Chat", {meeting:item,group})}>
-            <MeetingItem item={item} isHistory={isHistory? true: false}/>
+            <MeetingItem meeting={item} isHistory={isHistory? true: false}/>
         </TouchableOpacity>
     )
 
@@ -68,21 +65,40 @@ const MeetingsContainer = ({navigation, isHistory, context})=>{
         }
         getUserMeetings()
     }
-    
-    useEffect(() => {
-        async function getUserMeetings(){
-            const userMeetings = await GetAllMeetings()
-            setMeetings(userMeetings)
-            setIsLoading(false)            
-        }
-        getUserMeetings()
-        return () => {
-        };
-    }, [])
 
+    useEffect(() => {
+        const unsubscribe = firestore()
+          .collection('meetings')
+          .orderBy('createdAt', 'desc')
+          .onSnapshot((querySnapshot) => {
+            const userMeetings = querySnapshot.docs.map((documentSnapshot) => {
+              return {
+                ...documentSnapshot.data(),
+                key: documentSnapshot.id, // required for FlatList
+              };
+            });
+     
+            setMeetings(userMeetings)
+     
+            if (isLoading) {
+              setIsLoading(false);
+            }
+          });
+     
+          return () => unsubscribe(); // Stop listening for updates whenever the component unmounts
+      }, []);
+
+      if(isLoading){
+        return (
+            <View style={{flex: 1, alignItems: "center", justifyContent: "center"}}>
+                <StatusBar backgroundColor="#067b7a" barStyle="light-content" /> 
+                <ActivityIndicator />
+            </View>
+        );
+        }
 
     return <View style={styles.container}>
-        {(user.uid===groupData.creator.id) && <Header
+        {(user.uid===group.creator.id) && <Header
         barStyle="light-content"
         centerComponent={(<TouchableOpacity style={{
                 fontSize: 15, 
@@ -132,10 +148,10 @@ const MeetingsContainer = ({navigation, isHistory, context})=>{
             />
             <View style={styles.groupContainer}>
                 <TouchableOpacity onPress={()=>{navigation.navigate("GroupDetails", {group})}}>
-                    <Text style={styles.groupTitle} numberOfLines={1}>{groupData.title}</Text>
+                    <Text style={styles.groupTitle} numberOfLines={1}>{group.title}</Text>
                 </TouchableOpacity>
             <View style={styles.groupDetailsContainer}>
-                <Text style={styles.groupDetailsText}><Text>Facilitator: </Text>{groupData.creator.name}</Text>
+                <Text style={styles.groupDetailsText}><Text>Facilitator: </Text>{group.creator.name}</Text>
                 <View style={styles.groupNumberContainer}>
                     <Text style={styles.groupNumber}>25</Text>
                     <Image source={require('../assets/group-white.png')} style={styles.groupIcon}/>
@@ -147,7 +163,7 @@ const MeetingsContainer = ({navigation, isHistory, context})=>{
                 contentContainerStyle={meetings.length === 0 && styles.centerEmptySet}
                 data={meetings}
                 renderItem={renderMeetingItem}
-                keyExtractor={(item, index) => index.toString()}
+                keyExtractor={(item, index) => item.key}
                 ListFooterComponent={<View style={{marginTop: 100}}/>}
                 showsVerticalScrollIndicator={false}
                 ListEmptyComponent={<NoMeetingsComponent/>}
@@ -159,16 +175,7 @@ const MeetingsContainer = ({navigation, isHistory, context})=>{
 }
 
 MeetingsContainer.navigationOptions = ()=>({
-    title: "",
-    headerRight: (<TouchableOpacity style={{
-        marginRight: 10,
-        fontSize: 15, 
-        borderColor: "white", 
-        borderWidth: 1,
-        padding: 4
-    }}>
-        <Text style={{color: "white"}}>Create Meeting</Text>
-    </TouchableOpacity>)
+    header: null
 })
 
 const NoMeetingsComponent = ()=>{

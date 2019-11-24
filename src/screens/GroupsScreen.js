@@ -2,6 +2,8 @@ import React, {useEffect, useState} from 'react'
 import { StyleSheet,Text, View, Image, StatusBar, TouchableOpacity, FlatList, ActivityIndicator, RefreshControl } from 'react-native'
 import GroupItem from '../components/groupItem'
 import { GetAllGroups } from '../firebase/GroupsApi'
+import firestore from '@react-native-firebase/firestore';
+
 
 
     const GroupsScreen = ({navigation})=>{
@@ -23,21 +25,29 @@ import { GetAllGroups } from '../firebase/GroupsApi'
         getUserGroups()
     }
     
-    
 
-    useEffect(() => {
-        async function getUserGroups(){
-            const userGroups = await GetAllGroups()
-            setGroups(userGroups)
-            setIsLoading(false)            
+  useEffect(() => {
+    const unsubscribe = firestore()
+      .collection('groups')
+      .orderBy('createdAt', 'desc')
+      .onSnapshot((querySnapshot) => {
+        const userGroups = querySnapshot.docs.map((documentSnapshot) => {
+          return {
+            ...documentSnapshot.data(),
+            key: documentSnapshot.id, // required for FlatList
+          };
+        });
+ 
+        setGroups(userGroups)
+ 
+        if (isLoading) {
+          setIsLoading(false);
         }
-        getUserGroups()
-
-        
-        return () => {
-            
-        };
-    }, [])
+      });
+ 
+      return () => unsubscribe(); // Stop listening for updates whenever the component unmounts
+  }, []);
+ 
 
     if(isLoading){
         return (
@@ -54,9 +64,9 @@ import { GetAllGroups } from '../firebase/GroupsApi'
         contentContainerStyle={groups.length === 0 && styles.centerEmptySet}
             data={groups}
             renderItem={({item})=> (<TouchableOpacity onPress={()=>groupItemClicked(item)}>
-                <GroupItem item={item}/>
+                <GroupItem group={item}/>
             </TouchableOpacity>)}
-            keyExtractor={(item,index) => index.toString()}
+            keyExtractor={(item) => item.key}
             ListFooterComponent={<View style={{marginTop: 100}}/>}
             ListEmptyComponent={<NoGroupsComponent/>}
             showsVerticalScrollIndicator={false}
