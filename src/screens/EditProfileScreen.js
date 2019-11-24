@@ -6,7 +6,7 @@ import AppStyles from '../commons/AppStyles'
 import { withUserHOC } from '../contexts/UserContext'
 import { UpdateProfileSchema } from '../validationSchemas/ProfileSchema'
 import Loader from '../components/loader'
-import { createUserProfile } from '../firebase/FirebaseAuth'
+import { createUserProfile, batchUpdateUserInfo } from '../firebase/FirebaseAuth'
 import { DropDownHolder } from '../commons/DropDownHolder'
 import ImagePicker from 'react-native-image-crop-picker';
 import { Formik } from 'formik'
@@ -16,8 +16,9 @@ import { Formik } from 'formik'
 
 
 const EditProfileScreen = ({navigation,context})=>{
-    const {profile, setProfile} = context
+    const {profile, setProfile, user} = context
     const [isLoading, setIsLoading] = useState(false)
+    const oldProfile = profile
 
     const selectImage = ()=>{
         ImagePicker.openPicker({
@@ -51,11 +52,20 @@ const EditProfileScreen = ({navigation,context})=>{
                     onSubmit={values => {
                         setIsLoading(true)
                         const newProfile = {...profile, ...values}
-                        createUserProfile(newProfile, ()=>{
-                            setProfile(newProfile)
-                            navigation.goBack()
-                            DropDownHolder.dropDown.alertWithType('success', 'Success', "Profile Updated Successfully");
-                        })
+                        if(oldProfile.avatar.uri!==newProfile.avatar.uri || oldProfile.name!==newProfile.name){
+                            batchUpdateUserInfo(user,newProfile, ()=>{
+                                setProfile(newProfile)
+                                navigation.goBack()
+                                DropDownHolder.dropDown.alertWithType('success', 'Success', "Profile Updated Successfully");
+                            }, (error)=>DropDownHolder.dropDown.alertWithType('error', 'Error',error.message))
+                        }else{
+                            createUserProfile(newProfile, ()=>{
+                                setProfile(newProfile)
+                                navigation.goBack()
+                                DropDownHolder.dropDown.alertWithType('success', 'Success', "Profile Updated Successfully");
+                            })
+                        }
+                        
                     }}
                     validationSchema={UpdateProfileSchema}
                 >

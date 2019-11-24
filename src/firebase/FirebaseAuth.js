@@ -3,6 +3,7 @@ import { firebase } from '@react-native-firebase/auth';
 import { DropDownHolder } from '../commons/DropDownHolder';
 import firestore from '@react-native-firebase/firestore';
 import NavigationService from '../navigation/NavigationService';
+import { getAllUserGroups } from './GroupsApi';
 
 
 const handleGoogleLogin = async(callback, onError)=>{
@@ -127,6 +128,27 @@ const getUserById = async(userId, onSuccess, onError)=>{
     }
 }
 
+const batchUpdateUserInfo = async(user, profile, onSuccess, onError)=>{
+    try {
+        const groups = await getAllUserGroups(user)
+        if(groups.length>0){
+            let batch =  firestore().batch()
+            let userRef = firestore().collection('users').doc(user.uid)
+            batch.set(userRef, profile)
+            groups.forEach(group=>{
+                let ref = firestore().collection('groups_members').doc(group.id).collection("members").doc(user.uid)
+                batch.set(ref, {name:profile.name, avatar: profile.avatar}, {merge:true})
+            })
+            await batch.commit()
+            onSuccess()
+        }else{
+            createUserProfile(profile, onSuccess)
+        }
+    } catch (error) {
+        onError(error)
+    }
+}
 
 
-export {handleGoogleLogin, getAuthErrorMessage, handleEmailAuth, navigateAfterAuth, signOut, getCurrentUser, createUserProfile, getUserById}
+
+export {handleGoogleLogin, getAuthErrorMessage, handleEmailAuth, navigateAfterAuth, signOut, getCurrentUser, createUserProfile, getUserById, batchUpdateUserInfo}
