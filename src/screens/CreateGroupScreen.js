@@ -30,7 +30,7 @@ const CreateGroupScreen = ({context, navigation})=>{
             initialValues={{title: "", description: "", niche: "", experience: ""}}
             onSubmit={values => {
                     setIsLoading(true)
-                const newGroup = {creator:{name: profile.name, id: user.uid}, ...values, createdAt: moment().unix(), uid: getUniqueID()}
+                const newGroup = {creator:{name: profile.name, id: user.uid}, ...values, createdAt: moment().unix(), uid: getUniqueID(), memberCount:0}
                 createNewGroup(newGroup,user, profile, ()=>{
                     setIsLoading(false)
                     navigation.navigate("Groups", {created: 1})

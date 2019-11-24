@@ -14,12 +14,15 @@ export const createNewGroup = async(groupInfo,user, profile, callback, onError)=
 }
 
 export const addUserToGroup= async (user,profile,group,callback,onError)=>{
+    const increment = firestore.FieldValue.increment(1)
      try {
         let batch =  firestore().batch()
         let userGroupsRef = firestore().collection('user_groups').doc(user.uid).collection('groups').doc(group.id)
         let groupMembersRef = firestore().collection('group_members').doc(group.id).collection('members').doc(user.uid)
+        let groupRef = firestore().collection('groups').doc(group.id)
         batch.set(userGroupsRef, {title: group.title, creator: group.creator, id: group.id, createdAt: group.createdAt})
         batch.set(groupMembersRef, {name: profile.name, id: user.uid, avatar: profile.avatar})
+        batch.set(groupRef, {memberCount: increment}, {merge:true})
         await batch.commit()
         if (callback) {
             callback()

@@ -10,10 +10,13 @@ import { createNewMeeting, getAllGroupMeetings } from '../firebase/MeetingsApi';
 import { withUserHOC } from '../contexts/UserContext';
 import firestore from '@react-native-firebase/firestore';
 import NoItems from './NoItems';
+import { getGroupById } from '../firebase/GroupsApi';
+import { DropDownHolder } from '../commons/DropDownHolder';
 
 
 
 const MeetingsContainer = ({navigation, isHistory, context})=>{
+    const groupInfo = navigation.getParam("group", null);   
     const [modalVisible, setModalVisible] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
     const [loader, setLoader] = useState(true)
@@ -21,6 +24,7 @@ const MeetingsContainer = ({navigation, isHistory, context})=>{
     const [titleError, setTitleError] = useState(null)
     const [meetings, setMeetings] = useState([])
     const [refreshing, setRefreshing] = useState(false)
+    const [group, setGroup] = useState(groupInfo)
     const [dateTime, setDateTime] = useState({
         show: false,
         date: moment().format("D MMM YYYY"),
@@ -28,7 +32,6 @@ const MeetingsContainer = ({navigation, isHistory, context})=>{
         mode: "date"
     })
     const {profile, user} = context
-    const group = navigation.getParam("group", null);   
     
 
     const renderMeetingItem = ({item})=>(
@@ -69,6 +72,15 @@ const MeetingsContainer = ({navigation, isHistory, context})=>{
     }
 
     useEffect(() => {
+        const getGroupInfo = async()=>{
+            await getGroupById(group.id, (group)=>{
+                setGroup(group)
+            }, (error)=>{
+                DropDownHolder.dropDown.alertWithType('error', 'Error', error.message); 
+            })
+        }
+        getGroupInfo()
+        
         const unsubscribe = firestore()
             .collection('group_meetings')
             .doc(group.id)
@@ -87,6 +99,7 @@ const MeetingsContainer = ({navigation, isHistory, context})=>{
             if (loader) {
                 setLoader(false);
             }
+
           });
      
           return () => unsubscribe(); // Stop listening for updates whenever the component unmounts
@@ -158,7 +171,7 @@ const MeetingsContainer = ({navigation, isHistory, context})=>{
             <View style={styles.groupDetailsContainer}>
                 <Text style={styles.groupDetailsText}><Text>Facilitator: </Text>{group.creator.name}</Text>
                 <View style={styles.groupNumberContainer}>
-                    <Text style={styles.groupNumber}>25</Text>
+                    <Text style={styles.groupNumber}>{group.memberCount}</Text>
                     <Image source={require('../assets/group-white.png')} style={styles.groupIcon}/>
                 </View>
             </View>
