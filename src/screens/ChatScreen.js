@@ -112,9 +112,8 @@ const ChatScreen = ({navigation, context})=>{
                 .doc(meeting.id)
                 .collection("messages")
                 .orderBy('createdAt', 'desc')
-                .onSnapshot({ includeMetadataChanges: true },(querySnapshot) => {
+                .onSnapshot((querySnapshot) => {
                     const meetingMessages = querySnapshot.docs.map((documentSnapshot) => {
-                        console.log("from cache",  documentSnapshot.metadata.fromCache);
                         return {
                           ...documentSnapshot.data(),
                           id: documentSnapshot.id, // required for FlatList

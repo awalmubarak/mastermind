@@ -1,20 +1,19 @@
 import { DropDownHolder } from '../commons/DropDownHolder';
 import firestore from '@react-native-firebase/firestore';
-import NavigationService from '../navigation/NavigationService';
 
 export const createNewGroup = async(groupInfo,user, profile, callback, onError)=>{
     try {
         const results = await firestore()
             .collection('groups')
             .add(groupInfo)
-        await addUserToGroup(user,profile,null,{...groupInfo, id: results.id},onError)
+        await addUserToGroup(user,profile,{...groupInfo, id: results.id},null,onError)
         callback()
     } catch (error) {
         onError(error)   
     }
 }
 
-export const addUserToGroup= async (user,profile,callback,group,onError)=>{
+export const addUserToGroup= async (user,profile,group,callback,onError)=>{
      try {
         let batch =  firestore().batch()
         let userGroupsRef = firestore().collection('user_groups').doc(user.uid).collection('groups').doc(group.id)
@@ -48,8 +47,52 @@ export const getAllUserGroups = async(user)=>{
             });
     } catch (error) {
         groups = []
-        DropDownHolder.dropDown.alertWithType('error', 'Error', error.message, {});   
+        DropDownHolder.dropDown.alertWithType('error', 'Error', error.message);   
     }finally{
         return groups
     }
 }
+
+
+export const getGroupByUID = async(uid, onSuccess, onError)=>{
+    try {
+        const snapshot  = await firestore()
+                .collection('groups')
+                .where('uid','==',uid)
+                .get()
+            
+        if (snapshot.empty) {
+            onSuccess(null)
+        }else{
+            snapshot.forEach(doc=>{
+                onSuccess({id:doc.id, ...doc.data()})
+            })
+        }
+    } catch (error) {
+        onError(error)
+    }
+}
+
+export const getUserGroupById = async(userId, groupId, onSuccess, onError)=>{
+    try {
+        const snapshot  = await firestore()
+                        .collection('user_groups')
+                        .doc(userId)
+                        .collection("groups")
+                        .doc(groupId)
+                        .get()
+            
+            
+        if (snapshot.exists) {
+            onSuccess({id:snapshot.id, ...snapshot.data()})
+        }else{
+            onSuccess(null)
+        }
+    } catch (error) {
+        onError(error)
+    }
+}
+
+
+
+
