@@ -7,16 +7,9 @@ import {Formik} from 'formik'
 import Loader from '../components/loader'
 import { withUserHOC } from '../contexts/UserContext'
 import { NewGroupSchema } from '../validationSchemas/GroupSchema'
-import { createNewGroup } from '../firebase/GroupsApi'
+import { createNewGroup, generateUniqueID } from '../firebase/GroupsApi'
 import { DropDownHolder } from '../commons/DropDownHolder';
 import moment from 'moment'
-
-const getUniqueID = ()=>{
-    let firstPart = Math.floor(Math.random()*8999+1000);
-    let secondPart = (0|Math.random()*9e6).toString(36);
-    return firstPart + "-"+ secondPart
-
-}
 
 
 const CreateGroupScreen = ({context, navigation})=>{
@@ -30,7 +23,7 @@ const CreateGroupScreen = ({context, navigation})=>{
             initialValues={{title: "", description: "", niche: "", experience: ""}}
             onSubmit={values => {
                     setIsLoading(true)
-                const newGroup = {creator:{name: profile.name, id: user.uid}, ...values, createdAt: moment().unix(), uid: getUniqueID(), memberCount:0}
+                const newGroup = {creator:{name: profile.name, id: user.uid}, ...values, createdAt: moment().unix(), uid: generateUniqueID(), memberCount:0}
                 createNewGroup(newGroup,user, profile, ()=>{
                     setIsLoading(false)
                     navigation.navigate("Group")

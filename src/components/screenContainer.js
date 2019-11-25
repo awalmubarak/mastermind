@@ -4,7 +4,7 @@ import AppStyles from '../commons/AppStyles'
 
 
 const ScreenContainer = ({ children, title, subTitle})=>{
-    return <ScrollView>
+    return <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.container}>
         <StatusBar backgroundColor="#067b7a" barStyle="light-content" />
         <View style={styles.headerContainer}>

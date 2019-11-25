@@ -135,6 +135,23 @@ export const getGroupMembers = async(groupId, onSuccess, onError)=>{
     }
 }
 
+export const createNewGroupID = async(groupUid, onSuccess, onError)=>{
+    try {
+        const uid = generateUniqueID()
+        await firestore().collection("groups").doc(groupUid).set({uid}, {merge:true})        
+        onSuccess(uid)
+    } catch (error) {
+        onError(error)
+    }
+}
+
+export const generateUniqueID = ()=>{
+    let firstPart = Math.floor(Math.random()*8999+1000);
+    let secondPart = (0|Math.random()*9e6).toString(36);
+    return firstPart + "-"+ secondPart
+
+}
+
 
 
 

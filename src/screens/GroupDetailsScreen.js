@@ -1,10 +1,11 @@
 import React,{useEffect,useState,useContext} from 'react'
-import { StyleSheet, View, Text, FlatList, TouchableOpacity, Image,ActivityIndicator,StatusBar, Clipboard } from 'react-native'
+import { StyleSheet, View, Text, FlatList, TouchableOpacity, Image,ActivityIndicator,StatusBar, Clipboard, Alert } from 'react-native'
 import { ListItem } from 'react-native-elements'
 import AppStyles from '../commons/AppStyles'
-import { getGroupById,getGroupMembers } from '../firebase/GroupsApi'
+import { getGroupById,getGroupMembers, createNewGroupID } from '../firebase/GroupsApi'
 import { DropDownHolder } from '../commons/DropDownHolder'
 import { UserContext } from '../contexts/UserContext'
+import Loader from '../components/loader'
 
 
 
@@ -14,6 +15,7 @@ const GroupDetailsScreen = ({navigation})=>{
     const [group, setGroup] = useState(groupInfo)
     const [loading, setLoading] = useState(true)
     const [members, setMembers] = useState([])
+    const [isLoading, setIsLoading] = useState(false)
 
 
     useEffect(() => {
@@ -41,17 +43,48 @@ const GroupDetailsScreen = ({navigation})=>{
 
     const renderHeaderComponent = ()=>{
 
+        const revokeGroupId = ()=>{
+            Alert.alert(
+                'Are you sure you want to revoke this group ID?',
+                "If you Revoke the ID, no one will be able to use it join this group. A new Group ID will be generated.",
+                [
+                  {
+                    text: 'Cancel',
+                    onPress: ()=>console.log("Cancelled"),
+                    style: 'cancel',
+                  },
+                  {text: 'Revoke ID', onPress: () => {
+                    setIsLoading(true)
+                    createNewGroupID(group.id, (uid)=>{
+                        setIsLoading(false)
+                        DropDownHolder.dropDown.alertWithType('success', 'Success', "New group ID generated successfully");
+                        setGroup({...group, uid})
+                    }, (error)=>{
+                        DropDownHolder.dropDown.alertWithType('error', 'Error', error.message);
+                    })
+                }
+             },
+                ],
+                {cancelable: true},
+              );
+        }
+
         return <View style={styles.container}>
         <Text style={styles.groupTitle}>{group.title}</Text>
-        {(user.uid===group.creator.id)&& <TouchableOpacity onPress={()=>{
+        {(user.uid===group.creator.id)&& <View style={{borderColor:"grey", borderRadius: 4, borderWidth: 1, padding: 10}}>
+            <TouchableOpacity onPress={()=>{
             Clipboard.setString(group.uid)
             DropDownHolder.dropDown.alertWithType('success', 'Success', 'Group ID Copied!!');
-        }}>
-            <View style={styles.headedTextContainer}>
-            <Text style={[styles.heading, {color:"#4a9bff"}]}>Group ID (click to copy)</Text>
-            <Text style={[styles.body,{color:"#4a9bff"}]}>{group.uid} </Text>
-        </View>
-            </TouchableOpacity>}
+            }}>
+                <View style={styles.headedTextContainer}>
+                <Text style={[styles.heading, {color:"#4a9bff"}]}>Group ID (click to copy)</Text>
+                <Text style={[styles.body,{color:"#4a9bff"}]}>{group.uid} </Text>
+                </View>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={revokeGroupId}>
+                <Text style={{color:"grey", marginTop: 5}}>Revoke group ID</Text>
+            </TouchableOpacity>
+            </View>}
         <View style={styles.headedTextContainer}>
             <Text style={styles.heading}>About</Text>
             <Text style={styles.body}>{group.description} </Text>
@@ -109,6 +142,8 @@ const GroupDetailsScreen = ({navigation})=>{
         </TouchableOpacity>)}
         ListFooterComponent={<View style={{marginBottom: 30}}/>}
     />   
+
+    <Loader message="Revoking Group ID..." visible={isLoading}/>
     
 </View>
 }

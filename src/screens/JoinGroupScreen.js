@@ -1,5 +1,5 @@
 import React, {useState,useContext,useEffect} from 'react'
-import { View, StyleSheet, Text, TouchableOpacity, ActivityIndicator, BackHandler } from 'react-native'
+import { View, StyleSheet, Text, TouchableOpacity, ActivityIndicator, ScrollView } from 'react-native'
 import ScreenContainer from '../components/screenContainer'
 import Input from '../components/input'
 import Button from '../components/button'
@@ -52,7 +52,7 @@ const JoinGroupScreen = ({navigation})=>{
         </View>
     }
     const renderStepTwo = (group)=>{
-        return <View style={styles.container}>
+        return <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
             <Text style={styles.groupTitle}>{group.title}</Text>
             <View style={styles.headedTextContainer}>
                 <Text style={styles.heading}>About</Text>
@@ -84,7 +84,7 @@ const JoinGroupScreen = ({navigation})=>{
             </TouchableOpacity> 
      
             
-        </View>
+        </ScrollView>
     }
 
     const showJoinButton = ()=>{
@@ -153,7 +153,7 @@ const styles = StyleSheet.create({
     },
     skipButton:{
         alignSelf: "center",
-        marginTop: 20
+        marginVertical: 20
     },
     existingMember: {
         fontSize: 18, 
