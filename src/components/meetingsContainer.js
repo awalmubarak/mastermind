@@ -10,13 +10,11 @@ import { createNewMeeting, getAllGroupMeetings } from '../firebase/MeetingsApi';
 import { withUserHOC } from '../contexts/UserContext';
 import firestore from '@react-native-firebase/firestore';
 import NoItems from './NoItems';
-import { getGroupById } from '../firebase/GroupsApi';
-import { DropDownHolder } from '../commons/DropDownHolder';
 
 
 
 const MeetingsContainer = ({navigation, isHistory, context})=>{
-    const groupInfo = navigation.getParam("group", null);   
+    const group = navigation.getParam("group", null);   
     const [modalVisible, setModalVisible] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
     const [loader, setLoader] = useState(true)
@@ -24,7 +22,6 @@ const MeetingsContainer = ({navigation, isHistory, context})=>{
     const [titleError, setTitleError] = useState(null)
     const [meetings, setMeetings] = useState([])
     const [refreshing, setRefreshing] = useState(false)
-    const [group, setGroup] = useState(groupInfo)
     const [dateTime, setDateTime] = useState({
         show: false,
         date: moment().format("D MMM YYYY"),
@@ -72,14 +69,6 @@ const MeetingsContainer = ({navigation, isHistory, context})=>{
     }
 
     useEffect(() => {
-        const getGroupInfo = async()=>{
-            await getGroupById(group.id, (group)=>{
-                setGroup(group)
-            }, (error)=>{
-                DropDownHolder.dropDown.alertWithType('error', 'Error', error.message); 
-            })
-        }
-        getGroupInfo()
 
         const unsubscribe = firestore()
             .collection('group_meetings')

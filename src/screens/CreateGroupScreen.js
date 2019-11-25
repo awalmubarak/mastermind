@@ -33,7 +33,7 @@ const CreateGroupScreen = ({context, navigation})=>{
                 const newGroup = {creator:{name: profile.name, id: user.uid}, ...values, createdAt: moment().unix(), uid: getUniqueID(), memberCount:0}
                 createNewGroup(newGroup,user, profile, ()=>{
                     setIsLoading(false)
-                    navigation.navigate("Groups", {created: 1})
+                    navigation.navigate("Group")
                     DropDownHolder.dropDown.alertWithType('success', 'Success', "Group Created Successfully");
                 },(error)=>{
                     setIsLoading(false)

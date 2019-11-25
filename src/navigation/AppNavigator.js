@@ -104,12 +104,17 @@ const AppNavigator = createStackNavigator({
     navigationOptions: {
       header:null
     }
+  },
+  CreateGroup:{
+    screen:CreateGroupScreen,
+    navigationOptions: {
+      header:null
+    }
   }
 }, defaultConfigs);
 
 const DrawerNavigator = createDrawerNavigator({
   Groups: AppNavigator,
-  CreateGroup: CreateGroupScreen
 }, {
   contentComponent: props=><DrawerSidebar {...props}/>
 })

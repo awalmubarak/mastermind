@@ -9,6 +9,10 @@ return <View style={styles.cardContainer}>
         <Text style={styles.groupTitle} numberOfLines={1}>{group.title} </Text>
         <View style={styles.groupDetailsContainer}>
             <Text style={styles.groupDetailsText}><Text>Facilitator: </Text>{group.creator.name}</Text>
+            <View style={styles.groupNumberContainer}>
+                <Text style={styles.groupNumber}>{group.memberCount && group.memberCount}</Text>
+                <Image source={require('../assets/group.png')} style={styles.groupIcon}/>
+            </View>
         </View>
         </View>
     </View>
@@ -35,6 +39,7 @@ const styles = StyleSheet.create({
         marginTop: 10,
     },
     groupDetailsText:{
+        flex:0.8,
         color: "#5e5e5e",
 
     },

@@ -74,7 +74,7 @@ const GroupDetailsScreen = ({navigation})=>{
     
           <View style={styles.headedTextContainer}>
             <Text style={styles.heading}>Members</Text>
-            <Text style={styles.body}>34</Text>
+            <Text style={styles.body}>{group.memberCount}</Text>
         </View> 
         
     </View>     
