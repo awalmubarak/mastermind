@@ -95,13 +95,18 @@ const AppNavigator = createStackNavigator({
   },
   ProfileDetails: ProfileDetailsScreen,
   MemberDetails: MemberDetailsScreen,
-  EditProfile: EditProfileScreen
+  EditProfile: EditProfileScreen,
+  JoinGroup: {
+    screen:JoinGroupScreen,
+    navigationOptions: {
+      header:null
+    }
+  }
 }, defaultConfigs);
 
 const DrawerNavigator = createDrawerNavigator({
   Groups: AppNavigator,
-  CreateGroup: CreateGroupScreen,
-  JoinGroup: JoinGroupScreen
+  CreateGroup: CreateGroupScreen
 }, {
   contentComponent: props=><DrawerSidebar {...props}/>
 })

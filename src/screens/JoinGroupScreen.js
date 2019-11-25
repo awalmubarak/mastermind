@@ -19,17 +19,6 @@ const JoinGroupScreen = ({navigation})=>{
     const [loader, setLoader] = useState({message:"", visible:false})
 
 
-    useEffect(() => {
-        const handler = BackHandler.addEventListener("hardwareBackPress", ()=>{
-            cleanUp()
-            navigation.navigate("Groups")
-            return true;
-        })
-        return () => {
-            handler.remove()
-        };
-    }, [])
-
 
     const renderStepOne = ()=>{
         return <View style={styles.container}>
