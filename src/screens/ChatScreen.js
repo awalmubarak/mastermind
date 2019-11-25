@@ -154,7 +154,7 @@ const ChatScreen = ({navigation, context})=>{
                 }}
         />}
         <View style={styles.header}>
-        <Text style={styles.headerText} numberOfLines={1}>{meeting.title}</Text>
+        <Text style={styles.headerText} numberOfLines={2}>{meeting.title}</Text>
         </View>
         {isLoading? 
         <View style={{flex: 1, alignItems: "center", justifyContent: "center"}}>
@@ -201,7 +201,6 @@ const styles = StyleSheet.create({
         elevation: 0.5,
         backgroundColor: AppStyles.colors.primary,
         elevation: 3,
-        alignItems: "center"
     },
     headerText:{
         marginHorizontal: 10,

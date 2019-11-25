@@ -54,13 +54,14 @@ const EditProfileScreen = ({navigation,context})=>{
                     onSubmit={values => {
                         setIsLoading(true)
                         const newProfile = {...profileInfo, ...values}
-                        if(imageChanged || oldProfile.name!==newProfile.name){
-                            batchUpdateUserInfo(user,newProfile, ()=>{
+                        const nameChanged = oldProfile.name!==newProfile.name
+                        if(imageChanged || nameChanged){
+                                batchUpdateUserInfo(user,newProfile,nameChanged, ()=>{
                                 setProfile(newProfile)
                                 navigation.goBack()
                                 DropDownHolder.dropDown.alertWithType('success', 'Success', "Profile Updated Successfully");
                             }, (error)=>DropDownHolder.dropDown.alertWithType('error', 'Error',error.message))
-                        }else{
+                        }else{                            
                             createUserProfile(newProfile, ()=>{
                                 setProfile(newProfile)
                                 navigation.goBack()
