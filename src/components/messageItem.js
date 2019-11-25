@@ -3,6 +3,8 @@ import { View, Text } from 'react-native'
 import AppStyles from '../commons/AppStyles'
 import { UserContext } from '../contexts/UserContext'
 import moment from 'moment'
+import Hyperlink from 'react-native-hyperlink'
+
 
 const renderIncomingMessage = (message)=>{
     return <View style={{
@@ -28,9 +30,12 @@ const renderIncomingMessage = (message)=>{
         borderColor: "#bdbdbd",
         borderBottomRightRadius: 10,
         borderTopRightRadius: 10,}}>
+        <Hyperlink 
+        linkStyle={ { color: '#2980b9'} }>
             <Text style={{
         fontSize: 16,
-        lineHeight: 20}}>{message.text}</Text>
+        lineHeight: 20}} selectable>{message.text}</Text>
+        </Hyperlink>
         </View>
             {message.createdAt && <Text style={{fontSize: 12, color: 'grey'}}>{moment(message.createdAt.toDate()).format("HH:mm")}</Text>}
             
@@ -55,6 +60,8 @@ const renderOutGoingMessage = (message)=>{
             flex: 0.7,
             alignItems: "flex-end"
             }}>
+            <Hyperlink 
+            linkStyle={ { color: '#2980b9'} }>
             <Text style={{
             fontSize: 16,
             padding: 5,
@@ -62,9 +69,9 @@ const renderOutGoingMessage = (message)=>{
             borderTopLeftRadius: 10,
             borderColor: message.createdAt?AppStyles.colors.primary:"#f24949",
             borderBottomLeftRadius: 10,
-            lineHeight: 20}} > {message.text}</Text>
+            lineHeight: 20}} selectable> {message.text}</Text>
+            </Hyperlink>
             {message.createdAt && <Text style={{fontSize: 12, color: 'grey'}}>{moment(message.createdAt.toDate()).format("HH:mm")}</Text>}
-            
             </View>
        </View>
     </View>

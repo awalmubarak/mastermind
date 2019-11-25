@@ -94,7 +94,12 @@ const AppNavigator = createStackNavigator({
     navigationOptions: {header:null}
   },
   ProfileDetails: ProfileDetailsScreen,
-  MemberDetails: MemberDetailsScreen,
+  MemberDetails:{
+    screen: MemberDetailsScreen,
+    navigationOptions: {
+      title: "About"
+    }
+  },
   EditProfile: {
     screen:EditProfileScreen,
     navigationOptions: {title: "Edit Profile"}

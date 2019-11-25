@@ -41,9 +41,9 @@ const MemberDetailsScreen =({navigation})=>{
                 </View>
                 <HeadedText heading="Name" body={profile.name}/>
                 <HeadedText heading="Bio" body={profile.bio}/>
-                <HeadedText heading="LinkedIn URL" body={profile.linkedin? profile.linkedin: "Not provided"}/>
-                <HeadedText heading="Twitter URL" body={profile.twitter? profile.twitter: "Not provided"}/>
-                <HeadedText heading="Facebook URL URL" body={profile.facebook? profile.facebook: "Not provided"} style={{marginBottom: 60}}/>
+                <HeadedText heading="LinkedIn URL" body={profile.linkedin? profile.linkedin: "Not provided"} selectable/>
+                <HeadedText heading="Twitter URL" body={profile.twitter? profile.twitter: "Not provided"} selectable/>
+                <HeadedText heading="Facebook URL URL" body={profile.facebook? profile.facebook: "Not provided"} style={{marginBottom: 60}} selectable/>
                 
             </ScrollView>
 }

@@ -1,11 +1,15 @@
 import React from 'react'
-import { View, StyleSheet, Text } from 'react-native'
+import { View, StyleSheet, Text,Linking } from 'react-native'
 import AppStyles from '../commons/AppStyles'
+import Hyperlink from 'react-native-hyperlink'
 
-const HeadedText = ({heading, body, style})=>{
+const HeadedText = ({heading, body, style, selectable})=>{
     return <View style={[styles.headedTextContainer, style&& style]}>
-    <Text style={styles.heading}>{heading}</Text>
-    <Text style={styles.body}>{body} </Text>
+    <Hyperlink 
+        linkStyle={ { color: '#2980b9'} }>
+        <Text style={styles.heading}>{heading}</Text>
+        <Text style={styles.body} selectable={selectable}>{body} </Text>
+    </Hyperlink>
 </View> 
 }
 
