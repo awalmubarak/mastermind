@@ -10,9 +10,7 @@ import { stepTwo } from '../validationSchemas/ProfileSchema'
 
         return <Formik
             initialValues={{linkedin: profile.linkedin, twitter:profile.twitter, facebook: profile.facebook}}
-            onSubmit={values =>{
-                console.log(2,values);
-                
+            onSubmit={values =>{                
                 setProfile({...profile, ...values});
                 nextStep()
             } }

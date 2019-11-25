@@ -65,9 +65,8 @@ const navigateAfterAuth = async(callback)=>{
     }
 }
 
-const createUserProfile = async(profile, callback)=>{
+const createUserProfile = async(user,profile, callback)=>{
     try {
-        const user = firebase.auth().currentUser;
         const results = await firestore()
             .collection('users')
             .doc(user.uid)
@@ -76,7 +75,7 @@ const createUserProfile = async(profile, callback)=>{
         
     } catch (error) {
         const message = getAuthErrorMessage(error.code) || error.message
-        DropDownHolder.dropDown.alertWithType('error', 'Error', message, {});   
+        DropDownHolder.dropDown.alertWithType('error', 'Error', message);   
     }
 }
 
@@ -128,7 +127,7 @@ const getUserById = async(userId, onSuccess, onError)=>{
     }
 }
 
-const batchUpdateUserInfo = async(user, profile, nameChanged,onSuccess, onError)=>{
+const batchUpdateUserInfo = async(user, profile,onSuccess, onError)=>{
     try {        
         const groups = await getAllUserGroups(user)
         if(groups.length>0){
@@ -137,11 +136,7 @@ const batchUpdateUserInfo = async(user, profile, nameChanged,onSuccess, onError)
             batch.set(userRef, profile)
             groups.forEach(group=>{
                 let ref = firestore().collection('group_members').doc(group.id).collection("members").doc(user.uid)
-                batch.set(ref, {name:profile.name, avatar: profile.avatar}, {merge:true})
-                if(nameChanged && group.creator.id===user.uid){
-                    let groupGef = firestore().collection('groups').doc(group.id)
-                    batch.set(groupGef, {creator:{name: profile.name}}, {merge:true})
-                }
+                batch.set(ref, {avatar: profile.avatar}, {merge:true})
             })
             await batch.commit()
             onSuccess()

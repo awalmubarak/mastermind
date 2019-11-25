@@ -54,15 +54,14 @@ const EditProfileScreen = ({navigation,context})=>{
                     onSubmit={values => {
                         setIsLoading(true)
                         const newProfile = {...profileInfo, ...values}
-                        const nameChanged = oldProfile.name!==newProfile.name
-                        if(imageChanged || nameChanged){
-                                batchUpdateUserInfo(user,newProfile,nameChanged, ()=>{
+                        if(imageChanged){
+                                batchUpdateUserInfo(user,newProfile, ()=>{
                                 setProfile(newProfile)
                                 navigation.goBack()
                                 DropDownHolder.dropDown.alertWithType('success', 'Success', "Profile Updated Successfully");
                             }, (error)=>DropDownHolder.dropDown.alertWithType('error', 'Error',error.message))
                         }else{                            
-                            createUserProfile(newProfile, ()=>{
+                            createUserProfile(user,newProfile, ()=>{
                                 setProfile(newProfile)
                                 navigation.goBack()
                                 DropDownHolder.dropDown.alertWithType('success', 'Success', "Profile Updated Successfully");
@@ -74,7 +73,7 @@ const EditProfileScreen = ({navigation,context})=>{
                 >
                 {({values, handleChange, handleSubmit, errors, handleBlur, touched})=>(
                 <>
-                <Input 
+                {/* <Input 
                     label="Your Name"
                     placeholder="John Smith"
                     value={values.name} 
@@ -82,7 +81,7 @@ const EditProfileScreen = ({navigation,context})=>{
                     onBlur={handleBlur('name')}
                     touched={touched.name}
                     onchange={handleChange("name")}
-                     />
+                     /> */}
                 <Input label="Bio"  
                     placeholder="short info about yourself"
                     numberOfLines={10}

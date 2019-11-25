@@ -11,7 +11,6 @@ import { stepOne } from '../validationSchemas/ProfileSchema'
         return <Formik
                 initialValues={{name: profile.name, bio:profile.bio}}
                 onSubmit={values =>{
-                    console.log(1,values);
                     setProfile({...profile, ...values});
                     nextStep()
                 } }
@@ -33,6 +32,7 @@ import { stepOne } from '../validationSchemas/ProfileSchema'
                         onBlur={handleBlur('name')}
                         touched={touched.name}
                         onchange={handleChange("name")}
+                        notification="**You cannot change your name after profile has been successfully created."
                         />
                     <Input label="Bio"  
                         placeholder="short info about yourself"

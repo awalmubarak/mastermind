@@ -11,7 +11,7 @@ import { withUserHOC } from '../contexts/UserContext'
 
 const CreateProfieScreen = ({navigation, context})=>{
     const [isLoading, setIsLoading] = useState(false)
-    const {profile} = context
+    const {user,profile} = context
     const [step, setStep] = useState(1)
     const previousStep = ()=>{
         setStep(step - 1)
@@ -19,7 +19,7 @@ const CreateProfieScreen = ({navigation, context})=>{
     const nextStep = ()=>{
         if(step==3){
             setIsLoading(true)
-            createUserProfile(profile, ()=>{
+            createUserProfile(user,profile, ()=>{
                 setIsLoading(false)
                 navigation.navigate('ProfileSuccess')
             })
@@ -28,19 +28,6 @@ const CreateProfieScreen = ({navigation, context})=>{
         }
     }
 
-    const renderStepThree = ()=>{
-        return <ProfileContainer 
-            title="Add A Profile Picture" 
-            step={step} nextAction={nextStep} prevAction={previousStep}>
-            <View style={styles.imageContainer}>
-                <ImageBackground  style={styles.profileImage}>
-                <TouchableOpacity style={styles.chooseImageButton}>
-                    <Image source={require('../assets/profile.png')} style={styles.chooseImage}/>                    
-                </TouchableOpacity>
-                </ImageBackground>
-            </View>
-        </ProfileContainer>
-    }
 
     if(step==1){
         return <ProfileStepOne nextStep={nextStep} context={context}/>

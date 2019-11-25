@@ -2,9 +2,10 @@ import React from 'react'
 import { StyleSheet, View, Text, TextInput } from 'react-native'
 import AppStyles from '../commons/AppStyles'
 
-const Input = ({label, placeholder, error, secure, value, onchange, numberOfLines, multiline, style, touched, ...rest})=>{
+const Input = ({notification,label, placeholder, error, secure, value, onchange, numberOfLines, multiline, style, touched, ...rest})=>{
     return <View style={styles.inputContainer}>
                 <Text style={styles.inputLabel}>{label}</Text>
+                {notification && <Text style={styles.errorMessage}>{notification}</Text>}
                 <TextInput style={[styles.textInput, style]}
                     placeholder={placeholder}
                     autoCapitalize="none"
