@@ -95,7 +95,10 @@ const AppNavigator = createStackNavigator({
   },
   ProfileDetails: ProfileDetailsScreen,
   MemberDetails: MemberDetailsScreen,
-  EditProfile: EditProfileScreen,
+  EditProfile: {
+    screen:EditProfileScreen,
+    navigationOptions: {title: "Edit Profile"}
+  },
   JoinGroup: {
     screen:JoinGroupScreen,
     navigationOptions: {

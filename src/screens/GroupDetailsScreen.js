@@ -20,7 +20,7 @@ const GroupDetailsScreen = ({navigation})=>{
         const getGroupDetails = async()=>{
             await getGroupById(group.id, (groupInfo)=>{
                 setGroup(groupInfo)
-                getGroupMembers(groupInfo.id, (groupMembers)=>{
+                getGroupMembers(groupInfo.id, (groupMembers)=>{                    
                     setMembers(groupMembers)
                     setLoading(false)
                 }, (error)=>{

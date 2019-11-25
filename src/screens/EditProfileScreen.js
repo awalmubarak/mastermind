@@ -17,9 +17,10 @@ import { Formik } from 'formik'
 
 const EditProfileScreen = ({navigation,context})=>{
     const {profile, setProfile, user} = context
+    const [profileInfo, setProfileInfo] = useState(profile)
     const [isLoading, setIsLoading] = useState(false)
-    const oldProfile = profile
-
+    const [imageChanged, setImageChanged] = useState(false)
+    const oldProfile = {...profile}
     const selectImage = ()=>{
         ImagePicker.openPicker({
             width: 400,
@@ -29,7 +30,8 @@ const EditProfileScreen = ({navigation,context})=>{
             compressImageQuality: 0.7,
             includeBase64: true
           }).then(image => {
-            setProfile({...profile, avatar: {uri: `data:${image.mime};base64,${image.data}`}})
+            setProfileInfo({...profileInfo, avatar: {uri: `data:${image.mime};base64,${image.data}`}})
+            setImageChanged(true)
           }).catch((error)=>{
               if(error.code==="E_PERMISSION_MISSING"){
                 DropDownHolder.dropDown.alertWithType('error', 'Error', " Grant this app permission to select photos from your device");
@@ -40,7 +42,7 @@ const EditProfileScreen = ({navigation,context})=>{
     return <ScrollView>
         <View style={styles.formContainer}>
                 <View style={styles.imageContainer}>
-                    <ImageBackground  style={styles.profileImage} source={profile.avatar}>
+                    <ImageBackground  style={styles.profileImage} source={profileInfo.avatar}>
                         <TouchableOpacity style={styles.chooseImageButton} onPress={selectImage}>
                             <Image source={require('../assets/profile.png')} style={styles.chooseImage}/>                    
                         </TouchableOpacity>
@@ -51,8 +53,8 @@ const EditProfileScreen = ({navigation,context})=>{
                     initialValues={{name:profile.name, bio:profile.bio, linkedin:profile.linkedin, facebook:profile.facebook, twitter:profile.twitter}}
                     onSubmit={values => {
                         setIsLoading(true)
-                        const newProfile = {...profile, ...values}
-                        if(oldProfile.avatar.uri!==newProfile.avatar.uri || oldProfile.name!==newProfile.name){
+                        const newProfile = {...profileInfo, ...values}
+                        if(imageChanged || oldProfile.name!==newProfile.name){
                             batchUpdateUserInfo(user,newProfile, ()=>{
                                 setProfile(newProfile)
                                 navigation.goBack()
@@ -128,10 +130,6 @@ const EditProfileScreen = ({navigation,context})=>{
             <Loader message="Updating Profile..." visible={isLoading}/>
     </ScrollView>
 }
-
-EditProfileScreen.navigationOptions = ()=>({
-    title: "Edit Profile"
-})
 
 const styles = StyleSheet.create({
     formContainer:{

@@ -119,7 +119,7 @@ export const getGroupById = async(groupId, onSuccess, onError)=>{
 export const getGroupMembers = async(groupId, onSuccess, onError)=>{
     try {
         const results = await firestore()
-            .collection('groups_members')
+            .collection('group_members')
             .doc(groupId)
             .collection("members")
             .get()

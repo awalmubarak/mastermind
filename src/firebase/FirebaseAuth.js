@@ -66,6 +66,8 @@ const navigateAfterAuth = async(callback)=>{
 }
 
 const createUserProfile = async(profile, callback)=>{
+    console.log("running single");
+
     try {
         const user = firebase.auth().currentUser;
         const results = await firestore()
@@ -130,13 +132,15 @@ const getUserById = async(userId, onSuccess, onError)=>{
 
 const batchUpdateUserInfo = async(user, profile, onSuccess, onError)=>{
     try {
+        console.log("running batch");
+        
         const groups = await getAllUserGroups(user)
         if(groups.length>0){
             let batch =  firestore().batch()
             let userRef = firestore().collection('users').doc(user.uid)
             batch.set(userRef, profile)
             groups.forEach(group=>{
-                let ref = firestore().collection('groups_members').doc(group.id).collection("members").doc(user.uid)
+                let ref = firestore().collection('group_members').doc(group.id).collection("members").doc(user.uid)
                 batch.set(ref, {name:profile.name, avatar: profile.avatar}, {merge:true})
             })
             await batch.commit()
