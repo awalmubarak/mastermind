@@ -46,7 +46,7 @@ const GroupDetailsScreen = ({navigation})=>{
         const revokeGroupId = ()=>{
             Alert.alert(
                 'Are you sure you want to revoke this group ID?',
-                "If you Revoke the ID, no one will be able to use it join this group. A new Group ID will be generated.",
+                "If you Revoke the ID, no one will be able to use it to join this group. A new Group ID will be generated.",
                 [
                   {
                     text: 'Cancel',
@@ -72,6 +72,7 @@ const GroupDetailsScreen = ({navigation})=>{
         return <View style={styles.container}>
         <Text style={styles.groupTitle}>{group.title}</Text>
         {(user.uid===group.creator.id)&& <View style={{borderColor:"grey", borderRadius: 4, borderWidth: 1, padding: 10}}>
+            <Text style={{color:"grey"}}>Anyone with this App can join this group using the group ID below. Only Share it with people you want in your group.</Text>
             <TouchableOpacity onPress={()=>{
             Clipboard.setString(group.uid)
             DropDownHolder.dropDown.alertWithType('success', 'Success', 'Group ID Copied!!');
@@ -82,7 +83,7 @@ const GroupDetailsScreen = ({navigation})=>{
                 </View>
             </TouchableOpacity>
             <TouchableOpacity onPress={revokeGroupId}>
-                <Text style={{color:"grey", marginTop: 5}}>Revoke group ID</Text>
+                <Text style={styles.revokeButton}>Revoke group ID</Text>
             </TouchableOpacity>
             </View>}
         <View style={styles.headedTextContainer}>
@@ -150,7 +151,7 @@ const GroupDetailsScreen = ({navigation})=>{
 
 const styles = StyleSheet.create({
     container: {
-        marginHorizontal: 15,
+        marginHorizontal: 10,
         flex: 1
     },
     description:{
@@ -171,6 +172,15 @@ const styles = StyleSheet.create({
         fontSize: 21,
         marginTop: 30,
         marginBottom: 10
+    },
+    revokeButton: {
+        color:AppStyles.colors.primary, 
+        marginTop: 5, 
+        borderWidth: 1, 
+        borderRadius: 3, 
+        borderColor: AppStyles.colors.primary, 
+        alignSelf: "center", 
+        padding: 3
     }
 })
 export default GroupDetailsScreen;
