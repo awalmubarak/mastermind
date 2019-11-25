@@ -1,5 +1,6 @@
 import { DropDownHolder } from '../commons/DropDownHolder';
 import firestore from '@react-native-firebase/firestore';
+import moment from 'moment';
 
 export const createNewGroup = async(groupInfo,user, profile, callback, onError)=>{
     try {
@@ -15,13 +16,14 @@ export const createNewGroup = async(groupInfo,user, profile, callback, onError)=
 
 export const addUserToGroup= async (user,profile,group,callback,onError)=>{
     const increment = firestore.FieldValue.increment(1)
+    const joinedAt = moment().unix()
      try {
         let batch =  firestore().batch()
         let userGroupsRef = firestore().collection('user_groups').doc(user.uid).collection('groups').doc(group.id)
         let groupMembersRef = firestore().collection('group_members').doc(group.id).collection('members').doc(user.uid)
         let groupRef = firestore().collection('groups').doc(group.id)
-        batch.set(userGroupsRef, {title: group.title, creator: group.creator, id: group.id, createdAt: group.createdAt})
-        batch.set(groupMembersRef, {name: profile.name, id: user.uid, avatar: profile.avatar})
+        batch.set(userGroupsRef, {title: group.title, creator: group.creator, id: group.id, createdAt: group.createdAt, joinedAt})
+        batch.set(groupMembersRef, {name: profile.name, id: user.uid, avatar: profile.avatar,joinedAt})
         batch.set(groupRef, {memberCount: increment}, {merge:true})
         await batch.commit()
         if (callback) {
@@ -40,7 +42,7 @@ export const getAllUserGroups = async(user)=>{
             .collection('user_groups')
             .doc(user.uid)
             .collection("groups")
-            .orderBy('createdAt', 'desc')
+            .orderBy('joinedAt', 'asc')
             .get()
          groups = results.docs.map((documentSnapshot) => {
             return {

@@ -34,7 +34,7 @@ import NoItems from '../components/NoItems';
       .collection('user_groups')
       .doc(user.uid)
       .collection("groups")
-      .orderBy('createdAt', 'desc')
+      .orderBy('joinedAt', 'asc')
       .onSnapshot((querySnapshot) => {
         const userGroups = querySnapshot.docs.map((documentSnapshot) => {
           return {

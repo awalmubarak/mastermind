@@ -97,7 +97,7 @@ const JoinGroupScreen = ({navigation})=>{
             setLoader({message:"Adding you to group...", visible:true})
             addUserToGroup(user,profile,group, ()=>{
                 setLoader({message:"", visible:false})
-                navigation.navigate("Groups")
+                navigation.navigate("Group")
                 DropDownHolder.dropDown.alertWithType('success', 'Success', "Added to Group Successfully");
             }, (error)=>{
                 setLoader({message:"", visible:false})

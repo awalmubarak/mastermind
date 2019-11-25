@@ -80,7 +80,7 @@ const MeetingsContainer = ({navigation, isHistory, context})=>{
             })
         }
         getGroupInfo()
-        
+
         const unsubscribe = firestore()
             .collection('group_meetings')
             .doc(group.id)
@@ -187,7 +187,7 @@ const MeetingsContainer = ({navigation, isHistory, context})=>{
              keyExtractor={(item, index) => item.id}
              ListFooterComponent={<View style={{marginTop: 100}}/>}
              showsVerticalScrollIndicator={false}
-             ListEmptyComponent={<NoItems message="You don't have any meetings yet."/>}
+             ListEmptyComponent={<NoItems message={isHistory? "You don't have any past meetings.":"You don't have pending or ongoing meetings."}/>}
              refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}
          />  
          
