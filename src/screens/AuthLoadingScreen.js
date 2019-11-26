@@ -5,6 +5,7 @@ import { GoogleSignin } from '@react-native-community/google-signin';
 import { navigateAfterAuth, signOut } from '../firebase/FirebaseAuth'
 import { UserContext } from '../contexts/UserContext';
 import firestore from '@react-native-firebase/firestore';
+import AppStyles from '../commons/AppStyles';
 
 
 const configureFirebase = async()=>{
@@ -44,8 +45,8 @@ const AuthLoadingScreen =({navigation}) =>{
   
     return (
         <View style={{flex: 1, alignItems: "center", justifyContent: "center"}}>
-            <StatusBar backgroundColor="#067b7a" barStyle="light-content" /> 
-            <ActivityIndicator />
+            <StatusBar backgroundColor={AppStyles.colors.primary} barStyle="light-content" /> 
+            <ActivityIndicator size="large" color={AppStyles.colors.primary}/>
         </View>
     );
     
