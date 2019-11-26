@@ -6,6 +6,7 @@ import NavigationService from './src/navigation/NavigationService';
 import { UserProvider } from './src/contexts/UserContext';
 import {setCustomTextInput,setCustomText} from 'react-native-global-props';
 import * as Sentry from '@sentry/react-native';
+import AppStyles from './src/commons/AppStyles';
 
 Sentry.init({ 
   dsn: 'https://5ab3a546db58434b965a85db553cf8d3@sentry.io/1834556', 
@@ -30,7 +31,7 @@ export default function App(){
       <AppNavigator ref={navigatorRef => {
             NavigationService.setTopLevelNavigator(navigatorRef);
           }}/>
-      <DropdownAlert ref={(ref)=>DropDownHolder.setDropDown(ref)}/>
+      <DropdownAlert ref={(ref)=>DropDownHolder.setDropDown(ref)} inactiveStatusBarBackgroundColor={AppStyles.colors.primary}/>
     </UserProvider>
 }
 

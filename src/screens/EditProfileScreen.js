@@ -38,7 +38,7 @@ const EditProfileScreen = ({navigation,context})=>{
           })
     }
 
-    return <ScrollView>
+    return <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.formContainer}>
                 <View style={styles.imageContainer}>
                     <ImageBackground  style={styles.profileImage} source={profileInfo.avatar}>
