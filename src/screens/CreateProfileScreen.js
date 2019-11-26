@@ -1,15 +1,16 @@
 import React, {useState} from 'react'
-import {  View, StyleSheet, Image, ImageBackground } from 'react-native'
-import ProfileContainer from '../components/profileContainer'
-import { TouchableOpacity } from 'react-native-gesture-handler'
+import { StyleSheet } from 'react-native'
+import { DropDownHolder } from '../commons/DropDownHolder';
 import ProfileStepOne from '../components/createProfileOne'
 import ProfileStepTwo from '../components/createProfileTwo'
 import ProfileStepThree from '../components/createProfileThree'
 import Loader from '../components/loader'
 import { createUserProfile} from '../firebase/FirebaseAuth'
 import { withUserHOC } from '../contexts/UserContext'
+import {useNetInfo} from "@react-native-community/netinfo";
 
 const CreateProfieScreen = ({navigation, context})=>{
+    const netInfo = useNetInfo();
     const [isLoading, setIsLoading] = useState(false)
     const {user,profile} = context
     const [step, setStep] = useState(1)
@@ -18,6 +19,10 @@ const CreateProfieScreen = ({navigation, context})=>{
     }
     const nextStep = ()=>{
         if(step==3){
+            if (netInfo.type==="none" || netInfo.type==="unknown"|| !netInfo.isInternetReachable) {
+                DropDownHolder.dropDown.alertWithType('error', 'Error', "No Internet Connection");
+                return;
+            }
             setIsLoading(true)
             createUserProfile(user,profile, ()=>{
                 setIsLoading(false)

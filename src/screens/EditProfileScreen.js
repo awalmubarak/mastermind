@@ -10,17 +10,16 @@ import { createUserProfile, batchUpdateUserInfo } from '../firebase/FirebaseAuth
 import { DropDownHolder } from '../commons/DropDownHolder'
 import ImagePicker from 'react-native-image-crop-picker';
 import { Formik } from 'formik'
-
-
+import {useNetInfo} from "@react-native-community/netinfo";
 
 
 
 const EditProfileScreen = ({navigation,context})=>{
+    const netInfo = useNetInfo();
     const {profile, setProfile, user} = context
     const [profileInfo, setProfileInfo] = useState(profile)
     const [isLoading, setIsLoading] = useState(false)
     const [imageChanged, setImageChanged] = useState(false)
-    const oldProfile = {...profile}
     const selectImage = ()=>{
         ImagePicker.openPicker({
             width: 400,
@@ -52,6 +51,10 @@ const EditProfileScreen = ({navigation,context})=>{
                 <Formik
                     initialValues={{name:profile.name, bio:profile.bio, linkedin:profile.linkedin, facebook:profile.facebook, twitter:profile.twitter}}
                     onSubmit={values => {
+                        if (netInfo.type==="none" || netInfo.type==="unknown"|| !netInfo.isInternetReachable) {
+                            DropDownHolder.dropDown.alertWithType('error', 'Error', "No Internet Connection");
+                            return;
+                        }
                         setIsLoading(true)
                         const newProfile = {...profileInfo, ...values}
                         if(imageChanged){

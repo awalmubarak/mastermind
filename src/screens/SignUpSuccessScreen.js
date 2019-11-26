@@ -19,7 +19,7 @@ const SignUpSuccessScreen = ({navigation, context})=>{
                 </View>
                 <View style={styles.messageContainer}>
                     <Text style={styles.message}>Welcome! </Text>
-                    <Text style={[styles.message, {fontSize: 20, fontWeight: "bold"}]}>{user.email} </Text>
+                    <Text style={[styles.message, {fontSize: 20, fontFamily:"Brown_Pro_Bold"}]}>{user.email} </Text>
                     <Text style={styles.message}> We just need a few information
                     to finish setting you up.</Text>
                     <Button text="Continue" 

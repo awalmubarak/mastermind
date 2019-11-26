@@ -10,10 +10,11 @@ import { NewGroupSchema } from '../validationSchemas/GroupSchema'
 import { createNewGroup, generateUniqueID } from '../firebase/GroupsApi'
 import { DropDownHolder } from '../commons/DropDownHolder';
 import moment from 'moment'
+import {useNetInfo} from "@react-native-community/netinfo";
 
 
 const CreateGroupScreen = ({context, navigation})=>{
-    
+    const netInfo = useNetInfo();
     const {profile, user} = context
     const [isLoading, setIsLoading] = useState(false)
     return <>
@@ -22,6 +23,10 @@ const CreateGroupScreen = ({context, navigation})=>{
         <Formik
             initialValues={{title: "", description: "", niche: "", experience: ""}}
             onSubmit={values => {
+                if (netInfo.type==="none" || netInfo.type==="unknown"|| !netInfo.isInternetReachable) {
+                    DropDownHolder.dropDown.alertWithType('error', 'Error', "No Internet Connection");
+                    return;
+                }
                     setIsLoading(true)
                 const newGroup = {creator:{name: profile.name, id: user.uid}, ...values, createdAt: moment().unix(), uid: generateUniqueID(), memberCount:0}
                 createNewGroup(newGroup,user, profile, ()=>{

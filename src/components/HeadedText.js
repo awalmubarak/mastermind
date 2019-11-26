@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
     },
     heading:{
         fontSize: 18,
-        fontWeight: "bold",
+        fontFamily:"Brown_Pro_Bold",
         marginBottom: 2
     },
     body:{

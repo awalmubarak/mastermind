@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
     },
     getStartedButtonText:{
         color: "white",
-        fontWeight: "bold",
+        fontFamily:"Brown_Pro_Bold",
         textAlign: "center",
         letterSpacing: 2,
         width: "100%"

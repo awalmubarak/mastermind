@@ -11,7 +11,7 @@ const WelcomeScreen = ({navigation})=>{
         </View>
         <View>
             <Text style={styles.welcomeMessage}>Create, Facilitate, Join mastermind groups </Text>
-            <Button text="Get Started" onPress={()=>navigation.navigate('Register')}/>
+            <Button text="Get Started" onPress={()=>navigation.navigate('Login')}/>
         </View>
     </View>
 }

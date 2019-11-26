@@ -8,9 +8,10 @@ import Loader from '../components/loader'
 import { getGroupByUID, addUserToGroup, getUserGroupById } from '../firebase/GroupsApi'
 import { DropDownHolder } from '../commons/DropDownHolder';
 import { UserContext } from '../contexts/UserContext'
-
+import {useNetInfo} from "@react-native-community/netinfo";
 
 const JoinGroupScreen = ({navigation})=>{
+    const netInfo = useNetInfo();
     const {user,profile} = useContext(UserContext)
     const [groupId, setGroupId] = useState("")
     const [group, setGroup] = useState(null)
@@ -25,6 +26,10 @@ const JoinGroupScreen = ({navigation})=>{
             <Text style={styles.description}>Enter Mastermind Group ID to continue</Text>
             <Input label="Group ID" value={groupId} onchange={setGroupId}/>
            <Button text="Continue" onPress={()=>{
+               if (netInfo.type==="none" || netInfo.type==="unknown"|| !netInfo.isInternetReachable) {
+                DropDownHolder.dropDown.alertWithType('error', 'Error', "No Internet Connection");
+                return;
+            }
                setLoader({message:"Getting group info..", visible:true})
                getGroupByUID(groupId, (group)=>{
                 if (!group) {
@@ -94,6 +99,10 @@ const JoinGroupScreen = ({navigation})=>{
         return <Button text="Join Now" 
         style={{marginVertical: 20}}
         onPress={()=>{
+            if (netInfo.type==="none" || netInfo.type==="unknown"|| !netInfo.isInternetReachable) {
+                DropDownHolder.dropDown.alertWithType('error', 'Error', "No Internet Connection");
+                return;
+            }
             setLoader({message:"Adding you to group...", visible:true})
             addUserToGroup(user,profile,group, ()=>{
                 setLoader({message:"", visible:false})
@@ -136,7 +145,7 @@ const styles = StyleSheet.create({
     },
     heading:{
         fontSize: 18,
-        fontWeight: "bold",
+        fontFamily:"Brown_Pro_Bold",
         marginBottom: 2
     },
     body:{
@@ -158,11 +167,8 @@ const styles = StyleSheet.create({
     existingMember: {
         fontSize: 18, 
         marginTop: 10, 
-        borderWidth: 1, 
         padding: 5, 
-        borderRadius: 4, 
-        borderColor: AppStyles.colors.primary, 
-        color: AppStyles.colors.textSecondary
+        color: "#ff9900"
     }
 })
 

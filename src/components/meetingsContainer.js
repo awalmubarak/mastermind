@@ -10,10 +10,14 @@ import { createNewMeeting, getAllGroupMeetings } from '../firebase/MeetingsApi';
 import { withUserHOC } from '../contexts/UserContext';
 import firestore from '@react-native-firebase/firestore';
 import NoItems from './NoItems';
+import {useNetInfo} from "@react-native-community/netinfo";
+import { DropDownHolder } from '../commons/DropDownHolder';
+
 
 
 
 const MeetingsContainer = ({navigation, isHistory, context})=>{
+    const netInfo = useNetInfo();
     const group = navigation.getParam("group", null);   
     const [modalVisible, setModalVisible] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
@@ -133,6 +137,10 @@ const MeetingsContainer = ({navigation, isHistory, context})=>{
                         setTitleError(false)
                     }
                     setModalVisible(false)
+                    if (netInfo.type==="none" || netInfo.type==="unknown"|| !netInfo.isInternetReachable) {
+                        DropDownHolder.dropDown.alertWithType('error', 'Error', "No Internet Connection");
+                        return;
+                    }
                     setIsLoading(true)
                     createNewMeeting({title: title, date: dateTime.date, time: dateTime.time, createdAt: moment().unix(), creator: {name:profile.name, id:user.uid}, status:"pending"},group.id, ()=>{
                         setIsLoading(false)

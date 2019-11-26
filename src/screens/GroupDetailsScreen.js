@@ -6,10 +6,12 @@ import { getGroupById,getGroupMembers, createNewGroupID } from '../firebase/Grou
 import { DropDownHolder } from '../commons/DropDownHolder'
 import { UserContext } from '../contexts/UserContext'
 import Loader from '../components/loader'
+import {useNetInfo} from "@react-native-community/netinfo";
 
 
 
 const GroupDetailsScreen = ({navigation})=>{
+    const netInfo = useNetInfo();
     const {user} = useContext(UserContext)
     const groupInfo = navigation.getParam('group', null);
     const [group, setGroup] = useState(groupInfo)
@@ -54,6 +56,10 @@ const GroupDetailsScreen = ({navigation})=>{
                     style: 'cancel',
                   },
                   {text: 'Revoke ID', onPress: () => {
+                    if (netInfo.type==="none" || netInfo.type==="unknown"|| !netInfo.isInternetReachable) {
+                        DropDownHolder.dropDown.alertWithType('error', 'Error', "No Internet Connection");
+                        return;
+                    }
                     setIsLoading(true)
                     createNewGroupID(group.id, (uid)=>{
                         setIsLoading(false)
@@ -77,7 +83,7 @@ const GroupDetailsScreen = ({navigation})=>{
             Clipboard.setString(group.uid)
             DropDownHolder.dropDown.alertWithType('success', 'Success', 'Group ID Copied!!');
             }}>
-                <View style={styles.headedTextContainer}>
+                <View style={[styles.headedTextContainer, {marginTop:20}]}>
                 <Text style={[styles.heading, {color:"#4a9bff"}]}>Group ID (click to copy)</Text>
                 <Text style={[styles.body,{color:"#4a9bff"}]}>{group.uid} </Text>
                 </View>
@@ -162,7 +168,7 @@ const styles = StyleSheet.create({
     },
     heading:{
         fontSize: 18,
-        fontWeight: "bold",
+        fontFamily:"Brown_Pro_Bold",
         marginBottom: 2
     },
     body:{
@@ -175,11 +181,11 @@ const styles = StyleSheet.create({
     },
     revokeButton: {
         color:AppStyles.colors.primary, 
-        marginTop: 5, 
+        marginTop: 20, 
         borderWidth: 1, 
         borderRadius: 3, 
         borderColor: AppStyles.colors.primary, 
-        alignSelf: "center", 
+        alignSelf: "flex-start", 
         padding: 3
     }
 })
