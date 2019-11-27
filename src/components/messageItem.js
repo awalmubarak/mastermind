@@ -22,7 +22,7 @@ const renderIncomingMessage = (message)=>{
         borderTopRightRadius: 4,
         marginBottom: 5,
         fontSize: 16,
-        fontFamily:"Brown_Pro_Bold",
+        fontFamily:"Brown-Bold",
         color:"#067b7a"}}>{message.sender.name}</Text>
         <View style={{
         padding: 5,

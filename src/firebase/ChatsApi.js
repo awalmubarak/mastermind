@@ -8,7 +8,6 @@ export const sendMeetingMessage = async(message, sender, meetingId)=>{
             .doc(meetingId)
             .collection("messages")
             .add({text:message, sender, createdAt: firestore.FieldValue.serverTimestamp()})
-        console.log(results);
         
     } catch (error) {
         log(error)

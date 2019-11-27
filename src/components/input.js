@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
         marginVertical: 20
     },
     inputLabel:{
-        fontFamily:"Brown_Pro_Bold",
+        fontFamily:"Brown-Bold",
         fontSize: 18,
         color: "#424242"
     },

@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
     },
     heading:{
         fontSize: 18,
-        fontFamily:"Brown_Pro_Bold",
+        fontFamily:"Brown-Bold",
         marginBottom: 2
     },
     body:{
