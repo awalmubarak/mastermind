@@ -149,5 +149,20 @@ const batchUpdateUserInfo = async(user, profile,onSuccess, onError)=>{
 }
 
 
+export const setNotificationKey = async(user,fcmToken, callback)=>{
+    try {
+        await firestore()
+            .collection('fcm_tokens')
+            .doc(user.uid)
+            .set({fcmToken});
+       callback()
+        
+    } catch (error) {
+         console.log(error);
+         
+    }
+}
+
+
 
 export {handleGoogleLogin, getAuthErrorMessage, handleEmailAuth, navigateAfterAuth, signOut, getCurrentUser, createUserProfile, getUserById, batchUpdateUserInfo}

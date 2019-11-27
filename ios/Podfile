@@ -36,6 +36,7 @@ target 'masterMind' do
 
   pod 'RNGestureHandler', :path => '../node_modules/react-native-gesture-handler'
 
+  pod 'GoogleSignIn', '~> 5.0.2'
   target 'masterMindTests' do
     inherit! :search_paths
     # Pods for testing
