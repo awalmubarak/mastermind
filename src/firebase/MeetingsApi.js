@@ -15,18 +15,24 @@ export const createNewMeeting = async(meetingInfo,groupId, callback)=>{
 }
 
 export const getAllGroupMeetings = async(group)=>{
-    let results;
+    let userMeetings;
     try {
-        results = await firestore()
+        const results = await firestore()
             .collection('group_meetings')
             .doc(group.id)
             .collection("meetings")
-            .orderBy('createdAt', 'desc')
+            .orderBy('status', 'desc')
             .get()
+        userMeetings = results.docs.map((documentSnapshot) => {
+            return {
+                ...documentSnapshot.data(),
+                id: documentSnapshot.id, // required for FlatList
+            };
+            });
     } catch (error) {
-        results = []
+        userMeetings = []
         DropDownHolder.dropDown.alertWithType('error', 'Error', error.message, {});   
     }finally{
-        return results.docs
+        return userMeetings
     }
 }

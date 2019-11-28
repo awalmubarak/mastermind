@@ -4,7 +4,7 @@ import { setNotificationKey } from "./FirebaseAuth";
 import PushNotificationIOS from "@react-native-community/push-notification-ios";
 import auth from '@react-native-firebase/auth';
 import {UserContext} from "../contexts/UserContext"
-
+import AsyncStorage from '@react-native-community/async-storage';
 
 export default class PushController extends Component{
     static contextType = UserContext
@@ -16,14 +16,15 @@ export default class PushController extends Component{
     componentDidMount(){
         PushNotification.configure({
             // (optional) Called when Token is generated (iOS and Android)
-            onRegister: (token)=> {
+            onRegister: async (token)=> {
                 const user = auth().currentUser;
                 if(user){
-                    if(this.context.profile.fcmtoken!==token.token){
+                    const fcmToken = await AsyncStorage.getItem('fcmToken')
+                    if(fcmToken!==token.token){
                         console.log("sending token");
                         
-                        setNotificationKey(user, token, ()=>{
-                            this.context.setProfile({...this.context.profile, fcmtoken:token.token})
+                        setNotificationKey(user, token, async()=>{
+                            await AsyncStorage.setItem('fcmToken',token.token)
                             console.log("token sent");
                             
                         })

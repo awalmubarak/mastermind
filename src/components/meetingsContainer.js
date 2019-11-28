@@ -78,7 +78,7 @@ const MeetingsContainer = ({navigation, isHistory, context})=>{
             .collection('group_meetings')
             .doc(group.id)
             .collection("meetings")
-          .orderBy('createdAt', 'desc')
+          .orderBy('status', 'desc')
           .onSnapshot((querySnapshot) => {
             const userMeetings = querySnapshot.docs.map((documentSnapshot) => {
               return {
