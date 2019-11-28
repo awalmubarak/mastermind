@@ -7,6 +7,7 @@ import { DropDownHolder } from '../commons/DropDownHolder'
 import { UserContext } from '../contexts/UserContext'
 import Loader from '../components/loader'
 import {useNetInfo} from "@react-native-community/netinfo";
+import HeadedText from '../components/HeadedText'
 
 
 
@@ -92,7 +93,12 @@ const GroupDetailsScreen = ({navigation})=>{
                 <Text style={styles.revokeButton}>Revoke group ID</Text>
             </TouchableOpacity>
             </View>}
-        <View style={styles.headedTextContainer}>
+        <HeadedText heading="About" body={group.description}/>
+        <HeadedText heading="Niche" body={group.niche}/>
+        <HeadedText heading="Experince Level" body={group.experience}/>
+        <HeadedText heading="Creator" body={group.creator.name}/>
+        <HeadedText heading="Members" body={group.memberCount + ""}/>
+        {/* <View style={styles.headedTextContainer}>
             <Text style={styles.heading}>About</Text>
             <Text style={styles.body}>{group.description} </Text>
         </View> 
@@ -115,7 +121,7 @@ const GroupDetailsScreen = ({navigation})=>{
           <View style={styles.headedTextContainer}>
             <Text style={styles.heading}>Members</Text>
             <Text style={styles.body}>{group.memberCount}</Text>
-        </View> 
+        </View>  */}
         
     </View>     
     }

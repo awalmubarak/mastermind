@@ -27,7 +27,7 @@ import MemberDetailsScreen from '../screens/MemberDetailsScreen';
 
 const defaultConfigs = {
   defaultNavigationOptions: {
-    title: "Mastermind",
+    title: "Beset",
     headerStyle:{
       backgroundColor: "#067b7a"
     },
