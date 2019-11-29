@@ -403,6 +403,7 @@ DEPENDENCIES:
   - Folly (from `../node_modules/react-native/third-party-podspecs/Folly.podspec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - GoogleSignIn (~> 5.0.2)
+  - QBImagePickerController (from `../node_modules/react-native-image-crop-picker/ios/QBImagePicker/QBImagePickerController.podspec`)
   - RCTRequired (from `../node_modules/react-native/Libraries/RCTRequired`)
   - RCTTypeSafety (from `../node_modules/react-native/Libraries/TypeSafety`)
   - React (from `../node_modules/react-native/`)
@@ -467,7 +468,6 @@ SPEC REPOS:
     - leveldb-library
     - nanopb
     - Protobuf
-    - QBImagePickerController
     - RSKImageCropper
     - Sentry
 
@@ -482,6 +482,8 @@ EXTERNAL SOURCES:
     :podspec: "../node_modules/react-native/third-party-podspecs/Folly.podspec"
   glog:
     :podspec: "../node_modules/react-native/third-party-podspecs/glog.podspec"
+  QBImagePickerController:
+    :path: "../node_modules/react-native-image-crop-picker/ios/QBImagePicker/QBImagePickerController.podspec"
   RCTRequired:
     :path: "../node_modules/react-native/Libraries/RCTRequired"
   RCTTypeSafety:
@@ -619,6 +621,6 @@ SPEC CHECKSUMS:
   Sentry: bba998b0fb157fdd6596aa73290a9d67ae47be79
   Yoga: ba3d99dbee6c15ea6bbe3783d1f0cb1ffb79af0f
 
-PODFILE CHECKSUM: 738d32b2222ee5f72227274ed69cbe5dcd46bebe
+PODFILE CHECKSUM: 9255a95694121cbda4ad73920308fdbc0aec1f8c
 
 COCOAPODS: 1.6.0

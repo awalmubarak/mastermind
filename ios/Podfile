@@ -37,6 +37,7 @@ target 'masterMind' do
   pod 'RNGestureHandler', :path => '../node_modules/react-native-gesture-handler'
 
   pod 'GoogleSignIn', '~> 5.0.2'
+  pod 'QBImagePickerController', :path => '../node_modules/react-native-image-crop-picker/ios/QBImagePicker/QBImagePickerController.podspec'
   target 'masterMindTests' do
     inherit! :search_paths
     # Pods for testing
