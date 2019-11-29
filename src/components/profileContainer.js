@@ -2,11 +2,12 @@ import React from 'react'
 import { Text, View, StyleSheet, StatusBar, TouchableOpacity } from 'react-native'
 import Input from "../components/input"
 import Button from '../components/button'
-import { TouchableNativeFeedback } from 'react-native-gesture-handler'
+import { TouchableNativeFeedback, ScrollView } from 'react-native-gesture-handler'
 import AppStyles from '../commons/AppStyles'
 
 const ProfileContainer = ({navigation, children, prevAction, nextAction, title, step})=>{
     return <View style={styles.container}>
+        <View style={{flex: 1}}>
         <StatusBar backgroundColor="#067b7a" barStyle="light-content" />
         <View style={styles.headerContainer}>
             <Text style={styles.greetingText}>Step {step} / 3</Text>
@@ -37,6 +38,7 @@ const ProfileContainer = ({navigation, children, prevAction, nextAction, title, 
             
             
         </View>
+        </View>
     </View>
 }
 
@@ -49,7 +51,8 @@ const styles = StyleSheet.create({
     headerContainer:{
         marginHorizontal: 20,
         flex: 0.2,
-        justifyContent: "center"
+        justifyContent: "center",
+        height: 110
     },
     greetingText:{
         color: "white",
@@ -62,9 +65,8 @@ const styles = StyleSheet.create({
     cardContainer:{
         backgroundColor: "white",
         elevation: 20,
-        borderTopLeftRadius: 20,
-        borderTopRightRadius: 20,
-        flex: 0.8,
+        borderRadius:20,
+        height: 500,
         paddingTop: 20
     },
     formContainer:{

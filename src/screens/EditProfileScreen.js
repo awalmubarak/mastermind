@@ -11,7 +11,7 @@ import { DropDownHolder } from '../commons/DropDownHolder'
 import ImagePicker from 'react-native-image-crop-picker';
 import { Formik } from 'formik'
 import {useNetInfo} from "@react-native-community/netinfo";
-
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 
 const EditProfileScreen = ({navigation,context})=>{
@@ -38,7 +38,8 @@ const EditProfileScreen = ({navigation,context})=>{
           })
     }
 
-    return <ScrollView showsVerticalScrollIndicator={false}>
+    return <KeyboardAwareScrollView>
+    <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.formContainer}>
                 <View style={styles.imageContainer}>
                     <ImageBackground  style={styles.profileImage} source={profileInfo.avatar}>
@@ -132,6 +133,7 @@ const EditProfileScreen = ({navigation,context})=>{
             </View>
             <Loader message="Updating Profile..." visible={isLoading}/>
     </ScrollView>
+    </KeyboardAwareScrollView>
 }
 
 const styles = StyleSheet.create({

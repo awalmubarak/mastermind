@@ -4,8 +4,7 @@ import AppStyles from '../commons/AppStyles'
 
 
 const ScreenContainer = ({ children, title, subTitle})=>{
-    return <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={styles.container}>
+    return<View style={styles.container}>
         <StatusBar backgroundColor="#067b7a" barStyle="light-content" />
         <View style={styles.headerContainer}>
             {subTitle && <Text style={styles.greetingText}>{subTitle}</Text>}
@@ -17,7 +16,6 @@ const ScreenContainer = ({ children, title, subTitle})=>{
             
         </View>
     </View>
-    </ScrollView>
 }
 
 
@@ -44,7 +42,7 @@ const styles = StyleSheet.create({
         elevation: 20,
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20,
-        flex: 0.8,
+        height: 600,
         paddingTop: 20
     },
     formContainer:{

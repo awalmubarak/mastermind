@@ -9,6 +9,7 @@ import { getGroupByUID, addUserToGroup, getUserGroupById } from '../firebase/Gro
 import { DropDownHolder } from '../commons/DropDownHolder';
 import { UserContext } from '../contexts/UserContext'
 import {useNetInfo} from "@react-native-community/netinfo";
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 const JoinGroupScreen = ({navigation})=>{
     const netInfo = useNetInfo();
@@ -123,13 +124,13 @@ const JoinGroupScreen = ({navigation})=>{
         setButtonLoader(true)
     }
 
-    return <>
+    return <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
         <ScreenContainer 
             title="Join Group">
             {group? renderStepTwo(group): renderStepOne()}
         </ScreenContainer>
         <Loader message={loader.message} visible={loader.visible}/>
-    </>
+    </KeyboardAwareScrollView>
 }
 
 const styles = StyleSheet.create({

@@ -11,13 +11,14 @@ import { createNewGroup, generateUniqueID } from '../firebase/GroupsApi'
 import { DropDownHolder } from '../commons/DropDownHolder';
 import moment from 'moment'
 import {useNetInfo} from "@react-native-community/netinfo";
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 
 const CreateGroupScreen = ({context, navigation})=>{
     const netInfo = useNetInfo();
     const {profile, user} = context
     const [isLoading, setIsLoading] = useState(false)
-    return <>
+    return <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
     <ScreenContainer 
         title="New Mastermind Group">
         <Formik
@@ -87,13 +88,17 @@ const CreateGroupScreen = ({context, navigation})=>{
     </Formik>
     </ScreenContainer>
     <Loader message="Creating group..." visible={isLoading}/>
-    </>
+    </KeyboardAwareScrollView>
 }
 
 const styles = StyleSheet.create({
     container: {
         marginHorizontal: 10
-    }
+    },
+    input:{
+        height: 150,
+        marginTop: 8
+    },
 })
 
 export default withUserHOC(CreateGroupScreen);

@@ -8,6 +8,7 @@ import Loader from '../components/loader'
 import { createUserProfile} from '../firebase/FirebaseAuth'
 import { withUserHOC } from '../contexts/UserContext'
 import {useNetInfo} from "@react-native-community/netinfo";
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 const CreateProfieScreen = ({navigation, context})=>{
     const netInfo = useNetInfo();
@@ -35,14 +36,17 @@ const CreateProfieScreen = ({navigation, context})=>{
 
 
     if(step==1){
-        return <ProfileStepOne nextStep={nextStep} context={context}/>
+        return <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
+            <ProfileStepOne nextStep={nextStep} context={context}/></KeyboardAwareScrollView>
     }else if(step==2){
-        return <ProfileStepTwo nextStep={nextStep} prevAction={previousStep} context={context}/>
+        return <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
+        <ProfileStepTwo nextStep={nextStep} prevAction={previousStep} context={context}/>
+        </KeyboardAwareScrollView>
     }else if(step==3){
-        return <>
+        return <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
         <ProfileStepThree nextStep={nextStep} prevAction={previousStep} context={context}/>
         <Loader visible={isLoading} message='Creating Profile...'/>
-        </>
+        </KeyboardAwareScrollView>
     }
 }
 
