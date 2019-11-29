@@ -1,4 +1,5 @@
 import React from 'react'; 
+import { Platform } from 'react-native'
 import {createAppContainer, createSwitchNavigator} from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import {createDrawerNavigator} from 'react-navigation-drawer';
@@ -49,7 +50,14 @@ const CreateProfileNavigator = createStackNavigator({
   CreateProfile: {
     screen: CreateProfileScreen,
     navigationOptions:{
-      header: null
+      ...Platform.select({
+        ios: {
+          title: ""
+        },
+        android: {
+          header: null,
+        },
+      }),
     }
 
   }
@@ -80,7 +88,14 @@ const AppNavigator = createStackNavigator({
   MeetingsTab: {
     screen: ButtomTabNavigator,
     navigationOptions: {
-      header: null
+      ...Platform.select({
+        ios: {
+          title: ""
+        },
+        android: {
+          header: null,
+        },
+      }),
     }
   },
   GroupDetails: {
@@ -91,7 +106,16 @@ const AppNavigator = createStackNavigator({
   }, 
   Chat: {
     screen: ChatScreen,
-    navigationOptions: {header:null}
+    navigationOptions: {
+      ...Platform.select({
+        ios: {
+          title: ""
+        },
+        android: {
+          header: null,
+        },
+      }),
+    }
   },
   ProfileDetails: ProfileDetailsScreen,
   MemberDetails:{
@@ -107,13 +131,27 @@ const AppNavigator = createStackNavigator({
   JoinGroup: {
     screen:JoinGroupScreen,
     navigationOptions: {
-      header:null
+      ...Platform.select({
+        ios: {
+          title: ""
+        },
+        android: {
+          header: null,
+        },
+      }),
     }
   },
   CreateGroup:{
     screen:CreateGroupScreen,
     navigationOptions: {
-      header:null
+      ...Platform.select({
+        ios: {
+          title: ""
+        },
+        android: {
+          header: null,
+        },
+      }),
     }
   }
 }, defaultConfigs);
