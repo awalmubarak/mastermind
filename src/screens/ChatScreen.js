@@ -1,5 +1,5 @@
 import React, {useState,useEffect} from 'react'
-import {View, Text, StyleSheet, FlatList, TouchableOpacity,Alert,ActivityIndicator, StatusBar } from 'react-native'
+import {View, Text,Platform, StyleSheet, FlatList, TouchableOpacity,Alert,ActivityIndicator, StatusBar } from 'react-native'
 import MessageItem from '../components/messageItem'
 import SendMessage from '../components/sendMesage'
 import { Header } from 'react-native-elements';
@@ -10,6 +10,7 @@ import { DropDownHolder } from '../commons/DropDownHolder';
 import Loader from '../components/loader';
 import { sendMeetingMessage } from '../firebase/ChatsApi';
 import NoItems from '../components/NoItems';
+import KeyboardShift from '../components/KeyboardShift';
 
 
 
@@ -136,7 +137,7 @@ const ChatScreen = ({navigation, context})=>{
           }, []);   
 
     
-    return <View style={styles.container}>
+    return <ChatContainer style={styles.container}>
         
         {((user.uid===group.creator.id) && (chatStatus.status!=="ended")) &&<Header
             barStyle="light-content"
@@ -181,7 +182,15 @@ const ChatScreen = ({navigation, context})=>{
             }}/>
         </View>
         <Loader message={loader.message} visible={loader.loading}/>
-    </View>
+    </ChatContainer>
+}
+
+const ChatContainer = ({children, style})=>{
+    if(Platform.OS==="ios"){
+        return <KeyboardShift style={style}>{children}</KeyboardShift>
+    }else{
+        return <View style={style}>{children}</View>
+    }
 }
 
 const styles = StyleSheet.create({
