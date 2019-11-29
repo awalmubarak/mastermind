@@ -11,6 +11,7 @@ import AppStyles from "../commons/AppStyles";
 import { signOut } from '../firebase/FirebaseAuth'
 import { withUserHOC } from "../contexts/UserContext";
 import Loader from "./loader";
+import { DEFAULT_AVATAR } from "../commons/Utils";
 
 const DrawerSidebar = ({navigation, context})=> {
     const [isLoading, setIsLoading] = useState(false)
@@ -60,7 +61,7 @@ const DrawerSidebar = ({navigation, context})=> {
             onPress={()=>{
               setIsLoading(true)
               signOut(()=>{
-                setProfile({name:"", bio:"", linkedin:"", twitter:"", facebook:"", avatar:{ uri: null }})
+                setProfile({name:"", bio:"", linkedin:"", twitter:"", facebook:"", avatar:{ uri: DEFAULT_AVATAR }})
                 setUser({})
               }, ()=>setIsLoading(false))
               

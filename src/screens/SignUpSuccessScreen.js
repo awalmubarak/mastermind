@@ -6,6 +6,7 @@ import AppStyles from '../commons/AppStyles'
 import { withUserHOC } from '../contexts/UserContext'
 import { signOut } from '../firebase/FirebaseAuth'
 import Loader from '../components/loader'
+import { DEFAULT_AVATAR } from '../commons/Utils'
 
 
 const SignUpSuccessScreen = ({navigation, context})=>{
@@ -29,7 +30,7 @@ const SignUpSuccessScreen = ({navigation, context})=>{
                      <TouchableOpacity style={styles.skipButton} onPress={()=>{
                          setIsLoading(true)
                          signOut(()=>{
-                            setProfile({name:"", bio:"", linkedin:"", twitter:"", facebook:"", avatar:{ uri: null }})
+                            setProfile({name:"", bio:"", linkedin:"", twitter:"", facebook:"", avatar:{ uri: DEFAULT_AVATAR }})
                             setUser({})
                          }, ()=>setIsLoading(false))
                          }}>

@@ -63,7 +63,14 @@ const CreateProfileNavigator = createStackNavigator({
   }
 },{
   defaultNavigationOptions:{
-    title: "Create Profile"
+    title: "Create Profile",
+    headerStyle:{
+      backgroundColor: "#067b7a"
+    },
+    headerTitleStyle:{
+      color:"white",
+    },
+    headerTintColor: "white"
   },
   headerLayoutPreset: "center"
 });
