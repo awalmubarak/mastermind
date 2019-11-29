@@ -9,7 +9,7 @@ import Loader from '../components/loader'
 
 
 const SignUpSuccessScreen = ({navigation, context})=>{
-    const {user, setProfile} = context
+    const {user, setProfile,setUser} = context
     const [isLoading, setIsLoading] = useState(false)
     return <View style={styles.container}>
             <StatusBar backgroundColor="#067b7a" barStyle="light-content" />   
@@ -30,6 +30,7 @@ const SignUpSuccessScreen = ({navigation, context})=>{
                          setIsLoading(true)
                          signOut(()=>{
                             setProfile({name:"", bio:"", linkedin:"", twitter:"", facebook:"", avatar:{ uri: null }})
+                            setUser({})
                          }, ()=>setIsLoading(false))
                          }}>
                     <Text style={styles.skipText}>Use a different account</Text>

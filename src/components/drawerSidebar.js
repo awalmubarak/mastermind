@@ -14,7 +14,7 @@ import Loader from "./loader";
 
 const DrawerSidebar = ({navigation, context})=> {
     const [isLoading, setIsLoading] = useState(false)
-    const {profile, setProfile} = context
+    const {profile, setProfile, setUser} = context
     return (
       <View style={styles.container}>
         <View style={styles.containertopRow}>
@@ -61,6 +61,7 @@ const DrawerSidebar = ({navigation, context})=> {
               setIsLoading(true)
               signOut(()=>{
                 setProfile({name:"", bio:"", linkedin:"", twitter:"", facebook:"", avatar:{ uri: null }})
+                setUser({})
               }, ()=>setIsLoading(false))
               
             }}
