@@ -56,14 +56,15 @@ const renderOutGoingMessage = (message)=>{
             flex: 0.7,
             alignItems: "flex-end"
             }}>
+            <View style={{borderWidth: 1,
+            borderTopLeftRadius: 10,
+            borderColor: message.createdAt?AppStyles.colors.primary:"#f24949",
+            borderBottomLeftRadius: 10,}}>
             <Text style={{
             fontSize: 16,
             padding: 5,
-            borderWidth: 1,
-            borderTopLeftRadius: 10,
-            borderColor: message.createdAt?AppStyles.colors.primary:"#f24949",
-            borderBottomLeftRadius: 10,
             lineHeight: 20}} selectable={true}> {message.text}</Text>
+            </View>
             {message.createdAt && <Text style={{fontSize: 12, color: 'grey'}}>{moment(message.createdAt.toDate()).format("HH:mm")}</Text>}
             </View>
        </View>
