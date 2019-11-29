@@ -43,9 +43,11 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "center",
         alignItems: "center",
-        marginHorizontal: 10
+        marginHorizontal: 10,
+        marginVertical: 5
     },
     input:{
+        minHeight: 30,
         fontSize: 18,
         borderWidth:1,
         borderColor: "#c9c9c9",
@@ -54,6 +56,7 @@ const styles = StyleSheet.create({
         paddingStart: 10,
         paddingEnd: 10,
         flex: 0.8,
+        maxHeight: 70,
     },
     sendButton:{
         flex: 0.2,

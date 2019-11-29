@@ -11,6 +11,7 @@ import Loader from '../components/loader';
 import { sendMeetingMessage } from '../firebase/ChatsApi';
 import NoItems from '../components/NoItems';
 import KeyboardShift from '../components/KeyboardShift';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 
 
@@ -165,12 +166,15 @@ const ChatScreen = ({navigation, context})=>{
         <View style={styles.mainContainer}>
             <FlatList 
                 data={messages}
-                contentContainerStyle={messages.length === 0 && styles.centerEmptySet}
+                contentContainerStyle={[{ flexGrow: 1, justifyContent: 'flex-end' },messages.length === 0 && styles.centerEmptySet]}
                 renderItem={({item})=> (<MessageItem message={item}/>)}
                 keyExtractor={item => item.id}
                 inverted={messages.length > 0}
                 ListEmptyComponent={<NoItems message="No Messages"/>}
-                ListHeaderComponent={<View style={{marginBottom: 250}}/>}
+                ListHeaderComponent={<View style={{marginBottom: 100}}/>}
+                ListFooterComponent={<View style={{marginVertical: 10, alignItems: "center"}}>
+                    <Text style={{textAlign:"center", color: "grey", fontSize: 18}}>This is the beginning of your meeting.</Text>
+                </View>}
                 refreshing={true}
                 showsVerticalScrollIndicator={false}
             />  
@@ -201,7 +205,7 @@ const styles = StyleSheet.create({
     centerEmptySet: { 
         justifyContent: 'center', 
         alignItems: 'center',
-         height: '100%' 
+         //height: '100%' 
     },
     header:{
         height: 60,
@@ -218,13 +222,17 @@ const styles = StyleSheet.create({
         fontSize: 17
     },
     footer: {
-        height: 55,
+        maxHeight: 100,
         position: "absolute",
         left: 0, right: 0, bottom: 0,
         backgroundColor: "white",
         elevation: 4,
         paddingTop: 5,
-        paddingBottom: 5
+        paddingBottom: 5,
+        
+    },
+    mainContainer:{
+        flex: 1
     }
 })
 

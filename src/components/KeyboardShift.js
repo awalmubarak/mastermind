@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 const HEIGHT = Dimensions.get('screen').height
 const KeyboardShift = (props)=>{
     
-    const [shift, setShift] = useState(HEIGHT-90)
+    const [shift, setShift] = useState(HEIGHT-60)
 
     const handleKeyboardDidShow = (event)=>{
         const { height: windowHeight } = Dimensions.get('window');
@@ -17,7 +17,7 @@ const KeyboardShift = (props)=>{
         if (gap >= 0) {
             return;
         }
-        setShift(HEIGHT-80-keyboardHeight)
+        setShift(HEIGHT-60-keyboardHeight)
         // Animated.timing(
         //     shift,
         //     {
@@ -38,7 +38,7 @@ const KeyboardShift = (props)=>{
         //       useNativeDriver: true,
         //     }
         //   ).start();
-        setShift(HEIGHT-90)
+        setShift(HEIGHT-60)
         
     }
 
@@ -51,7 +51,7 @@ const KeyboardShift = (props)=>{
         };
     }, []);
 
-    return <Animated.View style={[styles.container, {height: shift}]}>
+    return <Animated.View style={[props.style,styles.container ,{height: shift}]}>
         {props.children}
     </Animated.View>
 }
