@@ -26,6 +26,7 @@ const MeetingsContainer = ({navigation, isHistory, context})=>{
     const [titleError, setTitleError] = useState(null)
     const [meetings, setMeetings] = useState([])
     const [refreshing, setRefreshing] = useState(false)
+    const [pickerDate, setPickerDate] = useState(new Date())
     const [dateTime, setDateTime] = useState({
         show: false,
         date: moment().format("D MMM YYYY"),
@@ -49,6 +50,7 @@ const MeetingsContainer = ({navigation, isHistory, context})=>{
              });
             return
         };
+        setPickerDate(date)
         setDateTime({
             ...dateTime, 
           show: Platform.OS === 'ios' ? true : false,
@@ -129,6 +131,8 @@ const MeetingsContainer = ({navigation, isHistory, context})=>{
                 isVisible={modalVisible}
                 date={dateTime.date}
                 time={dateTime.time}
+                setPickerDate={setPickerDate}
+                pickerDate={pickerDate}
                 createMeeting={()=>{
                     if(title.trim().length===0){
                         setTitleError(true)

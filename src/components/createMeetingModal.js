@@ -7,28 +7,28 @@ import moment from 'moment';
 import AppStyles from '../commons/AppStyles';
 
 
-const CreateMeetingModal = ({isVisible, date, time, createMeeting,cancel, mode, showPicker, setDate, show, titleError, setTitle})=>{
+const CreateMeetingModal = ({isVisible, date, time, createMeeting,cancel, mode, showPicker, setDate, show, titleError, setTitle, pickerDate})=>{
     return <Modal isVisible={isVisible} avoidKeyboard={false}>
     <View style={styles.modalContainer}>
           <View style={styles.modalContentContainer}>
               <ScrollView showsVerticalScrollIndicator={false}>
             <Text style={styles.itemLabel}>Meeting Agenda</Text>
-              <TextInput style={styles.selectDate} placeholder="Agenda" multiline onChangeText={setTitle}/>
+              <TextInput style={styles.selectDate} placeholder="Agenda" onChangeText={setTitle}/>
               {titleError && <Text style={{color: "red"}}> Please Enter a title for your meeting</Text>}
               <TouchableOpacity onPress={()=>showPicker('date')}>
                 <Text style={styles.itemLabel}>Meeting Date</Text>
                 <Text style={styles.selectDate}>{date}</Text>
               </TouchableOpacity>
-              { show && <DateTimePicker value={new Date()}
+              <TouchableOpacity onPress={()=>showPicker('time')}>
+                <Text style={styles.itemLabel}>Meeting Time</Text>
+                <Text style={styles.selectDate}>{time}</Text>
+              </TouchableOpacity>
+              { show && <DateTimePicker value={pickerDate}
                 mode={mode}
                 is24Hour={true}
                 display="default"
                 minimumDate={moment().toDate()}
                 onChange={setDate} />}
-              <TouchableOpacity onPress={()=>showPicker('time')}>
-                <Text style={styles.itemLabel}>Meeting Time</Text>
-                <Text style={styles.selectDate}>{time}</Text>
-              </TouchableOpacity>
               <Button text="Create Meeting" onPress={createMeeting}/>
               <TouchableOpacity onPress={cancel} style={{alignItems: "center"}}>
                   <Text style={styles.cancelText}>Cancel</Text>
