@@ -15,7 +15,8 @@ Sentry.init({
 
 const customFontProps = { 
   style: { 
-    fontFamily: "Brown-Regular"
+    fontFamily: "Brown-Regular",
+    color: "#3b3b3b"
   }
 }
 

@@ -46,7 +46,7 @@ const AuthLoadingScreen =({navigation}) =>{
     return (
         <View style={{flex: 1, alignItems: "center", justifyContent: "center"}}>
             <StatusBar backgroundColor={AppStyles.colors.primary} barStyle="light-content" /> 
-            <ActivityIndicator size="large" color={AppStyles.colors.primary}/>
+            <ActivityIndicator size="large" color="white"/>
         </View>
     );
     

@@ -31,6 +31,7 @@ const renderIncomingMessage = (message)=>{
         borderTopRightRadius: 10,}}>
         <Text style={{
         fontSize: 16,
+        color:"#4a4a4a",
         lineHeight: 20}} selectable={true}>{message.text}</Text>
         </View>
             {message.createdAt && <Text style={{fontSize: 12, color: 'grey'}}>{moment(message.createdAt.toDate()).format("HH:mm")}</Text>}
@@ -63,6 +64,7 @@ const renderOutGoingMessage = (message)=>{
             <Text style={{
             fontSize: 16,
             padding: 5,
+            color: "#4a4a4a",
             lineHeight: 20}} selectable={true}> {message.text}</Text>
             </View>
             {message.createdAt && <Text style={{fontSize: 12, color: 'grey'}}>{moment(message.createdAt.toDate()).format("HH:mm")}</Text>}
