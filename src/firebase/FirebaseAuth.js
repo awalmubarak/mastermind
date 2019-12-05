@@ -104,7 +104,8 @@ const errors = {
     "auth/user-not-found": "User with the provided email was not found.",
     "auth/email-already-in-use": "The email address is already in use by another user",
     "auth/weak-password": "The password you entered is very weak. Use a stronger password.",
-    "auth/wrong-password": "The password you entered is incorrect."
+    "auth/wrong-password": "The password you entered is incorrect.",
+    "auth/invalid-email": "Invalid email address entered. Please enter a valid email address."
 }
 const getAuthErrorMessage = (key)=>{
     if(errors[key])return errors[key];
@@ -160,6 +161,16 @@ export const setNotificationKey = async(user,fcmToken, callback)=>{
     } catch (error) {
          console.log(error);
          
+    }
+}
+
+export const sendPasswordResetEmail = async(email, onSuccess, onError)=>{
+    try {
+        await firebase.auth().sendPasswordResetEmail(email);
+        onSuccess()
+    } catch (error) {
+        onError(error)
+        
     }
 }
 

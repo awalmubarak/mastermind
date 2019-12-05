@@ -23,6 +23,7 @@ import ProfileDetailsScreen from '../screens/PofileDetailsScreen';
 import EditProfileScreen from '../screens/EditProfileScreen';
 import AuthLoadingScreen from '../screens/AuthLoadingScreen';
 import MemberDetailsScreen from '../screens/MemberDetailsScreen';
+import ResetPasswordScreen from '../screens/ResetPasswordScreen';
 
 
 
@@ -163,6 +164,28 @@ const AppNavigator = createStackNavigator({
   }
 }, defaultConfigs);
 
+const LoginNavigator = createStackNavigator({
+  Login: {
+    screen: LoginScreen,
+    navigationOptions: {
+      header: null,
+    }
+  },
+  ResetPassword: {
+    screen:ResetPasswordScreen,
+    navigationOptions: {
+      ...Platform.select({
+        ios: {
+          title: ""
+        },
+        android: {
+          header: null,
+        },
+      }),
+    }
+  }
+}, defaultConfigs);
+
 const DrawerNavigator = createDrawerNavigator({
   Groups: AppNavigator,
 }, {
@@ -173,7 +196,7 @@ const Navigator = createSwitchNavigator({
   AuthLoading: AuthLoadingScreen,
   Home: WelcomeScreen,
   Register: RegisterScreen,
-  Login: LoginScreen,
+  Login: LoginNavigator,
   CreateProfile: CreateProfileNavigator,
   ProfileSuccess: CreateProfileSuccessScreen,
   App: DrawerNavigator,  

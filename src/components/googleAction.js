@@ -3,8 +3,14 @@ import { Text, View, StyleSheet, TouchableOpacity } from 'react-native'
 import { GoogleSignin, GoogleSigninButton } from '@react-native-community/google-signin';
 import AppStyles from '../commons/AppStyles';
 
-const GoogleAction = ({actionMessage, actionText, googleAction, linkAction})=>{
+const GoogleAction = ({actionMessage, actionText, googleAction, linkAction, navigation})=>{
     return <>
+    {actionText=="Sign Up" && <View style={styles.loginActionContainer}>
+                <Text>Forgot your password?   </Text>
+                <TouchableOpacity onPress={()=>navigation.navigate('ResetPassword')}>
+                    <Text style={styles.signInText}>Reset Password</Text>
+                </TouchableOpacity>
+            </View>}
         <View style={styles.dividerContainer}>
                 <View style={styles.divider}></View>
                 <Text>OR</Text>

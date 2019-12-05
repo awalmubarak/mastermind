@@ -60,7 +60,7 @@ const RegisterScreen = ({navigation, context})=>{
                 </Formik>
             </View>
             
-            <GoogleAction actionText="Sign Up" actionMessage="Don't have an account?" googleAction={()=>{
+            <GoogleAction actionText="Sign Up" actionMessage="Don't have an account?" navigation={navigation} googleAction={()=>{
                 setIsLoading(true)
                 handleGoogleLogin((user, userProfile)=>{
                     setUser(user)
