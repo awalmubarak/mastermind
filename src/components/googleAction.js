@@ -22,7 +22,7 @@ const GoogleAction = ({actionMessage, actionText, googleAction, linkAction})=>{
 
             <View style={styles.loginActionContainer}>
                 <Text>{actionMessage}   </Text>
-                <TouchableOpacity onPress={()=>linkAction()}>
+                <TouchableOpacity onPress={()=>linkAction()} style={{padding:5}}>
                     <Text style={styles.signInText}>{actionText}</Text>
                 </TouchableOpacity>
             </View>
