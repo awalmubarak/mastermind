@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
 import { Text, StyleSheet, View, StatusBar, Image, TouchableOpacity } from 'react-native'
+import AsyncStorage from '@react-native-community/async-storage';
 import Button from '../components/button'
 import Card from '../components/card'
 import AppStyles from '../commons/AppStyles'
@@ -29,9 +30,10 @@ const SignUpSuccessScreen = ({navigation, context})=>{
                      />
                      <TouchableOpacity style={styles.skipButton} onPress={()=>{
                          setIsLoading(true)
-                         signOut(()=>{
+                         signOut(async()=>{
                             setProfile({name:"", bio:"", linkedin:"", twitter:"", facebook:"", avatar:{ uri: DEFAULT_AVATAR }})
                             setUser({})
+                            await AsyncStorage.removeItem('fcmToken')
                          }, ()=>setIsLoading(false))
                          }}>
                     <Text style={styles.skipText}>Use a different account</Text>

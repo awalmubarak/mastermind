@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Platform,
 } from "react-native";
+import AsyncStorage from '@react-native-community/async-storage';
 import AppStyles from "../commons/AppStyles";
 import { signOut } from '../firebase/FirebaseAuth'
 import { withUserHOC } from "../contexts/UserContext";
@@ -60,9 +61,10 @@ const DrawerSidebar = ({navigation, context})=> {
         <TouchableOpacity
             onPress={()=>{
               setIsLoading(true)
-              signOut(()=>{
+              signOut(async()=>{
                 setProfile({name:"", bio:"", linkedin:"", twitter:"", facebook:"", avatar:{ uri: DEFAULT_AVATAR }})
                 setUser({})
+                await AsyncStorage.removeItem('fcmToken')
               }, ()=>setIsLoading(false))
               
             }}
