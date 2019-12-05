@@ -171,10 +171,12 @@ const MeetingsContainer = ({navigation, isHistory, context})=>{
                 </TouchableOpacity>
             <View style={styles.groupDetailsContainer}>
                 <Text style={styles.groupDetailsText}><Text>Facilitator: </Text>{group.creator.name}</Text>
+                <TouchableOpacity onPress={()=>{navigation.navigate("GroupDetails", {group})}}>
                 <View style={styles.groupNumberContainer}>
                     <Text style={styles.groupNumber}>{group.memberCount}</Text>
                     <Image source={require('../assets/group-white.png')} style={styles.groupIcon}/>
                 </View>
+                </TouchableOpacity>
             </View>
             </View>
         </View>

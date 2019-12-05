@@ -11,7 +11,6 @@ export default class PushController extends Component{
 
     constructor(props){
         super(props)
-        var self = this
     }
     componentDidMount(){
         PushNotification.configure({

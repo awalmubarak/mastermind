@@ -4,7 +4,7 @@ import DropdownAlert from 'react-native-dropdownalert';
 import { DropDownHolder } from './src/commons/DropDownHolder';
 import NavigationService from './src/navigation/NavigationService';
 import { UserProvider } from './src/contexts/UserContext';
-import {setCustomTextInput,setCustomText} from 'react-native-global-props';
+import {setCustomTextInput,setCustomText, setCustomView} from 'react-native-global-props';
 import * as Sentry from '@sentry/react-native';
 import AppStyles from './src/commons/AppStyles';
 import PushController from './src/firebase/PushController';
@@ -20,12 +20,19 @@ const customFontProps = {
   }
 }
 
+const customViewProps = {
+  style: {
+    backgroundColor: 'white' // light gray
+  }
+};
+
 
 
 export default function App(){
   useEffect(() => {
     setCustomTextInput(customFontProps)
     setCustomText(customFontProps);
+    setCustomView(customViewProps)
     return () => {
     };
   }, [])

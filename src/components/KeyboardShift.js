@@ -66,8 +66,8 @@ const styles = StyleSheet.create({
     }
 });
 
-KeyboardShift.propTypes = {
-    children: PropTypes.object.isRequired
-};
+// KeyboardShift.propTypes = {
+//     children: PropTypes.object.isRequired
+// };
 
 export default KeyboardShift;
